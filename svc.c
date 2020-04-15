@@ -26,6 +26,7 @@ void *get_commit(void *helper, char *commit_id) {
 
 char **get_prev_commits(void *helper, void *commit, int *n_prev) {
     // TODO: Implement
+    
     return NULL;
 }
 
