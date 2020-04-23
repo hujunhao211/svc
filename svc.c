@@ -47,7 +47,7 @@ void *svc_init(void) {
 
 void cleanup(void *helper) {
 //    int i;
-//    struct helper* help = (struct helper*)helper;
+    struct helper* help = (struct helper*)helper;
 //    for (i = 0; i < help->branch_length; i++){
 //        int j;
 //        for (j = 0; j < help->branches[i]->length; j++){
