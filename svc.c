@@ -74,13 +74,12 @@ void cleanup(void *helper) {
     // TODO: Implement
 }
 
-int do_count(FILE* f){
+int do_count(FILE* f ,int hash){
     char c = 0;
-    int count = 0;
     while ((c = fgetc(f)) != EOF) {
-        count = (count + (unsigned char)c) % 2000000000;
+        hash = (hash + (unsigned char)c) % 2000000000;
     }
-    return count;
+    return hash;
 }
 int hash_file(void *helper, char *file_path) {
     // TODO: Implement
@@ -96,12 +95,11 @@ int hash_file(void *helper, char *file_path) {
     for (i = 0; i < (strlen(file_path)); i++){
         result = (result + (unsigned char)file_path[i]) % 1000;
     }
-    result += do_count(file);
+    result = do_count(file, result);
     
     
     return result;
 }
-
 char *svc_commit(void *helper, char *message) {
     // TODO: Implement
     return NULL;
