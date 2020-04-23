@@ -96,8 +96,7 @@ int hash_file(void *helper, char *file_path) {
         result = (result + (unsigned char)file_path[i]) % 1000;
     }
     result = do_count(file, result);
-    
-    
+//    printf("%d\n",result);
     return result;
 }
 char *svc_commit(void *helper, char *message) {
