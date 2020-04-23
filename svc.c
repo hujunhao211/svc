@@ -46,7 +46,7 @@ void *svc_init(void) {
 }
 
 void cleanup(void *helper) {
-//    int i;
+    int i;
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
         int j;
@@ -57,8 +57,8 @@ void cleanup(void *helper) {
             for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
                 free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
                 free(help->branches[i]->branch_commit[j]->files_array[z]);
-                free(help->branches[i]->branch_commit[j]->files_array);
             }
+            free(help->branches[i]->branch_commit[j]->files_array);
             free(help->branches[i]->branch_commit[j]->message);
             free(help->branches[i]->branch_commit[j]->next);
         }
