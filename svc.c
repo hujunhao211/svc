@@ -75,6 +75,14 @@ void cleanup(void *helper) {
 
 int hash_file(void *helper, char *file_path) {
     // TODO: Implement
+    if (file_path == NULL){
+        return -1;
+    }
+    FILE* file = fopen(file_path, "r");
+    if (file == NULL){
+        return -2;
+    }
+    return 0;
     return 0;
 }
 
