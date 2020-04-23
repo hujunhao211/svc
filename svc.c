@@ -1,5 +1,6 @@
 #include "svc.h"
 #include <stdio.h>
+#include <string.h>
 typedef struct commit{
     struct commit* prev;
     struct commit ** next;
@@ -73,6 +74,14 @@ void cleanup(void *helper) {
     // TODO: Implement
 }
 
+int do_count(FILE* f){
+    char c = 0;
+    int count = 0;
+    while ((c = fgetc(f)) != EOF) {
+        count = (count + (unsigned char)c) % 2000000000;
+    }
+    return count;
+}
 int hash_file(void *helper, char *file_path) {
     // TODO: Implement
     if (file_path == NULL){
@@ -82,8 +91,15 @@ int hash_file(void *helper, char *file_path) {
     if (file == NULL){
         return -2;
     }
-    return 0;
-    return 0;
+    int i;
+    int result = 0;
+    for (i = 0; i < (strlen(file_path)); i++){
+        result = (result + (unsigned char)file_path[i]) % 1000;
+    }
+    result += do_count(file);
+    
+    
+    return result;
 }
 
 char *svc_commit(void *helper, char *message) {
