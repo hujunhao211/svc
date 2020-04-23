@@ -33,38 +33,38 @@ void *svc_init(void) {
 //    commit->prev = NULL;
 //    commit->commit_id = NULL;
 //    commit->message = NULL;
-    help->branch_length = 1;
-    help->branches = malloc(sizeof(branch *));
-    help->head = NULL;
-    help->commit_array = NULL;
-    help->commit_length = 0;
-    help->branches[0] = malloc(sizeof(branch));
-    help->branches[0]->branch_commit = NULL;
-    help->branches[0]->length = 0;
-    help->branches[0]->tag = 0;
+//    help->branch_length = 1;
+//    help->branches = malloc(sizeof(branch *));
+//    help->head = NULL;
+//    help->commit_array = NULL;
+//    help->commit_length = 0;
+//    help->branches[0] = malloc(sizeof(branch));
+//    help->branches[0]->branch_commit = NULL;
+//    help->branches[0]->length = 0;
+//    help->branches[0]->tag = 0;
     return (void*)help;
 }
 
 void cleanup(void *helper) {
-    int i;
-    struct helper* help = (struct helper*)helper;
-    for (i = 0; i < help->branch_length; i++){
-        int j;
-        for (j = 0; j < help->branches[i]->length; j++){
-            free(help->branches[i]->branch_commit[j]->commit_id);
-            free(help->branches[i]->branch_commit[j]->branch_p);
-            int z;
-            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
-                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
-                free(help->branches[i]->branch_commit[j]->files_array[z]);
-                free(help->branches[i]->branch_commit[j]->files_array);
-            }
-            free(help->branches[i]->branch_commit[j]->message);
-            free(help->branches[i]->branch_commit[j]->next);
-        }
-    }
-    free(help->head);
-    free(help->commit_array);
+//    int i;
+//    struct helper* help = (struct helper*)helper;
+//    for (i = 0; i < help->branch_length; i++){
+//        int j;
+//        for (j = 0; j < help->branches[i]->length; j++){
+//            free(help->branches[i]->branch_commit[j]->commit_id);
+//            free(help->branches[i]->branch_commit[j]->branch_p);
+//            int z;
+//            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
+//                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
+//                free(help->branches[i]->branch_commit[j]->files_array[z]);
+//                free(help->branches[i]->branch_commit[j]->files_array);
+//            }
+//            free(help->branches[i]->branch_commit[j]->message);
+//            free(help->branches[i]->branch_commit[j]->next);
+//        }
+//    }
+//    free(help->head);
+//    free(help->commit_array);
     free(help);
     // TODO: Implement
 }
