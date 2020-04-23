@@ -63,6 +63,9 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]->next);
         }
     }
+    free(help->head);
+    free(help->commit_array);
+    free(help);
     // TODO: Implement
 }
 
