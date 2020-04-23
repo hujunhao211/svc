@@ -61,7 +61,10 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]->files_array);
             free(help->branches[i]->branch_commit[j]->message);
             free(help->branches[i]->branch_commit[j]->next);
+            free(help->branches[i]->branch_commit[j]);
         }
+        free(help->branches[i]->branch_commit);
+        free(help->branches[i]);
     }
     free(help->branches);
     free(help->head);
