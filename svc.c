@@ -76,8 +76,9 @@ void cleanup(void *helper) {
 
 int do_count(FILE* f ,int hash){
     char c = 0;
+//    printf("%d\n",hash);
     while ((c = fgetc(f)) != EOF) {
-        hash = (hash + (unsigned char)c) % 2000000000;
+        hash = (hash + (uint8_t)c) % 2000000000;
     }
     return hash;
 }
@@ -93,7 +94,7 @@ int hash_file(void *helper, char *file_path) {
     int i;
     int result = 0;
     for (i = 0; i < (strlen(file_path)); i++){
-        result = (result + (unsigned char)file_path[i]) % 1000;
+        result = (result + (uint8_t)file_path[i]) % 1000;
     }
     result = do_count(file, result);
 //    printf("%d\n",result);
