@@ -75,10 +75,12 @@ void cleanup(void *helper) {
 }
 
 int do_count(FILE* f ,int hash){
-    char c = 0;
-//    printf("%d\n",hash);
-    while ((c = fgetc(f)) != EOF) {
-        hash = (hash + c) % 2000000000;
+    char count[255];
+    int i;
+    while (fgets(count, 254, f)) {
+        for (i = 0; i < strlen(count); i++) {
+            hash = (hash + count[i]) % 2000000000;
+        }
     }
     return hash;
 }
