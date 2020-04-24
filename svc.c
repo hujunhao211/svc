@@ -75,14 +75,19 @@ void cleanup(void *helper) {
 }
 
 int do_count(FILE* f ,int hash){
-    char count[255];
-    int i;
-    while (fscanf(f, "%s",count) == 1) {
-//        count[255] = '\n';
-        for (i = 0; i < strlen(count); i++) {
-            hash = (hash + count[i]) % 2000000000;
+    char *count = NULL;
+        int i = 0;
+        while (fscanf(f, "%c",count)) {
+            count = realloc(count, sizeof(count) * (i + 1));
+            hash = (hash + count[i - 1]) % 2000000000;
+            i += 1;
         }
-    }
+    //    while ((c = fgetc(f)) != EOF) {
+    //        printf("%d\n",(unsigned char)c);
+    //        hash = (hash + (unsigned char)c) % 2000000000;
+    //    }
+        free(count);
+        return hash;
     return hash;
 }
 int hash_file(void *helper, char *file_path) {
