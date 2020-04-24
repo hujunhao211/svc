@@ -75,7 +75,6 @@ void cleanup(void *helper) {
 }
 
 int do_count(FILE* f ,int hash){
-    char c = 0;
     char *count = NULL;
     int i = 0;
     while (fscanf(f, "%c",count) == 1) {
