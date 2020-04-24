@@ -75,9 +75,9 @@ void cleanup(void *helper) {
 }
 
 int do_count(FILE* f ,int hash){
-    char count[525];
+    char count[25];
     int i;
-    while (fgets(count, 524, f) != NULL) {
+    while (fgets(count, 24, f) != NULL) {
         for (i = 0; i < strlen(count); i++) {
             hash = (hash + count[i]) % 2000000000;
         }
