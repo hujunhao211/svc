@@ -84,6 +84,7 @@ int do_count(FILE* f ,int hash){
         //    }
         //    free(count);
     char *count = NULL;
+    count = malloc(count, sizeof(char));
     int i = 0;
     while (fscanf(f, " %c",count)) {
         count = realloc(count, sizeof(count) * (++i));
