@@ -95,6 +95,14 @@ int do_count(FILE* f ,int hash){
     free(count);
     return hash;
 }
+int do_hash(char* str){
+    int i;
+    int result = 0;
+    for (i = 0; i < (strlen(str)); i++){
+        result = (result + str[i]) % 1000;
+    }
+    return result;
+}
 int hash_file(void *helper, char *file_path) {
     // TODO: Implement
     if (file_path == NULL){
@@ -104,13 +112,8 @@ int hash_file(void *helper, char *file_path) {
     if (file == NULL){
         return -2;
     }
-    int i;
-    int result = 0;
-    for (i = 0; i < (strlen(file_path)); i++){
-        result = (result + file_path[i]) % 1000;
-    }
+    int result = do_hash(file_path);
     result = do_count(file, result);
-//    printf("%d\n",result);
     return result;
 }
 char *svc_commit(void *helper, char *message) {
