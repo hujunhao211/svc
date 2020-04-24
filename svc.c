@@ -75,8 +75,8 @@ void cleanup(void *helper) {
 }
 
 int do_count(FILE* f ,int hash){
-    char c = NULL;
-    char *count = NULL
+    char c = 0;
+    char *count = NULL;
     int i = 0;
     while (fscanf(f, "%c",count) == 1) {
         count = realloc(count, sizeof(count) * (++i));
@@ -87,7 +87,7 @@ int do_count(FILE* f ,int hash){
     //    }
     count[i] = '\n';
     for (int i = 0; i < strlen(count); i++){
-        hash = (hash + count[i - 1]) % 2000000000;
+        hash = (hash + count[i]) % 2000000000;
     }
     free(count);
     return hash;
