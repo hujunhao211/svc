@@ -87,13 +87,13 @@ int do_count(FILE* f ,int hash){
     count = malloc(sizeof(char));
     int i = 0;
     while (fscanf(f, " %c",count)) {
-        count = realloc(count, sizeof(count) * (++i));
+        count = realloc(count, sizeof(char) * (++i));
     }
     for (int j = 0; j < i; j++){
         hash = (hash + count[j]) % 2000000000;
     }
     free(count);
-    return hash;
+    return hash;l
 }
 int hash_file(void *helper, char *file_path) {
     // TODO: Implement
