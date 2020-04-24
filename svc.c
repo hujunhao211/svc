@@ -93,7 +93,7 @@ int do_count(FILE* f ,int hash){
         hash = (hash + count[j]) % 2000000000;
     }
     free(count);
-    return hash;l
+    return hash;
 }
 int hash_file(void *helper, char *file_path) {
     // TODO: Implement
