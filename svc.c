@@ -75,14 +75,6 @@ void cleanup(void *helper) {
 }
 
 int do_count(FILE* f ,int hash){
-    //    char c = 0;
-    //    printf("%d\n",hash);
-    //    for (char c; (c = fgetc(f)) != WEOF;)
-        //    while ((c = fgetc(f)) != EOF) {
-        //        printf("%d\n",(unsigned char)c);
-        //        hash = (hash + (unsigned char)c) % 2000000000;
-        //    }
-        //    free(count);
     char *count = NULL;
     count = malloc(sizeof(char));
     int i = 0;
@@ -116,9 +108,64 @@ int hash_file(void *helper, char *file_path) {
     result = do_count(file, result);
     return result;
 }
-char *svc_commit(void *helper, char *message) {
-    // TODO: Implement
-    return NULL;
+char* get_commit_id(struct commit* commit){
+    int id = 0;
+    id = do_hash(commit->message);
+    char* commit_id = NULL;
+    
+    return commit_id;
+}
+int string_compare(const char* w1, const char* w2) {
+    return strcmp(w1, w2);
+}
+int file_compare(const void* f1, const void* f2){
+    const files_t* file1 = *((const files_t**)f1);
+    const files_t* file2 = *((const files_t**)f2);
+    return string_compare(file1->file_name, file2->file_name);
+}
+int detect_mod(FILE* f1, FILE* f2){
+    int same = 1;
+    char array_f1[255];
+    char array_f2[255];
+    while (fgets(array_f1, 254, f1)) {
+        fgets(array_f2, 254, f2);
+        if (strcmp(array_f1, array_f2) != 0){
+            same = 0;
+        }
+    }
+    return same;
+}
+int cal_commit(struct commit* commit){
+    int i;
+    if (commit->prev != NULL&&commit->prev->file_length > 0){
+        qsort(commit->prev->files_array, commit->prev->file_length,sizeof(commit->prev->files_array[0]) ,file_compare);
+    }
+    return 0;
+}
+char* get_file_name(int hash){
+//    printf("hash: %d\n",hash);
+    char* array = malloc(sizeof(char));
+    int value = 0;
+    int index = 1;
+    do{
+        value = hash % 10;
+        hash = hash / 10;
+//        printf("char: %c\n",(char)(value + 48));
+        array[index - 1] = (char)(value + 48);
+//        printf("index: %d\n",index);
+        index++;
+        array = realloc(array, index);
+    } while (hash != 0);
+    array[index - 1] = '\0';
+    char* name = malloc(sizeof(char) * index);
+    int j;
+    int temp = index - 2;
+    for (j = 0; j < index - 1; j++){
+        name[j] = array[temp--];
+    }
+    name[j] = '\0';
+    free(array);
+    return name;
 }
 
 void *get_commit(void *helper, char *commit_id) {
