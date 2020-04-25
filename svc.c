@@ -4,6 +4,7 @@
 char* get_file_name(int hash);
 typedef struct commit{
     struct commit* prev;
+    struct commit** parent;
     struct commit ** next;
     char* commit_id;
     char* message;
@@ -11,8 +12,12 @@ typedef struct commit{
     struct branch* branch_p;
     struct files** files_array;
     int file_length;
-    char* changes;
-    int changes_length;
+    char** addition;
+    char** deletion;
+    char** modification;
+    int add_length;
+    int rm_length;
+    int mod_lenth;
 }commit_t;
 typedef struct helper{
     int commit_length;
@@ -67,6 +72,16 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]->files_array);
             free(help->branches[i]->branch_commit[j]->message);
             free(help->branches[i]->branch_commit[j]->next);
+            for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
+                free(help->branches[i]->branch_commit[j]->addition);
+            }
+            for (z = 0; z < help->branches[i]->branch_commit[j]->rm_length;z++){
+                free(help->branches[i]->branch_commit[j]->deletion);
+            }
+            for (z = 0; z < help->branches[i]->branch_commit[j]->mod_lenth;z++){
+                free(help->branches[i]->branch_commit[j]->modification);
+            }
+            free(help->branches[i]->branch_commit[j]->parent);
             free(help->branches[i]->branch_commit[j]);
         }
         free(help->branches[i]->branch_commit);
@@ -186,15 +201,21 @@ int cal_commit(struct commit* commit){
     int commit_id = 0;
     commit_id = get_commit_id(commit);
     if (commit->prev == NULL){
-        if (add_length == 0){
+        if (add_length != 0){
+            commit->addition = malloc(sizeof(char*));
+            int size_file = 0;
             for (i = 0; i < add_length; i++){
                 commit_id += 376591;
                 commit_id = calculate_change(array_add[i], strlen(array_add[i]), commit_id);
-            }
+                commit->addition = realloc(commit->addition,( ++size_file) * sizeof(char*));
+                commit->addition[size_file - 1] = strdup(array_add[i]);
+             }
+            commit->add_length = size_file;
         }
     } else if (commit->file_length > 0){
         char** array = malloc(sizeof(char*) * (add_length + remove_length));
         int i;
+        commit->addition = malloc(sizeof(char*));
         for (i = 0; i < add_length; i++){
             array[i] = array_add[i];
         }
@@ -206,38 +227,54 @@ int cal_commit(struct commit* commit){
         for (i = 0; i < commit->file_length; i++){
             FILE* file = fopen(commit->files_array[i]->file_name, "r");
             if (file == NULL){
-                array_remove = realloc(array_remove, ++remove_length);
+                array_remove = realloc(array_remove, ++remove_length * sizeof(char*));
                 array_remove[remove_length - 1] = commit->files_array[i]->file_name;
             }
             fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
+        size = 0;
+        commit->modification = malloc(sizeof(char*));
         for (i = 0; i < commit->prev->file_length; i++){
             if (!detect_add(commit->prev->files_array[i]->file_name) && !detect_add(commit->prev->files_array[i]->file_name)){
                 if (detect_mod(commit->prev->files_array[i], commit->prev->files_array[i]->file_name)){
-                    array = realloc(array, ++size);
-                    mod_array = realloc(mod_array, ++mod_size);
+                    array = realloc(array, (++size) * sizeof(char*));
+                    mod_array = realloc(mod_array, (++mod_size) * sizeof(char*));
                     array[size - 1] = commit->prev->files_array[i]->file_name;
                     mod_array[mod_size - 1] = commit->prev->files_array[i]->file_name;
                 }
             }
         }
+        int size_add = 0;
+        int size_rm = 0;
+        int size_mod = 0;
         qsort(array, size,sizeof(array[0]) ,file_compare);
         for(i = 0; i < size; i++){
 //            int j;
             if (detect_add(array[i])){
+                commit->addition = realloc(commit->addition, (++size_add) * sizeof(char *));
+                commit->addition[size_add-1] = strdup(array[i]);
                 commit_id += 376591;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
             if (detect_del(array[i])){
+                commit->deletion = realloc(commit->deletion, (++size_rm) * sizeof(char*));
+                commit->deletion[size_rm - 1] = strdup(array[i]);
                 commit_id += 85973;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
             if (find_mod(array[i], mod_array, mod_size)){
+                commit->modification =realloc(commit->modification, (++size_mod)*sizeof(char*));
+                commit->modification[size_mod - 1] = strdup(array[i]);
                 commit_id += 9573681;
             }
         }
+        commit->add_length = size_add;
+        commit->rm_length = size_rm;
+        commit->mod_lenth = size_mod;
+        free(mod_array);
+        free(array);
     }  else {
         if (commit->prev->file_length > 0){
             int k;
@@ -308,12 +345,8 @@ char *svc_commit(void *helper, char *message) {
     if (message == NULL){
         return NULL;
     }
-    if (help->commit_array[help->commit_length - 1]->message == NULL){
-        int commit_id = cal_commit(help->commit_array[0]);
-        if (commit_id == 0){
-            return NULL;
-        }
-//        for ()
+    if(help->head == NULL){
+        
     }
     return NULL;
 }
