@@ -401,17 +401,22 @@ char **list_branches(void *helper, int *n_branches) {
 
 int svc_add(void *helper, char *file_name) {
     // TODO: Implement
-//    struct helper* help = helper;
-//    if (help->head == NULL){
-//        struct helper* help = helper;
-//        if (help->head == NULL){
-//            help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-//            help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
-//            help->branches[0]->length = 1;
-//            help->branches[0]->branch_commit[0]->prev = NULL;
-//            help->branches[0]->branch_commit[0]->next = NULL;
-//        }
-//    }
+    if (file_name == NULL){
+        return -1;
+    }
+    struct helper* help = helper;
+    int i;
+    for(i = 0; i < help->file_length;i++){
+        if (strcmp(file_name, help->file_array[i]) == 0 ){
+            return -2;
+        }
+    }
+    if (help->file_length == help->capacity){
+        help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+        help->capacity *= 2;
+        help->file_array[help->file_length ++] = strdup(file_name);
+        array_add[add_length++] = strdup(file_name);
+        }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
 //    }
@@ -420,8 +425,44 @@ int svc_add(void *helper, char *file_name) {
 
 int svc_rm(void *helper, char *file_name) {
     // TODO: Implement
+    if (file_name == NULL){
+        return -1;
+    }
+    struct helper* help = helper;
+    int find = 0;
+    int i,j,index = -1;
+    for(i = 0; i < help->file_length;i++){
+        if (strcmp(file_name, help->file_array[i]) == 0 ){
+            index = i;
+        }
+    }
+    if (!find){
+        return -2;
+    }
+    char* file_temp = help->file_array[index];
+    for (j = index; j < help->file_length - 1; j++){
+        help->file_array[j] = help->file_array[j - 1];
+    }
+    help->file_array[j] = NULL;
+    help->file_length--;
+    for (i = 0; i < add_length; i++){
+        if (strcmp(help->file_array[i],file_temp) == 0){
+            index = i;
+        }
+    }
+    for (j = index; j < add_length; j++){
+        help->file_array[j] = help->file_array[j + 1];
+    }
+    free(file_temp);
+    if (help->file_length == help->capacity){
+        help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+        help->capacity *= 2;
+        help->file_array[help->file_length ++] = strdup(file_name);
+        array_remove[remove_length++] = strdup(file_name);
+    }
     return 0;
 }
+
 
 int svc_reset(void *helper, char *commit_id) {
     // TODO: Implement
