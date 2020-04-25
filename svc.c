@@ -382,14 +382,14 @@ int svc_add(void *helper, char *file_name) {
     // TODO: Implement
     struct helper* help = helper;
     if (help->head == NULL){
-//        help->commit_array = malloc(sizeof(commit_t*));
-//        help->commit_array[0] = malloc(sizeof(commit_t));
-//        help->commit_length = 1;
-//        help->branches[0]->length = 1;
-//        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-//        help->branches[0]->branch_commit[0] = help->commit_array[0];
-//        help->commit_array[0]->next = NULL;
-//        help->commit_array[0]->prev = NULL;
+    struct helper* help = helper;
+    if (help->head == NULL){
+        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+        help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
+        help->branches[0]->length = 1;
+        help->branches[0]->branch_commit[0]->prev = NULL;
+        help->branches[0]->branch_commit[0]->next = NULL;
+    }
     }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
