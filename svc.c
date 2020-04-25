@@ -85,7 +85,7 @@ void cleanup(void *helper) {
 //            free(help->branches[i]->branch_commit[j]->modification);
             if (help->branches[i]->branch_commit[j] != NULL){
                 free(help->branches[i]->branch_commit[j]->parent[0]);
-                free(help->branched[i]->branch_commit[j]->parent[1]);
+                free(help->branches[i]->branch_commit[j]->parent[1]);
             }
             free(help->branches[i]->branch_commit[j]);
         }
