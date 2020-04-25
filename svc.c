@@ -70,7 +70,7 @@ void cleanup(void *helper) {
 //            }
 //            free(help->branches[i]->branch_commit[j]->files_array);
 //            free(help->branches[i]->branch_commit[j]->message);
-            free(help->branches[i]->branch_commit[j]->next);
+//            free(help->branches[i]->branch_commit[j]->next);
 //            for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
 //                free(help->branches[i]->branch_commit[j]->addition[z]);
 //            }
