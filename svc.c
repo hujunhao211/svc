@@ -61,7 +61,7 @@ void cleanup(void *helper) {
     for (i = 0; i < help->branch_length; i++){
         int j;
         for (j = 0; j < help->branches[i]->length; j++){
-//            free(help->branches[i]->branch_commit[j]->commit_id);
+            free(help->branches[i]->branch_commit[j]->commit_id);
 //            free(help->branches[i]->branch_commit[j]->branch_p);
 //            int z;
 //            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
@@ -83,7 +83,10 @@ void cleanup(void *helper) {
 //                free(help->branches[i]->branch_commit[j]->modification[z]);
 //            }
 //            free(help->branches[i]->branch_commit[j]->modification);
-            free(help->branches[i]->branch_commit[j]->parent);
+            if (help->branches[i]->branch_commit[j] != NULL){
+                free(help->branches[i]->branch_commit[j]->parent[0]);
+                free(help->branched[i]->branch_commit[j]->parent[1]);
+            }
             free(help->branches[i]->branch_commit[j]);
         }
         free(help->branches[i]->branch_commit);
