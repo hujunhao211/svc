@@ -72,14 +72,17 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]->message);
             free(help->branches[i]->branch_commit[j]->next);
             for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
-                free(help->branches[i]->branch_commit[j]->addition);
+                free(help->branches[i]->branch_commit[j]->addition[z]);
             }
+            free(help->branches[i]->branch_commit[j]->addition);
             for (z = 0; z < help->branches[i]->branch_commit[j]->rm_length;z++){
-                free(help->branches[i]->branch_commit[j]->deletion);
+                free(help->branches[i]->branch_commit[j]->deletion[z]);
             }
+            free(help->branches[i]->branch_commit[j]->deletion);
             for (z = 0; z < help->branches[i]->branch_commit[j]->mod_lenth;z++){
-                free(help->branches[i]->branch_commit[j]->modification);
+                free(help->branches[i]->branch_commit[j]->modification[z]);
             }
+            free(help->branches[i]->branch_commit[j]->modification);
             free(help->branches[i]->branch_commit[j]->parent);
             free(help->branches[i]->branch_commit[j]);
         }
