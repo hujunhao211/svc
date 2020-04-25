@@ -425,7 +425,7 @@ int svc_add(void *helper, char *file_name) {
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
 //    }
-    return 0;
+    return hash_file(NULL, file_name);
 }
 
 int svc_rm(void *helper, char *file_name) {
@@ -465,7 +465,7 @@ int svc_rm(void *helper, char *file_name) {
         help->file_array[help->file_length ++] = strdup(file_name);
         array_remove[remove_length++] = strdup(file_name);
     }
-    return 0;
+    return hash_file(NULL, file_name);
 }
 
 int svc_reset(void *helper, char *commit_id) {
