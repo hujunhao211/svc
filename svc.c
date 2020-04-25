@@ -21,7 +21,7 @@ typedef struct commit{
 }commit_t;
 typedef struct helper{
     int commit_length;
-    commit_t** commit_array;
+//    commit_t** commit_array;
     commit_t* head;
     struct branch** branches;
     int branch_length;
@@ -46,7 +46,6 @@ void *svc_init(void) {
     help->branch_length = 1;
     help->branches = malloc(sizeof(branch *));
     help->head = NULL;
-    help->commit_array = NULL;
     help->commit_length = 0;
     help->branches[0] = malloc(sizeof(branch));
     help->branches[0]->branch_commit = NULL;
@@ -89,7 +88,6 @@ void cleanup(void *helper) {
     }
     free(help->branches);
     free(help->head);
-    free(help->commit_array);
     free(help);
     // TODO: Implement
 }
@@ -384,17 +382,18 @@ int svc_add(void *helper, char *file_name) {
     // TODO: Implement
     struct helper* help = helper;
     if (help->head == NULL){
-        help->commit_array = malloc(sizeof(commit_t*));
-        help->commit_array[0] = malloc(sizeof(commit_t));
-        help->commit_length = 1;
-        help->branches[0]->length = 1;
-        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-        help->branches[0]->branch_commit[0] = help->commit_array[0];
-        help->commit_array[0]->next = NULL;
-        help->commit_array[0]->prev = NULL;
-    } else if(help->commit_array[help->commit_length - 1]->message != NULL){
-        
+//        help->commit_array = malloc(sizeof(commit_t*));
+//        help->commit_array[0] = malloc(sizeof(commit_t));
+//        help->commit_length = 1;
+//        help->branches[0]->length = 1;
+//        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+//        help->branches[0]->branch_commit[0] = help->commit_array[0];
+//        help->commit_array[0]->next = NULL;
+//        help->commit_array[0]->prev = NULL;
     }
+//    else if(help->commit_array[help->commit_length - 1]->message != NULL){
+//
+//    }
     return 0;
 }
 
