@@ -1,6 +1,7 @@
 #include "svc.h"
 #include <stdio.h>
 #include <string.h>
+char* get_file_name(int hash);
 typedef struct commit{
     struct commit* prev;
     struct commit ** next;
@@ -10,6 +11,8 @@ typedef struct commit{
     struct branch* branch_p;
     struct files** files_array;
     int file_length;
+    char* changes;
+    int changes_length;
 }commit_t;
 typedef struct helper{
     int commit_length;
@@ -22,11 +25,16 @@ typedef struct branch{
     int length;
     int tag;
     commit_t** branch_commit;
+    commit_t*precommit;
 }branch;
 typedef struct files{
     int hash_id;
     char* file_name;
 }files_t;
+int add_length;
+int remove_length;
+char** array_add;
+char** array_remove;
 void *svc_init(void) {
     // TODO: Implement
     helper* help = malloc(sizeof(helper));
@@ -339,9 +347,21 @@ char **list_branches(void *helper, int *n_branches) {
     return NULL;
 }
 
-
 int svc_add(void *helper, char *file_name) {
     // TODO: Implement
+    struct helper* help = helper;
+    if (help->head == NULL){
+        help->commit_array = malloc(sizeof(commit_t*));
+        help->commit_array[0] = malloc(sizeof(commit_t));
+        help->commit_length = 1;
+        help->branches[0]->length = 1;
+        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+        help->branches[0]->branch_commit[0] = help->commit_array[0];
+        help->commit_array[0]->next = NULL;
+        help->commit_array[0]->prev = NULL;
+    } else if(help->commit_array[help->commit_length - 1]->message != NULL){
+        
+    }
     return 0;
 }
 
@@ -359,4 +379,3 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     // TODO: Implement
     return NULL;
 }
-
