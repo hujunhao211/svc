@@ -358,6 +358,7 @@ char *svc_commit(void *helper, char *message) {
                 help->branches[0]->branch_commit[0]->next = NULL;
                 help->branches[0]->branch_commit[0]->file_length = 0;
                 help->branches[0]->branch_commit[0]->files_array = NULL;
+                help->branches[0]->branch_commit[0]->parent = NULL;
             }
         }
     }
