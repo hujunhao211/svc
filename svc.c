@@ -56,39 +56,39 @@ void *svc_init(void) {
 }
 
 void cleanup(void *helper) {
-    int i;
-    struct helper* help = (struct helper*)helper;
-    for (i = 0; i < help->branch_length; i++){
-        int j;
-        for (j = 0; j < help->branches[i]->length; j++){
-            free(help->branches[i]->branch_commit[j]->commit_id);
-            free(help->branches[i]->branch_commit[j]->branch_p);
-            int z;
-            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
-                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
-                free(help->branches[i]->branch_commit[j]->files_array[z]);
-            }
-            free(help->branches[i]->branch_commit[j]->files_array);
-            free(help->branches[i]->branch_commit[j]->message);
-            free(help->branches[i]->branch_commit[j]->next);
-            for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
-                free(help->branches[i]->branch_commit[j]->addition);
-            }
-            for (z = 0; z < help->branches[i]->branch_commit[j]->rm_length;z++){
-                free(help->branches[i]->branch_commit[j]->deletion);
-            }
-            for (z = 0; z < help->branches[i]->branch_commit[j]->mod_lenth;z++){
-                free(help->branches[i]->branch_commit[j]->modification);
-            }
-            free(help->branches[i]->branch_commit[j]->parent);
-            free(help->branches[i]->branch_commit[j]);
-        }
-        free(help->branches[i]->branch_commit);
-        free(help->branches[i]);
-    }
-    free(help->branches);
-    free(help->head);
-    free(help);
+//    int i;
+//    struct helper* help = (struct helper*)helper;
+//    for (i = 0; i < help->branch_length; i++){
+//        int j;
+//        for (j = 0; j < help->branches[i]->length; j++){
+//            free(help->branches[i]->branch_commit[j]->commit_id);
+//            free(help->branches[i]->branch_commit[j]->branch_p);
+//            int z;
+//            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
+//                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
+//                free(help->branches[i]->branch_commit[j]->files_array[z]);
+//            }
+//            free(help->branches[i]->branch_commit[j]->files_array);
+//            free(help->branches[i]->branch_commit[j]->message);
+//            free(help->branches[i]->branch_commit[j]->next);
+//            for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
+//                free(help->branches[i]->branch_commit[j]->addition);
+//            }
+//            for (z = 0; z < help->branches[i]->branch_commit[j]->rm_length;z++){
+//                free(help->branches[i]->branch_commit[j]->deletion);
+//            }
+//            for (z = 0; z < help->branches[i]->branch_commit[j]->mod_lenth;z++){
+//                free(help->branches[i]->branch_commit[j]->modification);
+//            }
+//            free(help->branches[i]->branch_commit[j]->parent);
+//            free(help->branches[i]->branch_commit[j]);
+//        }
+//        free(help->branches[i]->branch_commit);
+//        free(help->branches[i]);
+//    }
+//    free(help->branches);
+//    free(help->head);
+//    free(help);
     // TODO: Implement
 }
 int do_count(FILE* f ,int hash){
