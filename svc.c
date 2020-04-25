@@ -65,7 +65,7 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]->branch_p);
             int z;
             for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
-//                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
+                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
                 free(help->branches[i]->branch_commit[j]->files_array[z]);
             }
             free(help->branches[i]->branch_commit[j]->files_array);
@@ -382,14 +382,14 @@ int svc_add(void *helper, char *file_name) {
     // TODO: Implement
     struct helper* help = helper;
     if (help->head == NULL){
-        help->commit_array = malloc(sizeof(commit_t*));
-        help->commit_array[0] = malloc(sizeof(commit_t));
-        help->commit_length = 1;
-        help->branches[0]->length = 1;
-        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-        help->branches[0]->branch_commit[0] = help->commit_array[0];
-        help->commit_array[0]->next = NULL;
-        help->commit_array[0]->prev = NULL;
+//        help->commit_array = malloc(sizeof(commit_t*));
+//        help->commit_array[0] = malloc(sizeof(commit_t));
+//        help->commit_length = 1;
+//        help->branches[0]->length = 1;
+//        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+//        help->branches[0]->branch_commit[0] = help->commit_array[0];
+//        help->commit_array[0]->next = NULL;
+//        help->commit_array[0]->prev = NULL;
     }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
