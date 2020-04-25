@@ -18,13 +18,17 @@ typedef struct commit{
     int add_length;
     int rm_length;
     int mod_lenth;
+    int commit_tag;
 }commit_t;
 typedef struct helper{
-    int commit_length;
+//    int commit_length;
 //    commit_t** commit_array;
     commit_t* head;
     struct branch** branches;
     int branch_length;
+    int file_length;
+    int capacity;
+    char **file_array;
 } helper;
 typedef struct branch{
     int length;
@@ -46,12 +50,15 @@ void *svc_init(void) {
     help->branch_length = 1;
     help->branches = malloc(sizeof(branch *));
     help->head = NULL;
-    help->commit_length = 0;
+//    help->commit_length = 0;
     help->branches[0] = malloc(sizeof(branch));
     help->branches[0]->branch_commit = NULL;
     help->branches[0]->length = 0;
     help->branches[0]->tag = 0;
     help->branches[0]->precommit = NULL;
+    help->file_array = malloc(sizeof(char*));
+    help->file_length = 0;
+    help->capacity = 1;
     return (void*)help;
 }
 
@@ -62,7 +69,7 @@ void cleanup(void *helper) {
         int j;
         for (j = 0; j < help->branches[i]->length; j++){
             free(help->branches[i]->branch_commit[j]->commit_id);
-            free(help->branches[i]->branch_commit[j]->branch_p);
+//            free(help->branches[i]->branch_commit[j]->branch_p);
             int z;
             for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
                 free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
@@ -83,16 +90,16 @@ void cleanup(void *helper) {
                 free(help->branches[i]->branch_commit[j]->modification[z]);
             }
             free(help->branches[i]->branch_commit[j]->modification);
-            if (help->branches[i]->branch_commit[j]->parent != NULL){
-                free(help->branches[i]->branch_commit[j]->parent[0]);
-                free(help->branches[i]->branch_commit[j]->parent[1]);
-            }
             free(help->branches[i]->branch_commit[j]->parent);
             free(help->branches[i]->branch_commit[j]);
         }
         free(help->branches[i]->branch_commit);
         free(help->branches[i]);
     }
+    for (int k = 0; k < help->file_length; k++){
+        free(help->file_array[k]);
+    }
+    free(help->file_array);
     free(help->branches);
     free(help->head);
     free(help);
@@ -352,20 +359,18 @@ char *svc_commit(void *helper, char *message) {
     }
     if(help->head == NULL){
         struct helper* help = helper;
-        if (help->head == NULL){
-            struct helper* help = helper;
             if (help->head == NULL){
-                help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-                help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
-                help->branches[0]->length = 1;
-                help->branches[0]->branch_commit[0]->prev = NULL;
-                help->branches[0]->branch_commit[0]->next = NULL;
-                help->branches[0]->branch_commit[0]->file_length = 0;
-                help->branches[0]->branch_commit[0]->files_array = NULL;
-                help->branches[0]->branch_commit[0]->parent = NULL;
-                help->branches[0]->branch_commit[0]->commit_id = malloc(sizeof(char));
-            }
-        }
+                struct helper* help = helper;
+                if (help->head == NULL){
+                    help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+                    help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
+                    help->branches[0]->length = 1;
+                    help->branches[0]->branch_commit[0]->prev = NULL;
+                    help->branches[0]->branch_commit[0]->next = NULL;
+                    help->branches[0]->branch_commit[0]->file_length = 0;
+                    help->branches[0]->branch_commit[0]->files_array = NULL;
+                }
+          }
     }
     return NULL;
 }
@@ -462,7 +467,6 @@ int svc_rm(void *helper, char *file_name) {
     }
     return 0;
 }
-
 
 int svc_reset(void *helper, char *commit_id) {
     // TODO: Implement
