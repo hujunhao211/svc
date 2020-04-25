@@ -63,26 +63,26 @@ void cleanup(void *helper) {
         for (j = 0; j < help->branches[i]->length; j++){
             free(help->branches[i]->branch_commit[j]->commit_id);
 //            free(help->branches[i]->branch_commit[j]->branch_p);
-//            int z;
-//            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
-//                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
-//                free(help->branches[i]->branch_commit[j]->files_array[z]);
-//            }
-//            free(help->branches[i]->branch_commit[j]->files_array);
-//            free(help->branches[i]->branch_commit[j]->message);
-//            free(help->branches[i]->branch_commit[j]->next);
-//            for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
-//                free(help->branches[i]->branch_commit[j]->addition[z]);
-//            }
-//            free(help->branches[i]->branch_commit[j]->addition);
-//            for (z = 0; z < help->branches[i]->branch_commit[j]->rm_length;z++){
-//                free(help->branches[i]->branch_commit[j]->deletion[z]);
-//            }
-//            free(help->branches[i]->branch_commit[j]->deletion);
-//            for (z = 0; z < help->branches[i]->branch_commit[j]->mod_lenth;z++){
-//                free(help->branches[i]->branch_commit[j]->modification[z]);
-//            }
-//            free(help->branches[i]->branch_commit[j]->modification);
+            int z;
+            for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
+                free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
+                free(help->branches[i]->branch_commit[j]->files_array[z]);
+            }
+            free(help->branches[i]->branch_commit[j]->files_array);
+            free(help->branches[i]->branch_commit[j]->message);
+            free(help->branches[i]->branch_commit[j]->next);
+            for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
+                free(help->branches[i]->branch_commit[j]->addition[z]);
+            }
+            free(help->branches[i]->branch_commit[j]->addition);
+            for (z = 0; z < help->branches[i]->branch_commit[j]->rm_length;z++){
+                free(help->branches[i]->branch_commit[j]->deletion[z]);
+            }
+            free(help->branches[i]->branch_commit[j]->deletion);
+            for (z = 0; z < help->branches[i]->branch_commit[j]->mod_lenth;z++){
+                free(help->branches[i]->branch_commit[j]->modification[z]);
+            }
+            free(help->branches[i]->branch_commit[j]->modification);
             if (help->branches[i]->branch_commit[j]->parent != NULL){
                 free(help->branches[i]->branch_commit[j]->parent[0]);
                 free(help->branches[i]->branch_commit[j]->parent[1]);
