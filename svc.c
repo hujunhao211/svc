@@ -456,9 +456,7 @@ char *svc_commit(void *helper, char *message) {
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
                     fclose(file);
-                    char* get_name = get_file_name(commit_id);
-                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
-                    free(get_name);
+                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id));
                     copy_file(help->file_array[i]->file_name, free_file);
                     free(free_file);
                 } else{
@@ -467,11 +465,9 @@ char *svc_commit(void *helper, char *message) {
             }
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
             help->branches[0]->precommit = NULL;
-            char* return_result = con_hexa(commit_id);
-            free(return_result);
-            return return_result;
+            return help->branches[0]->branch_commit[0]->commit_id;
         } else {
-            return con_hexa(0);
+            return NULL;
         }
     } else if(help->branch_p->length == 0){
         if (detect_change(help->branch_p->precommit)){
@@ -489,8 +485,7 @@ char *svc_commit(void *helper, char *message) {
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
                     fclose(file);
-                    char* get_name = get_file_name(commit_id);
-                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
+                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id));
                     copy_file(help->file_array[i]->file_name,free_file);
                     free(free_file);
                 }
@@ -506,13 +501,9 @@ char *svc_commit(void *helper, char *message) {
             }
             help->head = help->branch_p->branch_commit[help->branch_p->length - 1];
             help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
-            char *return_result = con_hexa(commit_id);
-            free(return_result);
-            return return_result;
+            return help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id;
     }else {
-        char *return_result = con_hexa(0);
-        free(return_result);
-        return return_result;
+        return NULL;
         }
     } else{
         if (detect_change(help->head)){
@@ -530,7 +521,6 @@ char *svc_commit(void *helper, char *message) {
     }
     return NULL;
 }
-
 void *get_commit(void *helper, char *commit_id) {
     // TODO: Implement
     return NULL;
