@@ -462,11 +462,15 @@ char *svc_commit(void *helper, char *message) {
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
                     fclose(file);
-                    free(get_file_name(commit_id));
-                    free(concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), "j"));
-//                    copy_file(help->file_array[i]->file_name, free_file);
-//                    free(get_name);
-//                    free(free_file);
+                    char* get_name = get_file_name(commit_id);
+                    char* file_name = get_file_name(hash_file(NULL, help->file_array[i]->file_name));
+                    char* free_file = concat("A",file_name , get_name);
+                    copy_file(help->file_array[i]->file_name, free_file);
+                    free(get_name);
+                    free(file_name);
+                    free(free_file);
+                } else{
+                    fclose(file);
                 }
             }
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
@@ -491,13 +495,16 @@ char *svc_commit(void *helper, char *message) {
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
                     fclose(file);
-                    free(get_file_name(commit_id));
-                    free(concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), "j"));
-//                    copy_file(help->file_array[i]->file_name,free_file);
-//                    free(get_name);
-//                    free(free_file);
+                    char* get_name = get_file_name(commit_id);
+                    char* file_name = get_file_name(hash_file(NULL, help->file_array[i]->file_name));
+                    char* free_file = concat("A", file_name, get_name);
+                    copy_file(help->file_array[i]->file_name,free_file);
+                    free(get_name);
+                    free(file_name);
+                    free(free_file);
+                } else{
+                    fclose(file);
                 }
-//                fclose(file);
             }
             struct commit* pre = help->branch_p->precommit;
             if (pre->next_size == 0){
