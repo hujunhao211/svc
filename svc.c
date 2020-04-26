@@ -457,8 +457,9 @@ char *svc_commit(void *helper, char *message) {
                 if (file != NULL){
                     fclose(file);
                     copy_file(help->file_array[i]->file_name, concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id)));
-                }
+                } else{
                 fclose(file);
+                }
             }
             help->branches[0]->branch_commit[0]->commit_id = malloc(10);
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id, help->branches[0]->branch_commit[0]->commit_id);
