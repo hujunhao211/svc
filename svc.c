@@ -462,14 +462,11 @@ char *svc_commit(void *helper, char *message) {
                     fclose(file);
                 }
             }
-            help->branches[0]->branch_commit[0]->commit_id = malloc(10);
-            help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id, help->branches[0]->branch_commit[0]->commit_id);
+            help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
             help->branches[0]->precommit = NULL;
-            char* array = malloc(20);
-            return con_hexa(commit_id, array);
+            return con_hexa(commit_id);
         } else {
-            char* array = malloc(20);
-            return con_hexa(0, array);
+            return con_hexa(0);
         }
     } else if(help->branch_p->length == 0){
         if (detect_change(help->branch_p->precommit)){
@@ -482,7 +479,7 @@ char *svc_commit(void *helper, char *message) {
             help->branch_p->branch_commit[help->branch_length - 1]->parent[0] = help->branch_p->precommit;
             help->branch_p->branch_commit[help->branch_length - 1]->parent[1] = NULL;
             int commit_id = cal_commit(help->branch_p->branch_commit[help->branch_length - 1]);
-            help->branch_p->branch_commit[help->branch_length - 1]->commit_id = con_hexa(commit_id, help->branch_p->branch_commit[help->branch_length - 1]->commit_id);
+            help->branch_p->branch_commit[help->branch_length - 1]->commit_id = con_hexa(commit_id);
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
@@ -502,12 +499,10 @@ char *svc_commit(void *helper, char *message) {
                 pre->next[pre->next_size - 1] = help->branch_p->branch_commit[help->branch_length - 1];
             }
             help->head = help->branch_p->branch_commit[help->branch_p->length - 1];
-            char* array = malloc(20);
-            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = array;
-            return con_hexa(commit_id, array);
+            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
+            return con_hexa(commit_id);
     }else {
-        char* array = malloc(20);
-        return con_hexa(0, array);
+        return con_hexa(0);
         }
     } else{
         if (detect_change(help->head)){
