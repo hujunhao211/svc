@@ -484,8 +484,8 @@ char *svc_commit(void *helper, char *message) {
             int commit_id = cal_commit(help->branch_p->branch_commit[help->branch_length - 1]);
             help->branch_p->branch_commit[help->branch_length - 1]->commit_id = con_hexa(commit_id);
             for (i = 0; i < help->file_length; i++){
-//                FILE* file = fopen(help->file_array[i]->file_name,"r");
-//                if (file != NULL){
+                FILE* file = fopen(help->file_array[i]->file_name,"r");
+                if (file != NULL){
 //                    char* get_name = get_file_name(commit_id);
 //                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
 //                    copy_file(help->file_array[i]->file_name,free_file);
