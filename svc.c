@@ -463,7 +463,7 @@ char *svc_commit(void *helper, char *message) {
                 if (file != NULL){
                     fclose(file);
                     free(get_file_name(commit_id));
-                    free(concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name));
+                    free(concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), "j"));
 //                    copy_file(help->file_array[i]->file_name, free_file);
 //                    free(get_name);
 //                    free(free_file);
