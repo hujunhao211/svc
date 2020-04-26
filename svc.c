@@ -493,11 +493,11 @@ char *svc_commit(void *helper, char *message) {
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
                     fclose(file);
-                    char* get_name = get_file_name(commit_id);
-                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
-                    copy_file(help->file_array[i]->file_name,free_file);
-                    free(get_name);
-                    free(free_file);
+                    free(get_file_name(commit_id));
+                    free(concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name));
+//                    copy_file(help->file_array[i]->file_name,free_file);
+//                    free(get_name);
+//                    free(free_file);
                 }
 //                fclose(file);
             }
