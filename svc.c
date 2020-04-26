@@ -609,6 +609,7 @@ int svc_add(void *helper, char *file_name) {
 }
 
 int svc_rm(void *helper, char *file_name) {
+    // TODO: Implement
     if (file_name == NULL){
         return -1;
     }
@@ -641,6 +642,8 @@ int svc_rm(void *helper, char *file_name) {
             index = i;
         }
     }
+    free(array_add[index]->file_name);
+    free(array_add[index]);
     for (j = index; j < add_length - 1; j++){
         array_add[j] = array_add[j + 1];
     }
