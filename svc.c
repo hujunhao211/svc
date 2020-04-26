@@ -24,11 +24,12 @@ typedef struct helper{
 //    int commit_length;
 //    commit_t** commit_array;
     commit_t* head;
+    struct branch* branch_p;
     struct branch** branches;
     int branch_length;
     int file_length;
     int capacity;
-    char **file_array;
+    struct files **file_array;
 } helper;
 typedef struct branch{
     int length;
@@ -42,7 +43,7 @@ typedef struct files{
 }files_t;
 int add_length;
 int remove_length;
-char** array_add;
+struct files** array_add;
 char** array_remove;
 void *svc_init(void) {
     // TODO: Implement
@@ -97,6 +98,7 @@ void cleanup(void *helper) {
         free(help->branches[i]);
     }
     for (int k = 0; k < help->file_length; k++){
+        free(help->file_array[k]->file_name);
         free(help->file_array[k]);
     }
     free(help->file_array);
@@ -164,7 +166,7 @@ int detect_add(char* file){
     int add = 0;
     int i;
     for (i = 0; i < add_length; i++){
-        if (strcmp(file, array_add[i]) == 0){
+        if (strcmp(file, array_add[i]->file_name) == 0){
             add = 1;
         }
     }
@@ -218,9 +220,9 @@ int cal_commit(struct commit* commit){
             int size_file = 0;
             for (i = 0; i < add_length; i++){
                 commit_id += 376591;
-                commit_id = calculate_change(array_add[i], strlen(array_add[i]), commit_id);
+                commit_id = calculate_change(array_add[i]->file_name, strlen(array_add[i]->file_name), commit_id);
                 commit->addition = realloc(commit->addition,( ++size_file) * sizeof(char*));
-                commit->addition[size_file - 1] = strdup(array_add[i]);
+                commit->addition[size_file - 1] = strdup(array_add[i]->file_name);
              }
             commit->add_length = size_file;
         }
@@ -229,7 +231,7 @@ int cal_commit(struct commit* commit){
         int i;
         commit->addition = malloc(sizeof(char*));
         for (i = 0; i < add_length; i++){
-            array[i] = array_add[i];
+            array[i] = array_add[i]->file_name;
         }
         int j;
         for(j = 0; j < remove_length; j++){
@@ -325,6 +327,10 @@ char* convert_hexa(int decimalNumber){
     free(hexadecimalNumber);
     return answer;
 }
+char* con_hexa(int decimalNumber,char* array){
+    sprintf(array,"%x", decimalNumber);
+    return array;
+}
 char* get_file_name(int hash){
 //    printf("hash: %d\n",hash);
     char* array = malloc(sizeof(char));
@@ -353,6 +359,7 @@ char* get_file_name(int hash){
 
 char *svc_commit(void *helper, char *message) {
     // TODO: Implement
+    int i;
     struct helper* help = helper;
     if (message == NULL){
         return NULL;
@@ -361,16 +368,27 @@ char *svc_commit(void *helper, char *message) {
         struct helper* help = helper;
             if (help->head == NULL){
                 struct helper* help = helper;
-                if (help->head == NULL){
-                    help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-                    help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
-                    help->branches[0]->length = 1;
-                    help->branches[0]->branch_commit[0]->prev = NULL;
-                    help->branches[0]->branch_commit[0]->next = NULL;
-                    help->branches[0]->branch_commit[0]->file_length = 0;
-                    help->branches[0]->branch_commit[0]->files_array = NULL;
+                help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+                help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
+                help->branches[0]->length = 1;
+                help->branches[0]->branch_commit[0]->prev = NULL;
+                help->branches[0]->branch_commit[0]->next = NULL;
+                help->branches[0]->branch_commit[0]->file_length = 0;
+                help->branches[0]->branch_commit[0]->message = strdup(message);
+                cal_commit(help->branches[0]->branch_commit[0]);
+                help->head = help->branches[0]->branch_commit[0];
+                for (i = 0; i < help->file_length; i++){
+                    FILE* file = fopen(help->file_array[i]->file_name,"r");
+                    if (file != NULL){
+                        fclose(file);
+                        copy_file(help->file_array[i]->file_name, get_file_name(hash_file(NULL, help->file_array[i]->file_name)));
+                    }
                 }
-          }
+            } else if(help->branch_p->length == 0){
+//                help->(help->branch_p)
+            } else{
+                
+            }
     }
     return NULL;
 }
@@ -411,17 +429,25 @@ int svc_add(void *helper, char *file_name) {
     }
     struct helper* help = helper;
     int i;
-    for(i = 0; i < help->file_length;i++){
-        if (strcmp(file_name, help->file_array[i]) == 0 ){
+    for(i = 0; i < help->branch_p->length;i++){
+        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
             return -2;
         }
     }
+    FILE* file = fopen(file_name, "r");
+    if (file == NULL){
+        fclose(file);
+        return -3;
+    }
+    fclose(file);
     if (help->file_length == help->capacity){
         help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
         help->capacity *= 2;
-        help->file_array[help->file_length ++] = strdup(file_name);
-        array_add[add_length++] = strdup(file_name);
-        }
+        help->file_array[help->file_length ++]->file_name = strdup(file_name);
+        help->file_array[help->file_length + 1]->hash_id = hash_file(NULL, file_name);
+        array_add[add_length++]->file_name = strdup(file_name);
+        array_add[add_length + 1]->hash_id = hash_file(NULL, file_name);
+    }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
 //    }
@@ -437,35 +463,38 @@ int svc_rm(void *helper, char *file_name) {
     int find = 0;
     int i,j,index = -1;
     for(i = 0; i < help->file_length;i++){
-        if (strcmp(file_name, help->file_array[i]) == 0 ){
+        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
             index = i;
         }
     }
     if (!find){
         return -2;
     }
-    char* file_temp = help->file_array[index];
+    char* file_temp = help->file_array[index]->file_name;
     for (j = index; j < help->file_length - 1; j++){
         help->file_array[j] = help->file_array[j - 1];
     }
     help->file_array[j] = NULL;
     help->file_length--;
+    int id = -2;
     for (i = 0; i < add_length; i++){
-        if (strcmp(help->file_array[i],file_temp) == 0){
+        if (strcmp(help->file_array[i]->file_name,file_temp) == 0){
             index = i;
+            id = help->file_array[i]->hash_id;
         }
     }
     for (j = index; j < add_length; j++){
         help->file_array[j] = help->file_array[j + 1];
     }
+    
     free(file_temp);
     if (help->file_length == help->capacity){
         help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
         help->capacity *= 2;
-        help->file_array[help->file_length ++] = strdup(file_name);
+        help->file_array[help->file_length ++]->file_name = strdup(file_name);
         array_remove[remove_length++] = strdup(file_name);
     }
-    return hash_file(NULL, file_name);
+    return id;
 }
 
 int svc_reset(void *helper, char *commit_id) {
