@@ -1,6 +1,7 @@
 #include "svc.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 char* get_file_name(int hash);
 typedef struct commit{
     struct commit* prev;
