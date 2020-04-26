@@ -375,7 +375,7 @@ char *svc_commit(void *helper, char *message) {
                 help->branches[0]->branch_commit[0]->next = NULL;
                 help->branches[0]->branch_commit[0]->file_length = 0;
                 help->branches[0]->branch_commit[0]->message = strdup(message);
-                cal_commit(help->branches[0]->branch_commit[0]);
+                int commit_id = cal_commit(help->branches[0]->branch_commit[0]);
                 help->head = help->branches[0]->branch_commit[0];
                 for (i = 0; i < help->file_length; i++){
                     FILE* file = fopen(help->file_array[i]->file_name,"r");
@@ -383,7 +383,10 @@ char *svc_commit(void *helper, char *message) {
                         fclose(file);
                         copy_file(help->file_array[i]->file_name, get_file_name(hash_file(NULL, help->file_array[i]->file_name)));
                     }
+                    fclose(file);
                 }
+                char* array = malloc(20);
+                return con_hexa(commit_id, array);
             } else if(help->branch_p->length == 0){
 //                help->(help->branch_p)
             } else{
@@ -392,7 +395,6 @@ char *svc_commit(void *helper, char *message) {
     }
     return NULL;
 }
-
 void *get_commit(void *helper, char *commit_id) {
     // TODO: Implement
     return NULL;
