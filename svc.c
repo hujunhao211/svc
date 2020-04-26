@@ -467,7 +467,9 @@ char *svc_commit(void *helper, char *message) {
             }
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
             help->branches[0]->precommit = NULL;
-            return con_hexa(commit_id);
+            char* return_result = con_hexa(commit_id);
+            free(return_result);
+            return return_result;
         } else {
             return con_hexa(0);
         }
@@ -504,9 +506,13 @@ char *svc_commit(void *helper, char *message) {
             }
             help->head = help->branch_p->branch_commit[help->branch_p->length - 1];
             help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
-            return con_hexa(commit_id);
+            char *return_result = con_hexa(commit_id);
+            free(return_result);
+            return return_result;
     }else {
-        return con_hexa(0);
+        char *return_result = con_hexa(0);
+        free(return_result);
+        return return_result;
         }
     } else{
         if (detect_change(help->head)){
