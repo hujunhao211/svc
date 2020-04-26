@@ -105,7 +105,7 @@ void cleanup(void *helper) {
     }
     free(help->file_array);
     free(help->branches);
-    free(help->head);
+//    free(help->head);
     free(help);
     // TODO: Implement
 }
