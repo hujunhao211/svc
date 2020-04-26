@@ -167,7 +167,7 @@ int file_compare(const void* f1, const void* f2){
         s2[i] = tolower(c);
         i++;
     }
-    int result = string_compare(file1, file2);
+    int result = string_compare(s1, s2);
     free(s1);
     free(s2);
     return result;
