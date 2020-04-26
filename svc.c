@@ -563,11 +563,8 @@ int svc_add(void *helper, char *file_name) {
     }
     FILE* file = fopen(file_name, "r");
     if (file == NULL){
-        fclose(file);
         return -3;
-    } else{
-        fclose(file);
-    }
+    } 
     int find_remove = 0;
     int remove_index = 0;
     for (i = 0; i < remove_length; i++){
