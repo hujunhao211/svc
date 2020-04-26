@@ -419,7 +419,6 @@ int detect_change(struct commit* pre){
         if (file == NULL){
             remove_file = 1;
         }
-        fclose(file);
     }
     return (remove_length || add_length || have_mod || remove_file);
 }
