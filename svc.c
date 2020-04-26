@@ -429,7 +429,7 @@ int svc_add(void *helper, char *file_name) {
     }
     struct helper* help = helper;
     int i;
-    for(i = 0; i < help->branch_p->length;i++){
+    for(i = 0; i < help->file_length;i++){
         if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
             return -2;
         }
