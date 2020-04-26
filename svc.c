@@ -630,6 +630,7 @@ int svc_rm(void *helper, char *file_name) {
         return -2;
     }
     char* file_temp = help->file_array[index]->file_name;
+    free(help->file_array[index]);
     for (j = index; j < help->file_length - 1; j++){
         help->file_array[j] = help->file_array[j + 1];
     }
@@ -643,7 +644,6 @@ int svc_rm(void *helper, char *file_name) {
     for (j = index; j < add_length - 1; j++){
         array_add[j] = array_add[j + 1];
     }
-    
     free(file_temp);
     if (help->file_length == help->capacity){
         help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
