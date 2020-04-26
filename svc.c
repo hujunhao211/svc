@@ -635,15 +635,20 @@ int svc_rm(void *helper, char *file_name) {
     for (j = index; j < help->file_length - 1; j++){
         help->file_array[j] = help->file_array[j + 1];
     }
+    find = 0;
     help->file_array[j] = NULL;
     help->file_length--;
     for (i = 0; i < add_length; i++){
-        if (strcmp(array_add[i]->file_name,file_temp) == 0){
+        if (strcmp(array_add[i]->file_name,file_name) == 0){
             index = i;
+            find = 1;
         }
     }
-    free(array_add[index]->file_name);
-    free(array_add[index]);
+    if (find){
+        free(array_add[index]->file_name);
+        free(array_add[index]);
+    }
+        
     for (j = index; j < add_length - 1; j++){
         array_add[j] = array_add[j + 1];
     }
