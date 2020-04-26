@@ -109,14 +109,11 @@ void cleanup(void *helper) {
     // TODO: Implement
 }
 int do_count(FILE* f ,int hash){
-    char *count = NULL;
+    char c = NULL;
     count = malloc(sizeof(char));
     int i = 0;
-    while (fscanf(f, " %c",count) != EOF) {
-        count = realloc(count, sizeof(char) * (++i));
-    }
-    for (int j = 0; j < i; j++){
-        hash = (hash + (unsigned char)count[j]) % 2000000000;
+    while (fscanf(f, "%c",&c) != EOF) {
+        hash = (hash + (unsigned char)c) % 2000000000;
     }
     free(count);
     return hash;
