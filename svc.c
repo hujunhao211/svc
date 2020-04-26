@@ -42,10 +42,10 @@ typedef struct files{
     int hash_id;
     char* file_name;
 }files_t;
-int add_length;
-int remove_length;
-struct files** array_add;
-char** array_remove;
+int add_length = 0;
+int remove_length = 0;
+struct files** array_add = NULL;
+char** array_remove = NULL;
 void *svc_init(void) {
     // TODO: Implement
     helper* help = malloc(sizeof(helper));
@@ -58,7 +58,7 @@ void *svc_init(void) {
     help->branches[0]->length = 0;
     help->branches[0]->tag = 0;
     help->branches[0]->precommit = NULL;
-    help->file_array = malloc(sizeof(char*));
+    help->file_array = malloc(sizeof(struct files*));
     help->file_length = 0;
     help->capacity = 1;
     return (void*)help;
@@ -112,7 +112,7 @@ int do_count(FILE* f ,int hash){
     char *count = NULL;
     count = malloc(sizeof(char));
     int i = 0;
-    while (1){
+    while (fscanf(f, " %c",count) != EOF) {
         count = realloc(count, sizeof(char) * (++i));
     }
     for (int j = 0; j < i; j++){
@@ -228,6 +228,29 @@ int find_mod(char* file_name, char** file_array,int size){
     }
     return find;
 }
+void allocate_file(struct commit* commit){
+    int i;
+    commit->files_array = malloc(sizeof(struct files*));
+    commit->file_length = 0;
+    for (i = 0; i < add_length; i++){
+        commit->files_array = realloc(commit->files_array, (++commit->file_length) * sizeof(struct files*));
+        commit->files_array[commit->file_length - 1] = malloc(sizeof(struct files));
+        commit->files_array[commit->file_length - 1]->file_name = strdup(array_add[i]->file_name);
+        commit->files_array[commit->file_length - 1]->hash_id = hash_file(NULL, array_add[i]->file_name);
+    }
+    printf("here\n");
+    struct commit* pre = commit->prev;
+    if (pre != NULL){
+        for(i = 0; i < pre->file_length; i++){
+            printf("here1\n");
+            if (!detect_del(pre->files_array[i]->file_name)){
+                commit->files_array = realloc(commit->files_array, ++commit->file_length);
+                commit->files_array[commit->file_length - 1]->file_name = strdup(pre->files_array[i]->file_name);
+                commit->files_array[commit->file_length - 1]->hash_id = hash_file(NULL, pre->files_array[i]->file_name);
+            }
+        }
+    }
+}
 int cal_commit(struct commit* commit){
     int hash;
     int i;
@@ -318,6 +341,7 @@ int cal_commit(struct commit* commit){
             }
         }
     }
+    allocate_file(commit);
     return commit_id;
 }
 char* concat(const char *s1, const char *s2,const char* s3)
@@ -386,6 +410,24 @@ char* get_file_name(int hash){
     return name;
 }
 
+int detect_change(struct commit* pre){
+    int i;
+    int have_mod = 0;
+    for (i = 0; i < pre->file_length; i++){
+        if (detect_mod(pre->files_array[i], pre->files_array[i]->file_name)){
+            have_mod = 1;
+        }
+    }
+    int remove_file = 0;
+    for (i = 0; i < pre->file_length; i++){
+        FILE* file = fopen(pre->files_array[i]->file_name, "r");
+        if (file == NULL){
+            remove_file = 1;
+        }
+        fclose(file);
+    }
+    return (remove_length || add_length || have_mod || remove_file);
+}
 char *svc_commit(void *helper, char *message) {
     // TODO: Implement
     int i;
@@ -393,55 +435,93 @@ char *svc_commit(void *helper, char *message) {
     if (message == NULL){
         return NULL;
     }
+    for (i = 0; i < help->file_length; i++){
+        help->file_array[i]->hash_id = hash_file(NULL, help->file_array[i]->file_name);
+    }
     if (help->head == NULL){
-        struct helper* help = helper;
-        help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
-        help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
-        help->branches[0]->length = 1;
-        help->branches[0]->branch_commit[0]->prev = NULL;
-        help->branches[0]->branch_commit[0]->next = NULL;
-        help->branches[0]->branch_commit[0]->file_length = 0;
-        help->branches[0]->branch_commit[0]->message = strdup(message);
-        help->branches[0]->branch_commit[0]->parent = NULL;
-        int commit_id = cal_commit(help->branches[0]->branch_commit[0]);
-        help->head = help->branches[0]->branch_commit[0];
-        for (i = 0; i < help->file_length; i++){
-            FILE* file = fopen(help->file_array[i]->file_name,"r");
-            if (file != NULL){
+        if (add_length != 0){
+            struct helper* help = helper;
+            help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
+            help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
+            help->branches[0]->length = 1;
+            help->branches[0]->branch_commit[0]->next_size = 0;
+            help->branches[0]->branch_commit[0]->prev = NULL;
+            help->branches[0]->branch_commit[0]->next = NULL;
+            help->branches[0]->branch_commit[0]->file_length = 0;
+            help->branches[0]->branch_commit[0]->message = strdup(message);
+            help->branches[0]->branch_commit[0]->parent = NULL;
+            int commit_id = cal_commit(help->branches[0]->branch_commit[0]);
+            help->head = help->branches[0]->branch_commit[0];
+            for (i = 0; i < help->file_length; i++){
+                FILE* file = fopen(help->file_array[i]->file_name,"r");
+                if (file != NULL){
+                    fclose(file);
+                    copy_file(help->file_array[i]->file_name, concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id)));
+                }
                 fclose(file);
-                copy_file(help->file_array[i]->file_name, concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id)));
             }
-            fclose(file);
+            help->branches[0]->branch_commit[0]->commit_id = malloc(10);
+            help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id, help->branches[0]->branch_commit[0]->commit_id);
+            help->branches[0]->precommit = NULL;
+            char* array = malloc(20);
+            return con_hexa(commit_id, array);
+        } else {
+            char* array = malloc(20);
+            return con_hexa(0, array);
         }
-        help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id, help->branches[0]->branch_commit[0]->commit_id);
-        help->branches[0]->precommit = NULL;
-        char* array = malloc(20);
-        return con_hexa(commit_id, array);
     } else if(help->branch_p->length == 0){
-        help->branch_p->branch_commit = realloc(help->branch_p->branch_commit, (++help->branch_length)* sizeof(struct commit*));
-        help->branch_p->branch_commit[help->branch_length - 1] = malloc(sizeof(commit_t));
-        help->branch_p->branch_commit[help->branch_length - 1]->file_length = 1;
-        help->branch_p->branch_commit[help->branch_length - 1]->prev = help->branches[help->branch_length - 1]->precommit;
-        help->branch_p->branch_commit[help->branch_length - 1]->parent = malloc(sizeof(struct commit*) * 2);
-        help->branch_p->branch_commit[help->branch_length - 1]->parent[0] = help->head;
-        help->branch_p->branch_commit[help->branch_length - 1]->parent[1] = NULL;
-        int commit_id = cal_commit(help->branch_p->branch_commit[help->branch_length - 1]);
-        help->branch_p->branch_commit[help->branch_length - 1]->commit_id = con_hexa(commit_id, help->branch_p->branch_commit[help->branch_length - 1]->commit_id);
-        for (i = 0; i < help->file_length; i++){
-            FILE* file = fopen(help->file_array[i]->file_name,"r");
-            if (file != NULL){
+        if (detect_change(help->branch_p->precommit)){
+            help->branch_p->branch_commit = realloc(help->branch_p->branch_commit, (++help->branch_length)* sizeof(struct commit*));
+            help->branch_p->branch_commit[help->branch_length - 1] = malloc(sizeof(commit_t));
+            help->branch_p->branch_commit[help->branch_length - 1]->file_length = 0;
+            help->branch_p->branch_commit[help->branch_length - 1]->prev = help->branches[help->branch_length - 1]->precommit;
+            help->branch_p->branch_commit[help->branch_length - 1]->parent = malloc(sizeof(struct commit*) * 2);
+            help->branch_p->branch_commit[help->branch_length - 1]->message = strdup(message);
+            help->branch_p->branch_commit[help->branch_length - 1]->parent[0] = help->branch_p->precommit;
+            help->branch_p->branch_commit[help->branch_length - 1]->parent[1] = NULL;
+            int commit_id = cal_commit(help->branch_p->branch_commit[help->branch_length - 1]);
+            help->branch_p->branch_commit[help->branch_length - 1]->commit_id = con_hexa(commit_id, help->branch_p->branch_commit[help->branch_length - 1]->commit_id);
+            for (i = 0; i < help->file_length; i++){
+                FILE* file = fopen(help->file_array[i]->file_name,"r");
+                if (file != NULL){
+                    fclose(file);
+                    copy_file(help->file_array[i]->file_name, concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id)));
+                }
                 fclose(file);
-                copy_file(help->file_array[i]->file_name, concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_file_name(commit_id)));
             }
-            fclose(file);
-        }
+            struct commit* pre = help->branch_p->precommit;
+            if (pre->next_size == 0){
+                pre->next = malloc(sizeof(struct commit*));
+                pre->next[0] = help->branch_p->branch_commit[help->branch_length - 1];
+            } else{
+                pre->next = realloc(pre->next, (sizeof(struct commit*)) * ++pre->next_size);
+                pre->next[pre->next_size - 1] = help->branch_p->branch_commit[help->branch_length - 1];
+            }
+            help->head = help->branch_p->branch_commit[help->branch_p->length - 1];
+            char* array = malloc(20);
+            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = array;
+            return con_hexa(commit_id, array);
+    }else {
         char* array = malloc(20);
-        return con_hexa(commit_id, array);
+        return con_hexa(0, array);
+        }
     } else{
-        
+        if (detect_change(help->head)){
+            struct commit* commit = malloc(sizeof(struct commit));
+            commit->prev = help->head;
+            commit->file_length = 0;
+            if (help->head->next_size == 0){
+                help->head->next = malloc(sizeof(struct commit*));
+                help->head->next[0] = help->branch_p->branch_commit[help->branch_length - 1];
+            } else{
+                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * ++help->head->next_size);
+                help->head->next[help->head->next_size - 1] = commit;
+            }
+        }
     }
     return NULL;
 }
+
 void *get_commit(void *helper, char *commit_id) {
     // TODO: Implement
     return NULL;
@@ -476,6 +556,9 @@ int svc_add(void *helper, char *file_name) {
     if (file_name == NULL){
         return -1;
     }
+    if (array_add == NULL){
+        array_add = malloc(sizeof(struct files));
+    }
     struct helper* help = helper;
     int i;
     for(i = 0; i < help->file_length;i++){
@@ -499,7 +582,7 @@ int svc_add(void *helper, char *file_name) {
     }
     if (find_remove){
         char* filename = array_remove[remove_index];
-        for (i = remove_index; i < remove_length; i++){
+        for (i = remove_index; i < remove_length - 1; i++){
             array_remove[i] = array_remove[i + 1];
         }
         free(filename);
@@ -508,11 +591,23 @@ int svc_add(void *helper, char *file_name) {
         if (help->file_length == help->capacity){
             help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
             help->capacity *= 2;
-            help->file_array[help->file_length ++]->file_name = strdup(file_name);
-            help->file_array[help->file_length + 1]->hash_id = hash_file(NULL, file_name);
-            array_add[add_length++]->file_name = strdup(file_name);
-            array_add[add_length + 1]->hash_id = hash_file(NULL, file_name);
         }
+//        printf("%d\n",help->file_length);
+//        printf("%d\n",help->capacity);
+//        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
+//        printf("%p\n",help->file_array[help->file_length]);
+//        help->file_array[help->file_length]->file_name;
+//        help->file_array = realloc(help->file_array, sizeof(struct files*));
+        help->file_array[help->file_length] = malloc(sizeof(struct files));
+        help->file_array[help->file_length++]->file_name = strdup(file_name);
+        help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
+        
+        
+        array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
+        array_add[add_length - 1] = malloc(sizeof(struct files));
+//        printf("lenth%d\n",add_length);
+        array_add[add_length - 1]->file_name = strdup(file_name);
+        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
     }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
@@ -525,12 +620,17 @@ int svc_rm(void *helper, char *file_name) {
     if (file_name == NULL){
         return -1;
     }
+    if (array_remove == NULL){
+        array_remove = malloc(sizeof(char*));
+    }
     struct helper* help = helper;
     int find = 0;
     int i,j,index = -1;
+    int id = -2;
     for(i = 0; i < help->file_length;i++){
         if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
             index = i;
+            id = help->file_array[i]->hash_id;
         }
     }
     if (!find){
@@ -538,28 +638,29 @@ int svc_rm(void *helper, char *file_name) {
     }
     char* file_temp = help->file_array[index]->file_name;
     for (j = index; j < help->file_length - 1; j++){
-        help->file_array[j] = help->file_array[j - 1];
+        help->file_array[j] = help->file_array[j + 1];
     }
     help->file_array[j] = NULL;
     help->file_length--;
-    int id = -2;
     for (i = 0; i < add_length; i++){
-        if (strcmp(help->file_array[i]->file_name,file_temp) == 0){
+        if (strcmp(array_add[i]->file_name,file_temp) == 0){
             index = i;
-            id = help->file_array[i]->hash_id;
         }
     }
-    for (j = index; j < add_length; j++){
-        help->file_array[j] = help->file_array[j + 1];
+    for (j = index; j < add_length - 1; j++){
+        array_add[j] = array_add[j + 1];
     }
     
     free(file_temp);
     if (help->file_length == help->capacity){
         help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
         help->capacity *= 2;
-        help->file_array[help->file_length ++]->file_name = strdup(file_name);
-        array_remove[remove_length++] = strdup(file_name);
     }
+    help->file_array[help->file_length] = malloc(sizeof(struct files));
+    help->file_array[help->file_length ++]->file_name = strdup(file_name);
+    help->file_array[help->file_length ++]->hash_id = hash_file(NULL, help->file_array[help->file_length ++]->file_name);
+    array_remove = realloc(array_remove, ++remove_length);
+    array_remove[remove_length - 1] = strdup(file_name);
     return id;
 }
 
