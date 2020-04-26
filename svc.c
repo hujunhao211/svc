@@ -435,12 +435,13 @@ char *svc_commit(void *helper, char *message) {
             }
             fclose(file);
         }
+        char* array = malloc(20);
+        return con_hexa(commit_id, array);
     } else{
         
     }
     return NULL;
 }
-
 void *get_commit(void *helper, char *commit_id) {
     // TODO: Implement
     return NULL;
