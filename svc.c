@@ -644,11 +644,9 @@ int svc_rm(void *helper, char *file_name) {
             find = 1;
         }
     }
-    printf("find %d\n",find);
-    if (find){
-        free(array_add[index]->file_name);
-        free(array_add[index]);
-    }
+    free(array_add[index]->file_name);
+    free(array_add[index]);
+    
         
     for (j = index; j < add_length - 1; j++){
         array_add[j] = array_add[j + 1];
