@@ -247,7 +247,6 @@ void allocate_file(struct commit* commit){
     }
 }
 int cal_commit(struct commit* commit){
-    int hash;
     int i;
     int commit_id = 0;
     commit_id = get_commit_id(commit);
@@ -336,8 +335,9 @@ int cal_commit(struct commit* commit){
             int k;
             for (k = 0; k < commit->prev->file_length; k++){
                 commit_id += 85973;
-                hash = hash_file(NULL, commit->prev->files_array[k]->file_name);
-                commit_id = calculate_change(get_file_name(hash), strlen(get_file_name(hash)), commit_id);
+//                hash = hash_file(NULL, commit->prev->files_array[k]->file_name);
+                char* get_name = commit->prev->files_array[k]->file_name;
+                commit_id = calculate_change(get_name, strlen(get_name), commit_id);
             }
         }
     }
@@ -486,10 +486,10 @@ char *svc_commit(void *helper, char *message) {
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
-//                    char* get_name = get_file_name(commit_id);
-//                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
-//                    copy_file(help->file_array[i]->file_name,free_file);
-//                    free(free_file);
+                    char* get_name = get_file_name(commit_id);
+                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
+                    copy_file(help->file_array[i]->file_name,free_file);
+                    free(free_file);
                 }
             }
             struct commit* pre = help->branch_p->precommit;
