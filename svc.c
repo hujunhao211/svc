@@ -652,7 +652,7 @@ int svc_rm(void *helper, char *file_name) {
     help->file_array[help->file_length] = malloc(sizeof(struct files));
     help->file_array[help->file_length++]->file_name = strdup(file_name);
     help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, help->file_array[help->file_length - 1]->file_name);
-    array_remove = realloc(array_remove, ++remove_length);
+    array_remove = realloc(array_remove, (++remove_length)*sizeof(char*));
     array_remove[remove_length - 1] = strdup(file_name);
     return id;
 }
