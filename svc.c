@@ -109,7 +109,7 @@ void cleanup(void *helper) {
     // TODO: Implement
 }
 int do_count(FILE* f ,int hash){
-    char c = NULL;
+    char c = 0;
     count = malloc(sizeof(char));
     int i = 0;
     while (fscanf(f, "%c",&c) != EOF) {
