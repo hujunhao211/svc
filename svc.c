@@ -116,7 +116,7 @@ int do_count(FILE* f ,int hash){
         count = realloc(count, sizeof(char) * (++i));
     }
     for (int j = 0; j < i; j++){
-        hash = (hash + count[j]) % 2000000000;
+        hash = (hash + (unsigned char)count[j]) % 2000000000;
     }
     free(count);
     return hash;
@@ -125,7 +125,7 @@ int do_hash(char* str){
     int i;
     int result = 0;
     for (i = 0; i < (strlen(str)); i++){
-        result = (result + str[i]) % 1000;
+        result = (result + (unsigned char)str[i]) % 1000;
     }
     return result;
 }
