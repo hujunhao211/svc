@@ -58,6 +58,7 @@ void *svc_init(void) {
     help->branches[0]->length = 0;
     help->branches[0]->tag = 0;
     help->branches[0]->precommit = NULL;
+    help->branch_p = help->branches[0];
     help->file_array = malloc(sizeof(struct files*));
     help->file_length = 0;
     help->capacity = 1;
