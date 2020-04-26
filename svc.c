@@ -380,7 +380,8 @@ char* convert_hexa(int decimalNumber){
     free(hexadecimalNumber);
     return answer;
 }
-char* con_hexa(int decimalNumber,char* array){
+char* con_hexa(int decimalNumber){
+    char* array = malloc(20);
     sprintf(array,"%x", decimalNumber);
     return array;
 }
