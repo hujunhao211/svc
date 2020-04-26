@@ -522,16 +522,16 @@ char *svc_commit(void *helper, char *message) {
         }
     } else{
         if (detect_change(help->head)){
-            struct commit* commit = malloc(sizeof(struct commit));
-            commit->prev = help->head;
-            commit->file_length = 0;
-            if (help->head->next_size == 0){
-                help->head->next = malloc(sizeof(struct commit*));
-                help->head->next[0] = help->branch_p->branch_commit[help->branch_length - 1];
-            } else{
-                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * ++help->head->next_size);
-                help->head->next[help->head->next_size - 1] = commit;
-            }
+//            struct commit* commit = malloc(sizeof(struct commit));
+//            commit->prev = help->head;
+//            commit->file_length = 0;
+//            if (help->head->next_size == 0){
+//                help->head->next = malloc(sizeof(struct commit*));
+//                help->head->next[0] = help->branch_p->branch_commit[help->branch_length - 1];
+//            } else{
+//                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * ++help->head->next_size);
+//                help->head->next[help->head->next_size - 1] = commit;
+//            }
         }
     }
     return NULL;
