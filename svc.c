@@ -254,6 +254,10 @@ int cal_commit(struct commit* commit){
     if (commit->prev == NULL){
         if (add_length != 0){
             commit->addition = malloc(sizeof(char*));
+            commit->deletion = malloc(sizeof(char*));
+            commit->rm_length = 0;
+            commit->modification = malloc(sizeof(char*));
+            commit->mod_lenth = 0;
             int size_file = 0;
             for (i = 0; i < add_length; i++){
                 commit_id += 376591;
@@ -268,7 +272,6 @@ int cal_commit(struct commit* commit){
         int i;
         commit->addition = malloc(sizeof(char*));
         commit->deletion = malloc(sizeof(char*));
-        commit->modification = malloc(sizeof(char*));
         for (i = 0; i < add_length; i++){
             array[i] = array_add[i]->file_name;
         }
