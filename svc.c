@@ -348,10 +348,14 @@ char* concat(const char *s1, const char *s2,const char* s3)
 {
     char *result = malloc(strlen(s1) + strlen(s2) +  + strlen(s3) + 1); // +1 for the null-terminator
     // in real code you would check for errors in malloc here
-    
-    strcpy(result, s1);
-    strcat(result, s2);
-    strcat(result, s3);
+    result[0] = s1[0];
+    for (int i = 0; i < strlen(s2); i++){
+        result[i + 1] = s2[i];
+    }
+    for(int j = 0; j < strlen(s3); j++){
+        result[strlen(s1) + 1 + j] = s3[j];
+    }
+    result[strlen(s1) + strlen(s2) +  + strlen(s3)] = '\n';
     return result;
 }
 char* convert_hexa(int decimalNumber){
@@ -457,10 +461,10 @@ char *svc_commit(void *helper, char *message) {
                 if (file != NULL){
                     fclose(file);
                     char* get_name = get_file_name(commit_id);
-//                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
+                    char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
                     free(get_name);
-//                    copy_file(help->file_array[i]->file_name, free_file);
-//                    free(free_file);
+                    copy_file(help->file_array[i]->file_name, free_file);
+                    free(free_file);
                 } else{
                     fclose(file);
                 }
