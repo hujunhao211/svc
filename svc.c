@@ -644,15 +644,16 @@ int svc_rm(void *helper, char *file_name) {
             find = 1;
         }
     }
-    free(array_add[index]->file_name);
-    free(array_add[index]);
-    
-        
-    for (j = index; j < add_length - 1; j++){
-        array_add[j] = array_add[j + 1];
+
+    if (find){
+        free(array_add[index]->file_name);
+        free(array_add[index]);
+        for (j = index; j < add_length - 1; j++){
+            array_add[j] = array_add[j + 1];
+        }
+        array_add[j] = NULL;
+        add_length--;
     }
-    array_add[j] = NULL;
-    add_length--;
     free(file_temp);
     if (help->file_length == help->capacity){
         help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
