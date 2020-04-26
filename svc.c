@@ -112,7 +112,7 @@ int do_count(FILE* f ,int hash){
     char *count = NULL;
     count = malloc(sizeof(char));
     int i = 0;
-    while (fscanf(f, " %c",count)) {
+    while (fscanf(f, " %c",count) != EOF) {
         count = realloc(count, sizeof(char) * (++i));
     }
     for (int j = 0; j < i; j++){
