@@ -564,7 +564,7 @@ int svc_add(void *helper, char *file_name) {
     FILE* file = fopen(file_name, "r");
     if (file == NULL){
         return -3;
-    } 
+    }
     int find_remove = 0;
     int remove_index = 0;
     for (i = 0; i < remove_length; i++){
@@ -623,6 +623,7 @@ int svc_rm(void *helper, char *file_name) {
         if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
             index = i;
             id = help->file_array[i]->hash_id;
+            find = 1;
         }
     }
     if (!find){
