@@ -462,8 +462,8 @@ char *svc_commit(void *helper, char *message) {
                     fclose(file);
                     char* get_name = get_file_name(commit_id);
                     char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
-                    free(get_name);
                     copy_file(help->file_array[i]->file_name, free_file);
+                    free(get_name);
                     free(free_file);
                 } else{
                     fclose(file);
@@ -490,11 +490,14 @@ char *svc_commit(void *helper, char *message) {
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
+                    fclose(file);
                     char* get_name = get_file_name(commit_id);
                     char* free_file = concat("A", get_file_name(hash_file(NULL, help->file_array[i]->file_name)), get_name);
                     copy_file(help->file_array[i]->file_name,free_file);
+                    free(get_name);
                     free(free_file);
                 }
+                fclose(file);
             }
             struct commit* pre = help->branch_p->precommit;
             if (pre->next_size == 0){
@@ -512,20 +515,21 @@ char *svc_commit(void *helper, char *message) {
         }
     } else{
         if (detect_change(help->head)){
-//            struct commit* commit = malloc(sizeof(struct commit));
-//            commit->prev = help->head;
-//            commit->file_length = 0;
-//            if (help->head->next_size == 0){
-//                help->head->next = malloc(sizeof(struct commit*));
-//                help->head->next[0] = help->branch_p->branch_commit[help->branch_length - 1];
-//            } else{
-//                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * ++help->head->next_size);
-//                help->head->next[help->head->next_size - 1] = commit;
-//            }
+            struct commit* commit = malloc(sizeof(struct commit));
+            commit->prev = help->head;
+            commit->file_length = 0;
+            if (help->head->next_size == 0){
+                help->head->next = malloc(sizeof(struct commit*));
+                help->head->next[0] = help->branch_p->branch_commit[help->branch_length - 1];
+            } else{
+                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * ++help->head->next_size);
+                help->head->next[help->head->next_size - 1] = commit;
+            }
         }
     }
     return NULL;
 }
+
 void *get_commit(void *helper, char *commit_id) {
     // TODO: Implement
     return NULL;
