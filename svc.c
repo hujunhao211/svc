@@ -467,9 +467,7 @@ char *svc_commit(void *helper, char *message) {
                     copy_file(help->file_array[i]->file_name, free_file);
                     free(get_name);
                     free(free_file);
-                } else{
-                    fclose(file);
-                }
+                } 
             }
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
             help->branches[0]->precommit = NULL;
