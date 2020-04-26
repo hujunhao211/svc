@@ -267,6 +267,8 @@ int cal_commit(struct commit* commit){
         char** array = malloc(sizeof(char*) * (add_length + remove_length));
         int i;
         commit->addition = malloc(sizeof(char*));
+        commit->deletion = malloc(sizeof(char*));
+        commit->modification = malloc(sizeof(char*));
         for (i = 0; i < add_length; i++){
             array[i] = array_add[i]->file_name;
         }
