@@ -688,16 +688,71 @@ void print_commit(void *helper, char *commit_id) {
     // TODO: Implement
 }
 
+int check_name(char* name){
+    int i;
+    int valid = 1;
+    for(i = 0; i < strlen(name); i++){
+        if ((name[i] <= 57 && name[i] >= 48) || (name[i] >= 65 && name[i] <= 90) || (name[i] >= 97 && name[i] <= 122) || (name[i] == '-') || (name[i] == '/') || (name[i] == '_')){
+            
+        } else {
+            valid = 0;
+        }
+    }
+    return valid;
+}
 int svc_branch(void *helper, char *branch_name) {
     // TODO: Implement
+    struct helper* help = helper;
+    if (branch_name == NULL || !check_name(branch_name)){
+        return -1;
+    }
+    int i;
+    for ( i = 0; i < help->branch_length; i++){
+        if (strcmp(help->branches[i]->name, branch_name) == 0){
+            return -2;
+        }
+    }
+    if (detect_change(help->head)){
+        help->branches = realloc(help->branches, ++help->branch_length);
+        help->branches[help->branch_length - 1] = malloc(sizeof(struct branch));
+        help->branches[help->branch_length - 1]->length = 0;
+        help->branches[help->branch_length - 1]->precommit = help->head;
+        help->branches[help->branch_length - 1]->name = strdup(branch_name);
+        help->branches[help->branch_length - 1]->branch_commit = NULL;
+//        help->branches[help->branch_length - 1]->
+        return 0;
+    } else {
+        return -3;
+    }
+    
     return 0;
 }
 
 int svc_checkout(void *helper, char *branch_name) {
+    int find = 0;
+    int i;
+    if (branch_name == NULL){
+        return -1;
+    }
+    int index = 0;
+    struct helper* help = helper;
+    for (i = 0; i < help->branch_length; i++){
+        if(strcmp(help->branches[i]->name, branch_name)){
+            find = 1;
+            index = i;
+        }
+    }
+    if (!find){
+        return -1;
+    }
+    if (detect_change(help->head)){
+        help->branch_p = help->branches[i];
+    } else {
+        return -2;
+    }
     // TODO: Implement
     return 0;
 }
-
 char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
     return NULL;
