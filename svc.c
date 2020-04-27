@@ -347,6 +347,7 @@ int cal_commit(struct commit* commit){
                 commit->modification =realloc(commit->modification, (++size_mod)*sizeof(char*));
                 commit->modification[size_mod - 1] = strdup(array[i]);
                 commit_id += 9573681;
+                commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
             }
         }
