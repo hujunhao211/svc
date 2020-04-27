@@ -335,13 +335,13 @@ int cal_commit(struct commit* commit){
                 commit_id += 376591;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
-            if (detect_del(array[i])){
+            else if (detect_del(array[i])){
                 commit->deletion = realloc(commit->deletion, (++size_rm) * sizeof(char*));
                 commit->deletion[size_rm - 1] = strdup(array[i]);
                 commit_id += 85973;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
-            if (find_mod(array[i], mod_array, mod_size)){
+            else {
                 commit->modification =realloc(commit->modification, (++size_mod)*sizeof(char*));
                 commit->modification[size_mod - 1] = strdup(array[i]);
                 commit_id += 9573681;
