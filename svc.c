@@ -858,7 +858,18 @@ int svc_checkout(void *helper, char *branch_name) {
 
 char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
-    return NULL;
+    int i;
+    if (n_branches == NULL){
+        return NULL;
+    }
+    struct helper* help = (struct helper*)helper;
+    int size = 0;
+    char** array = malloc(sizeof(char*));
+    for (i = 0 ;i < help->branch_length; i++){
+        array = realloc(array, sizeof(char*) * (++size));
+        array[size - 1] = help->branches[i]->name;
+    }
+    return array;
 }
 
 int svc_add(void *helper, char *file_name) {
