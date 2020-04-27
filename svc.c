@@ -691,8 +691,53 @@ char **get_prev_commits(void *helper, void *commit, int *n_prev) {
     return NULL;
 }
 
+void find_file_hash(struct commit* com,char* file_name ,int* hash, int* old){
+    int i;
+    for (i = 0; i < com->file_length; i++){
+        if (strcmp(com->files_array[i]->file_name, file_name) == 0){
+            *(hash) = com->files_array[i]->hash_id;
+            *(old) = com->files_array[i]->old_hash;
+        }
+    }
+}
+
+void print_c(struct commit* com){
+    printf("%s [%s]: %s\n",com->commit_id, com->branch_p->name,com->message);
+    int i;
+    for (i = 0; i < com->add_length; i++){
+        printf("    + %s\n",com->addition[i]);
+    }
+    for (i = 0; i < com->rm_length; i++){
+        printf("    - %s\n",com->deletion[i]);
+    }
+    int old = 0;
+    int hash = 0;
+    for(i = 0; i < com->mod_lenth;i++){
+        find_file_hash(com, com->modification[i], &hash, &old);
+        printf("    / %s [%d --> %d]",com->modification[i],old,hash);
+    }
+    printf("\n");
+    printf("    Tracked files (%d)\n",com->file_length);
+    for (i = 0; i < com->file_length; i++){
+        printf("    [%*d]%s\n",10,com->files_array[i]->hash_id,com->files_array[i]->file_name);
+    }
+}
 void print_commit(void *helper, char *commit_id) {
     // TODO: Implement
+    if (commit_id == NULL){
+        printf("Invalid commit id\n");
+    }
+    struct helper* help = (struct helper*)helper;
+    int i,j;
+    for (i = 0; i < help->branch_length; i++){
+        for (j = 0; j < help->branches[i]->length; j++){
+            if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
+                print_c(help->branches[i]->branch_commit[j]);
+                return;
+            }
+        }
+    }
+    printf("Invalid commit id\n");
 }
 
 int detect_no_change(struct commit* pre){
