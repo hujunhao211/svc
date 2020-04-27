@@ -501,8 +501,7 @@ int detect_change(struct commit* pre){
             change = 1;
         }
     }
-//    printf("%d %d %d\n",have_mod,remove_file, change);
-    return (!(remove_length || have_mod || remove_file || change));
+    return (remove_length || have_mod || remove_file || change);
 }
 void update_help(struct helper* help){
     int i,index,find,iteration;
