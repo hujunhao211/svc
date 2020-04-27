@@ -79,6 +79,7 @@ void cleanup(void *helper) {
     int i;
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
+        free(help->branches[i]->name);
         int j;
 //        printf("length: %d\n",help->branches[i]->length);
         for (j = 0; j < help->branches[i]->length; j++){
@@ -110,7 +111,6 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]);
         }
         free(help->branches[i]->branch_commit);
-        free(help->branches[i]->name);
         free(help->branches[i]);
     }
     for (int k = 0; k < help->file_length; k++){
