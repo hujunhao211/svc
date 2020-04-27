@@ -576,9 +576,7 @@ char *svc_commit(void *helper, char *message) {
                     free(get_name);
                     free(file_name);
                     free(free_file);
-                } else{
-                    fclose(file);
-                }
+                } 
             }
             return commit->commit_id;
         }
