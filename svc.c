@@ -291,10 +291,11 @@ int cal_commit(struct commit* commit){
         commit->deletion = malloc(sizeof(char*));
 //        printf("add length: %d\n",add_length);
         for (i = 0; i < add_length; i++){
+            FILE* file = fopen(array_add[i]->file_name, "r");
 //                printf("fuck fuck fuck\n");
                 array = realloc(array, (++size) * sizeof(char*));
                 array[size - 1] = array_add[i]->file_name;
-            
+            }
         }
 //        printf("after size: %d\n",size);
         int j;
@@ -438,7 +439,7 @@ char* convert_hexa(int decimalNumber){
 }
 char* con_hexa(int decimalNumber){
     char* array = malloc(20);
-    sprintf(array,"%x", decimalNumber);
+    sprintf(array,"%.6x", decimalNumber);
     return array;
 }
 char* get_file_name(int hash){
