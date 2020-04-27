@@ -240,7 +240,7 @@ void allocate_file(struct commit* commit){
             printf("here1\n");
             if (!detect_del(pre->files_array[i]->file_name)){
                 commit->files_array = realloc(commit->files_array, ++commit->file_length);
-                commit->files_array[commit->file_length - 1] = malloc(sizeof(struct files));
+                commit->files_array[commit->file_length - 1]= malloc(sizeof(struct files));
                 commit->files_array[commit->file_length - 1]->file_name = strdup(pre->files_array[i]->file_name);
                 commit->files_array[commit->file_length - 1]->hash_id = hash_file(NULL, pre->files_array[i]->file_name);
             }
