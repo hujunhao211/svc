@@ -28,7 +28,6 @@ typedef struct commit{
     int rm_length;
     int mod_lenth;
     int commit_tag;
-    int old_hash;
 }commit_t;
 typedef struct helper{
 //    int commit_length;
@@ -49,6 +48,7 @@ typedef struct branch{
     commit_t*precommit;
 }branch;
 typedef struct files{
+    int old_hash;
     int hash_id;
     char* file_name;
 }files_t;
