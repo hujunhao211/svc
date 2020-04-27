@@ -41,7 +41,7 @@ typedef struct helper{
     struct files **file_array;
 } helper;
 typedef struct branch{
-    char* name;
+    int* name;
     int length;
     int tag;
     commit_t** branch_commit;
@@ -530,7 +530,7 @@ char *svc_commit(void *helper, char *message) {
     }
     if (help->head == NULL){
         if (add_length != 0){
-            help->branches[0]->name = strdup("master");
+            help->branches[0]->name = malloc(sizeof(int));
             struct helper* help = helper;
             help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
             help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
