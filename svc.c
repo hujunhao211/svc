@@ -529,6 +529,7 @@ char *svc_commit(void *helper, char *message) {
     }
     if (help->head == NULL){
         if (add_length != 0){
+            help->branches[0]->name = NULL;
             struct helper* help = helper;
             help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
             help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
@@ -542,7 +543,6 @@ char *svc_commit(void *helper, char *message) {
             help->branches[0]->branch_commit[0]->branch_p = help->branches[0];
             int commit_id = cal_commit(help->branches[0]->branch_commit[0]);
             help->head = help->branches[0]->branch_commit[0];
-            help->branches[0]->name = strdup("master");
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
