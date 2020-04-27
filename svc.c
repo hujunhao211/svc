@@ -79,7 +79,7 @@ void cleanup(void *helper) {
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
         int j;
-//        free(help->branches[i]->name);
+        free(help->branches[i]->name);
         for (j = 0; j < help->branches[i]->length; j++){
             free(help->branches[i]->branch_commit[j]->commit_id);
 //            free(help->branches[i]->branch_commit[j]->branch_p);
