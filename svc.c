@@ -737,7 +737,7 @@ int svc_branch(void *helper, char *branch_name) {
         }
     }
     if (detect_no_change(help->head)){
-        help->branches = realloc(help->branches, ++help->branch_length);
+        help->branches = realloc(help->branches, (++help->branch_length)*sizeof(struct branch*));
         help->branches[help->branch_length - 1] = malloc(sizeof(struct branch));
         help->branches[help->branch_length - 1]->length = 0;
         help->branches[help->branch_length - 1]->precommit = help->head;
