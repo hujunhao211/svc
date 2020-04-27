@@ -492,8 +492,6 @@ char *svc_commit(void *helper, char *message) {
                     free(get_name);
                     free(file_name);
                     free(free_file);
-                } else{
-                    fclose(file);
                 }
             }
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
@@ -746,4 +744,3 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     // TODO: Implement
     return NULL;
 }
-
