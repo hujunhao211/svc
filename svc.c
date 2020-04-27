@@ -261,8 +261,8 @@ int cal_commit(struct commit* commit){
     int i;
     int commit_id = 0;
     commit_id = get_commit_id(commit);
-    printf("message: %s\n",commit->message);
-    printf("commid %d\n",commit_id);
+//    printf("message: %s\n",commit->message);
+//    printf("commid %d\n",commit_id);
     if (commit->prev == NULL){
         if (add_length != 0){
             commit->addition = malloc(sizeof(char*));
