@@ -705,13 +705,13 @@ char **get_prev_commits(void *helper, void *commit, int *n_prev) {
     } else if (com->parent[1] == NULL){
         *(n_prev) = 1;
         char** array = malloc(sizeof(char*));
-        array[0] = com->parent[0]->message;
+        array[0] = com->parent[0]->commit_id;
         return array;
     } else{
         *(n_prev) = 2;
         char** array = malloc(sizeof(char*) * 2);
-        array[0] = com->parent[0]->message;
-        array[1] = com->parent[1]->message;
+        array[0] = com->parent[0]->commit_id;
+        array[1] = com->parent[1]->commit_id;
         return array;
     }
 //    struct commit** array = malloc(sizeof(struct commit*));
