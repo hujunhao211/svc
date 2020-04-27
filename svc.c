@@ -538,7 +538,7 @@ char *svc_commit(void *helper, char *message) {
             }
             
             help->head = help->branch_p->branch_commit[help->branch_p->length - 1];
-            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
+//            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
             return help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id;
     }else {
         return NULL;
@@ -575,6 +575,7 @@ char *svc_commit(void *helper, char *message) {
                     free(file_name);
                     free(free_file);
                 } else{
+                    fclose(file);
                 }
             }
             return commit->commit_id;
