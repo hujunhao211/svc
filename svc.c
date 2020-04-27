@@ -869,9 +869,9 @@ char **list_branches(void *helper, int *n_branches) {
         array = realloc(array, sizeof(char*) * (++size));
         array[size - 1] = help->branches[i]->name;
     }
+    *(n_branches) = size;
     return array;
 }
-
 int svc_add(void *helper, char *file_name) {
     // TODO: Implement
     if (file_name == NULL){
