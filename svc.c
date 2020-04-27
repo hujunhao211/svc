@@ -746,24 +746,4 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     // TODO: Implement
     return NULL;
 }
-int main(){
-    void *helper = svc_init();
 
-    // TODO: write your own tests here
-    // Hint: you can use assert(EXPRESSION) if you want
-    // e.g.  assert((2 + 3) == 5);
-
-    hash_file(helper, "fake.c");
-    svc_commit(helper, "No changes");
-    svc_add(helper, "hello.py");
-    svc_add(helper, "view.sh");
-    char* id1 = svc_commit(helper, "Initial commit");
-    printf("commit_id = %s\n", id1);
-    svc_rm(helper, "view.sh");
-    svc_add(helper, "mc-config.txt");
-    char* id = svc_commit(helper, "Some changes");
-    printf("commit_id = %s\n", id);
-    print_commit(helper, id1);
-    print_commit(helper, id);
-    return 0;
-}
