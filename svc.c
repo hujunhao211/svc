@@ -291,12 +291,10 @@ int cal_commit(struct commit* commit){
         commit->deletion = malloc(sizeof(char*));
 //        printf("add length: %d\n",add_length);
         for (i = 0; i < add_length; i++){
-            FILE* file = fopen(array_add[i]->file_name, "r");
-            if (file != NULL){
 //                printf("fuck fuck fuck\n");
                 array = realloc(array, (++size) * sizeof(char*));
                 array[size - 1] = array_add[i]->file_name;
-            }
+            
         }
 //        printf("after size: %d\n",size);
         int j;
