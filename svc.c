@@ -1,3 +1,11 @@
+//
+//  svcAsm.c
+//  Test
+//
+//  Created by junhao hu on 2020/4/15.
+//  Copyright © 2020 junhao hu. All rights reserved.
+//
+
 #include "svc.h"
 #include <stdio.h>
 #include <string.h>
@@ -58,9 +66,9 @@ void *svc_init(void) {
     help->branches[0]->length = 0;
     help->branches[0]->tag = 0;
     help->branches[0]->precommit = NULL;
+    help->branch_p = help->branches[0];
     help->file_array = malloc(sizeof(struct files*));
     help->file_length = 0;
-    help->branch_p = help->branches[0];
     help->capacity = 1;
     return (void*)help;
 }
@@ -611,66 +619,64 @@ char **list_branches(void *helper, int *n_branches) {
 int svc_add(void *helper, char *file_name) {
     // TODO: Implement
     if (file_name == NULL){
-            return -1;
-        }
-        if (array_add == NULL){
-            array_add = malloc(sizeof(struct files));
-        }
-        struct helper* help = helper;
-        int i;
-        for(i = 0; i < help->file_length;i++){
-            if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
-                return -2;
-            }
-        }
-        FILE* file = fopen(file_name, "r");
-        if (file == NULL){
-            return -3;
-        }
-        int find_remove = 0;
-        int remove_index = 0;
-        for (i = 0; i < remove_length; i++){
-            if (strcmp(array_remove[i], file_name) == 0){
-                find_remove = 1;
-                remove_index = i;
-            }
-        }
-        if (find_remove){
-            char* filename = array_remove[remove_index];
-            for (i = remove_index; i < remove_length - 1; i++){
-                array_remove[i] = array_remove[i + 1];
-            }
-            free(filename);
-            remove_length--;
-        } else {
-            if (help->file_length == help->capacity){
-                help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
-                help->capacity *= 2;
-            }
-    //        printf("%d\n",help->file_length);
-    //        printf("%d\n",help->capacity);
-    //        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
-    //        printf("%p\n",help->file_array[help->file_length]);
-    //        help->file_array[help->file_length]->file_name;
-    //        help->file_array = realloc(help->file_array, sizeof(struct files*));
-            help->file_array[help->file_length] = malloc(sizeof(struct files));
-            help->file_array[help->file_length++]->file_name = strdup(file_name);
-            help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
-            
-            
-            array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
-            array_add[add_length - 1] = malloc(sizeof(struct files));
-    //        printf("lenth%d\n",add_length);
-            array_add[add_length - 1]->file_name = strdup(file_name);
-            array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
-        }
-    //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
-    //
-    //    }
-        return hash_file(NULL, file_name);
+        return -1;
     }
-
-
+    if (array_add == NULL){
+        array_add = malloc(sizeof(struct files));
+    }
+    struct helper* help = helper;
+    int i;
+    for(i = 0; i < help->file_length;i++){
+        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
+            return -2;
+        }
+    }
+    FILE* file = fopen(file_name, "r");
+    if (file == NULL){
+        return -3;
+    }
+    int find_remove = 0;
+    int remove_index = 0;
+    for (i = 0; i < remove_length; i++){
+        if (strcmp(array_remove[i], file_name) == 0){
+            find_remove = 1;
+            remove_index = i;
+        }
+    }
+    if (find_remove){
+        char* filename = array_remove[remove_index];
+        for (i = remove_index; i < remove_length - 1; i++){
+            array_remove[i] = array_remove[i + 1];
+        }
+        free(filename);
+        remove_length--;
+    } else {
+        if (help->file_length == help->capacity){
+            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+            help->capacity *= 2;
+        }
+//        printf("%d\n",help->file_length);
+//        printf("%d\n",help->capacity);
+//        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
+//        printf("%p\n",help->file_array[help->file_length]);
+//        help->file_array[help->file_length]->file_name;
+//        help->file_array = realloc(help->file_array, sizeof(struct files*));
+        help->file_array[help->file_length] = malloc(sizeof(struct files));
+        help->file_array[help->file_length++]->file_name = strdup(file_name);
+        help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
+        
+        
+        array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
+        array_add[add_length - 1] = malloc(sizeof(struct files));
+//        printf("lenth%d\n",add_length);
+        array_add[add_length - 1]->file_name = strdup(file_name);
+        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
+    }
+//    else if(help->commit_array[help->commit_length - 1]->message != NULL){
+//
+//    }
+    return hash_file(NULL, file_name);
+}
 
 int svc_rm(void *helper, char *file_name) {
     // TODO: Implement
@@ -719,10 +725,10 @@ int svc_rm(void *helper, char *file_name) {
         add_length--;
     }
     free(file_temp);
-    if (help->file_length == help->capacity){
-        help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
-        help->capacity *= 2;
-    }
+//    if (help->file_length == help->capacity){
+//        help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+//        help->capacity *= 2;
+//    }
 //    help->file_array[help->file_length] = malloc(sizeof(struct files));
 //    help->file_array[help->file_length++]->file_name = strdup(file_name);
 //    help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, help->file_array[help->file_length - 1]->file_name);
@@ -739,4 +745,25 @@ int svc_reset(void *helper, char *commit_id) {
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
     return NULL;
+}
+int main(){
+    void *helper = svc_init();
+
+    // TODO: write your own tests here
+    // Hint: you can use assert(EXPRESSION) if you want
+    // e.g.  assert((2 + 3) == 5);
+
+    hash_file(helper, "fake.c");
+    svc_commit(helper, "No changes");
+    svc_add(helper, "hello.py");
+    svc_add(helper, "view.sh");
+    char* id1 = svc_commit(helper, "Initial commit");
+    printf("commit_id = %s\n", id1);
+    svc_rm(helper, "view.sh");
+    svc_add(helper, "mc-config.txt");
+    char* id = svc_commit(helper, "Some changes");
+    printf("commit_id = %s\n", id);
+    print_commit(helper, id1);
+    print_commit(helper, id);
+    return 0;
 }
