@@ -329,7 +329,6 @@ int cal_commit(struct commit* commit){
         for(i = 0; i < size; i++){
 //            printf("array[i] : %s\n",array[i]);
 //            int j;
-            FILE* file = fopen(array[i], "r");
             if (detect_add(array[i])){
                 commit->addition = realloc(commit->addition, (++size_add) * sizeof(char *));
                 commit->addition[size_add-1] = strdup(array[i]);
