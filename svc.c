@@ -350,7 +350,6 @@ int cal_commit(struct commit* commit){
         if (commit->prev->file_length > 0){
             int k;
             for (k = 0; k < commit->prev->file_length; k++){
-                FILE* file = fopen(commit->prev->files_array[k]->file_name, "r");
                 commit_id += 85973;
 //                hash = hash_file(NULL, commit->prev->files_array[k]->file_name);
                 char* get_name = commit->prev->files_array[k]->file_name;
