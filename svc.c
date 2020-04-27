@@ -71,7 +71,7 @@ void *svc_init(void) {
     help->file_array = malloc(sizeof(struct files*));
     help->file_length = 0;
     help->capacity = 1;
-    help->branches[0]->name = strdup("master");
+    help->branches[0]->name = malloc(5);
     return (void*)help;
 }
 
