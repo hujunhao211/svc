@@ -258,6 +258,7 @@ void allocate_file(struct commit* commit){
     }
 }
 int cal_commit(struct commit* commit){
+    allocate_file(commit);
     int i;
     int commit_id = 0;
     commit_id = get_commit_id(commit);
@@ -291,7 +292,7 @@ int cal_commit(struct commit* commit){
         for (i = 0; i < add_length; i++){
             FILE* file = fopen(array_add[i]->file_name, "r");
             if (file != NULL){
-                array = realloc(array, ++size);
+                array = realloc(array, (++size) * sizeof(char *));
                 array[size - 1] = array_add[i]->file_name;
             }
         }
@@ -312,15 +313,16 @@ int cal_commit(struct commit* commit){
         char** mod_array = malloc(sizeof(char*));
         size = 0;
         commit->modification = malloc(sizeof(char*));
+//        printf("mod is in wrnnn nnnlnlnttpijt\n");
         for (i = 0; i < commit->prev->file_length; i++){
-            if (!detect_add(commit->prev->files_array[i]->file_name) && !detect_add(commit->prev->files_array[i]->file_name)){
                 if (detect_mod(commit->prev->files_array[i], commit->prev->files_array[i]->file_name)){
+//                    printf("mod is in wrnnn nnnlnlnttpijt\n");
                     array = realloc(array, (++size) * sizeof(char*));
                     mod_array = realloc(mod_array, (++mod_size) * sizeof(char*));
                     array[size - 1] = commit->prev->files_array[i]->file_name;
                     mod_array[mod_size - 1] = commit->prev->files_array[i]->file_name;
                 }
-            }
+            
         }
         int size_add = 0;
         int size_rm = 0;
@@ -329,23 +331,26 @@ int cal_commit(struct commit* commit){
         for(i = 0; i < size; i++){
 //            printf("array[i] : %s\n",array[i]);
 //            int j;
+            FILE* file = fopen(array[i], "r");
+            if (file != NULL){
             if (detect_add(array[i])){
                 commit->addition = realloc(commit->addition, (++size_add) * sizeof(char *));
                 commit->addition[size_add-1] = strdup(array[i]);
                 commit_id += 376591;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
-            else if (detect_del(array[i])){
+            if (detect_del(array[i])){
                 commit->deletion = realloc(commit->deletion, (++size_rm) * sizeof(char*));
                 commit->deletion[size_rm - 1] = strdup(array[i]);
                 commit_id += 85973;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
-            else {
+            if (find_mod(array[i], mod_array, mod_size)){
                 commit->modification =realloc(commit->modification, (++size_mod)*sizeof(char*));
                 commit->modification[size_mod - 1] = strdup(array[i]);
                 commit_id += 9573681;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
+            }
             }
         }
         commit->add_length = size_add;
@@ -373,7 +378,6 @@ int cal_commit(struct commit* commit){
             commit->modification = NULL;
         }
     }
-    allocate_file(commit);
     for (i = 0; i < add_length; i++){
         free(array_add[i]->file_name);
         free(array_add[i]);
