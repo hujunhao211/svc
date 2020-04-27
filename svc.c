@@ -298,7 +298,7 @@ int cal_commit(struct commit* commit){
         }
         int j;
         for(j = 0; j < remove_length; j++){
-            array = realloc(array, ++size);
+            array = realloc(array, (++size) * sizeof(char*));
             array[size - 1] = array_remove[j];
         }
         for (i = 0; i < commit->prev->file_length; i++){
