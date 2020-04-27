@@ -261,6 +261,8 @@ int cal_commit(struct commit* commit){
     int i;
     int commit_id = 0;
     commit_id = get_commit_id(commit);
+    printf("message: %s\n",commit->message);
+    printf("commid %d\n",commit_id);
     if (commit->prev == NULL){
         if (add_length != 0){
             commit->addition = malloc(sizeof(char*));
@@ -270,10 +272,13 @@ int cal_commit(struct commit* commit){
             commit->mod_lenth = 0;
             int size_file = 0;
             for (i = 0; i < add_length; i++){
-                commit_id += 376591;
-                commit_id = calculate_change(array_add[i]->file_name, strlen(array_add[i]->file_name), commit_id);
-                commit->addition = realloc(commit->addition,( ++size_file) * sizeof(char*));
-                commit->addition[size_file - 1] = strdup(array_add[i]->file_name);
+                FILE* file = fopen(array_add[i]->file_name, "r");
+                if (file != NULL){
+                    commit_id += 376591;
+                    commit_id = calculate_change(array_add[i]->file_name, strlen(array_add[i]->file_name), commit_id);
+                    commit->addition = realloc(commit->addition,( ++size_file) * sizeof(char*));
+                    commit->addition[size_file - 1] = strdup(array_add[i]->file_name);
+                }
              }
             commit->add_length = size_file;
         }
@@ -318,11 +323,15 @@ int cal_commit(struct commit* commit){
         qsort(array, size,sizeof(array[0]) ,file_compare);
         for(i = 0; i < size; i++){
 //            int j;
+            FILE* file = fopen(array[i], "r");
+            if (file != NULL){
             if (detect_add(array[i])){
+                if (file != NULL){
                 commit->addition = realloc(commit->addition, (++size_add) * sizeof(char *));
                 commit->addition[size_add-1] = strdup(array[i]);
                 commit_id += 376591;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
+                }
             }
             if (detect_del(array[i])){
                 commit->deletion = realloc(commit->deletion, (++size_rm) * sizeof(char*));
@@ -335,6 +344,7 @@ int cal_commit(struct commit* commit){
                 commit->modification[size_mod - 1] = strdup(array[i]);
                 commit_id += 9573681;
             }
+            }
         }
         commit->add_length = size_add;
         commit->rm_length = size_rm;
@@ -345,10 +355,13 @@ int cal_commit(struct commit* commit){
         if (commit->prev->file_length > 0){
             int k;
             for (k = 0; k < commit->prev->file_length; k++){
+                FILE* file = fopen(commit->prev->files_array[k]->file_name, "r");
+                if (file != NULL){
                 commit_id += 85973;
 //                hash = hash_file(NULL, commit->prev->files_array[k]->file_name);
                 char* get_name = commit->prev->files_array[k]->file_name;
                 commit_id = calculate_change(get_name, strlen(get_name), commit_id);
+                }
             }
             commit->add_length = 0;
             commit->rm_length = 0;
