@@ -79,7 +79,7 @@ void cleanup(void *helper) {
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
         int j;
-        free(help->branches[i]->name);
+//        free(help->branches[i]->name);
         for (j = 0; j < help->branches[i]->length; j++){
             free(help->branches[i]->branch_commit[j]->commit_id);
 //            free(help->branches[i]->branch_commit[j]->branch_p);
@@ -529,7 +529,7 @@ char *svc_commit(void *helper, char *message) {
     }
     if (help->head == NULL){
         if (add_length != 0){
-            help->branches[0]->name = NULL;
+            help->branches[0]->name = strdup("master");
             struct helper* help = helper;
             help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
             help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
