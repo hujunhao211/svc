@@ -78,11 +78,10 @@ void cleanup(void *helper) {
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
         int j;
-        printf("length: %d\n",help->branches[i]->length);
         for (j = 0; j < help->branches[i]->length; j++){
             free(help->branches[i]->branch_commit[j]->commit_id);
 //            free(help->branches[i]->branch_commit[j]->branch_p);
-            printf("commit id in the function3: \n");
+//            printf("commit id in the function3: \n");
             int z;
             for (z = 0; z < help->branches[i]->branch_commit[j]->file_length;z++){
                 free(help->branches[i]->branch_commit[j]->files_array[z]->file_name);
