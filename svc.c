@@ -291,9 +291,12 @@ int cal_commit(struct commit* commit){
         commit->deletion = malloc(sizeof(char*));
 //        printf("add length: %d\n",add_length);
         for (i = 0; i < add_length; i++){
+            FILE* file = fopen(array_add[i]->file_name, "r");
+            if (file != NULL){
 //                printf("fuck fuck fuck\n");
                 array = realloc(array, (++size) * sizeof(char*));
                 array[size - 1] = array_add[i]->file_name;
+            }
         }
 //        printf("after size: %d\n",size);
         int j;
@@ -363,12 +366,10 @@ int cal_commit(struct commit* commit){
             int k;
             for (k = 0; k < commit->prev->file_length; k++){
                 FILE* file = fopen(commit->prev->files_array[k]->file_name, "r");
-                if (file != NULL){
                 commit_id += 85973;
 //                hash = hash_file(NULL, commit->prev->files_array[k]->file_name);
                 char* get_name = commit->prev->files_array[k]->file_name;
                 commit_id = calculate_change(get_name, strlen(get_name), commit_id);
-                }
             }
             commit->add_length = 0;
             commit->rm_length = 0;
