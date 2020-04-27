@@ -351,9 +351,11 @@ int cal_commit(struct commit* commit){
         free(array_remove[i]);
     }
     free(array_remove);
-    return commit_id;
     add_length = 0;
     remove_length = 0;
+    array_add = NULL;
+    array_remove = NULL;
+    return commit_id;
 }
 char* concat(char *s1, char *s2,char* s3)
 {
