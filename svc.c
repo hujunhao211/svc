@@ -496,6 +496,7 @@ int detect_change(struct commit* pre){
     }
     int change = 0;
     for (i = 0; i < add_length; i++){
+        printf("111");
         FILE* f = fopen(array_add[i]->file_name, "r");
         if (f != NULL){
             change = 1;
