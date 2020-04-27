@@ -209,7 +209,7 @@ int detect_del(char* file){
 int calculate_change(char* file_name,size_t size,int id){
     size_t i;
     for (i = 0; i < size; i++) {
-        id = (id * (file_name[i] % 37))% 15485863 + 1;
+        id = (id * ((unsigned char)file_name[i] % 37))% 15485863 + 1;
     }
     return id;
 }
