@@ -688,9 +688,29 @@ void *get_commit(void *helper, char *commit_id) {
 
 char **get_prev_commits(void *helper, void *commit, int *n_prev) {
     // TODO: Implement
-    return NULL;
+    if (n_prev == NULL){
+        return NULL;
+    }
+    if (commit == NULL){
+        *(n_prev) = 0;
+        return NULL;
+    }
+//    struct helper* help = (struct helper*)helper;
+    struct commit* com = (struct commit*)commit;
+    if (com->parent[1] == NULL){
+        *(n_prev) = 1;
+        char** array = malloc(sizeof(char*));
+        array[0] = com->parent[0]->message;
+        return array;
+    } else{
+        *(n_prev) = 2;
+        char** array = malloc(sizeof(char*) * 2);
+        array[0] = com->parent[0]->message;
+        array[1] = com->parent[1]->message;
+        return array;
+    }
+//    struct commit** array = malloc(sizeof(struct commit*));
 }
-
 void find_file_hash(struct commit* com,char* file_name ,int* hash, int* old){
     int i;
     for (i = 0; i < com->file_length; i++){
