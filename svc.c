@@ -496,14 +496,13 @@ int detect_change(struct commit* pre){
     }
     int change = 0;
     for (i = 0; i < add_length; i++){
-        printf("111");
         FILE* f = fopen(array_add[i]->file_name, "r");
         if (f != NULL){
             change = 1;
         }
     }
-    printf("%d %d %d\n",have_mod,remove_file, change);
-    return (remove_length || have_mod || remove_file || change);
+//    printf("%d %d %d\n",have_mod,remove_file, change);
+    return (!(remove_length || have_mod || remove_file || change));
 }
 void update_help(struct helper* help){
     int i,index,find,iteration;
