@@ -289,13 +289,16 @@ int cal_commit(struct commit* commit){
         int size = 0;
         commit->addition = malloc(sizeof(char*));
         commit->deletion = malloc(sizeof(char*));
+//        printf("add length: %d\n",add_length);
         for (i = 0; i < add_length; i++){
             FILE* file = fopen(array_add[i]->file_name, "r");
             if (file != NULL){
-                array = realloc(array, (++size) * sizeof(char *));
+//                printf("fuck fuck fuck\n");
+                array = realloc(array, (++size) * sizeof(char*));
                 array[size - 1] = array_add[i]->file_name;
             }
         }
+//        printf("after size: %d\n",size);
         int j;
         for(j = 0; j < remove_length; j++){
             array = realloc(array, (++size) * sizeof(char*));
@@ -306,13 +309,16 @@ int cal_commit(struct commit* commit){
             if (file == NULL){
                 array_remove = realloc(array_remove, ++remove_length * sizeof(char*));
                 array_remove[remove_length - 1] = commit->prev->files_array[i]->file_name;
+                array = realloc(array, (++size)*sizeof(char*));
+                array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
+            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
-        size = 0;
         commit->modification = malloc(sizeof(char*));
 //        printf("mod is in wrnnn nnnlnlnttpijt\n");
+//        printf("before size = %d\n",size);
         for (i = 0; i < commit->prev->file_length; i++){
                 if (detect_mod(commit->prev->files_array[i], commit->prev->files_array[i]->file_name)){
 //                    printf("mod is in wrnnn nnnlnlnttpijt\n");
@@ -327,11 +333,11 @@ int cal_commit(struct commit* commit){
         int size_rm = 0;
         int size_mod = 0;
         qsort(array, size,sizeof(array[0]) ,file_compare);
+//        printf("size = %d\n",size);
         for(i = 0; i < size; i++){
 //            printf("array[i] : %s\n",array[i]);
 //            int j;
-            FILE* file = fopen(array[i], "r");
-            if (file != NULL){
+//            printf("jbjbjbjbjjbjjbbjjb\n");
             if (detect_add(array[i])){
                 commit->addition = realloc(commit->addition, (++size_add) * sizeof(char *));
                 commit->addition[size_add-1] = strdup(array[i]);
@@ -349,7 +355,6 @@ int cal_commit(struct commit* commit){
                 commit->modification[size_mod - 1] = strdup(array[i]);
                 commit_id += 9573681;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
-            }
             }
         }
         commit->add_length = size_add;
