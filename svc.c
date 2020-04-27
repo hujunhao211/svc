@@ -326,12 +326,10 @@ int cal_commit(struct commit* commit){
             FILE* file = fopen(array[i], "r");
             if (file != NULL){
             if (detect_add(array[i])){
-                if (file != NULL){
                 commit->addition = realloc(commit->addition, (++size_add) * sizeof(char *));
                 commit->addition[size_add-1] = strdup(array[i]);
                 commit_id += 376591;
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
-                }
             }
             if (detect_del(array[i])){
                 commit->deletion = realloc(commit->deletion, (++size_rm) * sizeof(char*));
