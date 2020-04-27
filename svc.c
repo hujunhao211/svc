@@ -697,7 +697,12 @@ char **get_prev_commits(void *helper, void *commit, int *n_prev) {
     }
 //    struct helper* help = (struct helper*)helper;
     struct commit* com = (struct commit*)commit;
-    if (com->parent[1] == NULL){
+    if (com->parent == NULL){
+        *(n_prev) = 0;
+        char** array = malloc(sizeof(char*));
+        array[0] = NULL;
+        return array;
+    } else if (com->parent[1] == NULL){
         *(n_prev) = 1;
         char** array = malloc(sizeof(char*));
         array[0] = com->parent[0]->message;
