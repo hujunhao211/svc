@@ -28,6 +28,7 @@ typedef struct commit{
     int rm_length;
     int mod_lenth;
     int commit_tag;
+    int old_hash;
 }commit_t;
 typedef struct helper{
 //    int commit_length;
@@ -319,7 +320,7 @@ int cal_commit(struct commit* commit){
                 array = realloc(array, (++size)*sizeof(char*));
                 array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
-//            fclose(file);
+            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
@@ -334,9 +335,15 @@ int cal_commit(struct commit* commit){
                     mod_array = realloc(mod_array, (++mod_size) * sizeof(char*));
                     array[size - 1] = commit->prev->files_array[i]->file_name;
                     mod_array[mod_size - 1] = commit->prev->files_array[i]->file_name;
+                    for (j = 0; j < commit->file_length; j++){
+                        if (strcmp(commit->prev->files_array[i]->file_name, commit->files_array[j]->file_name) == 0){
+                            commit->files_array[j]->old_hash = commit->prev->files_array[i]->hash_id;
+                        }
+                    }
                 }
             }
         }
+        
         int size_add = 0;
         int size_rm = 0;
         int size_mod = 0;
@@ -366,6 +373,7 @@ int cal_commit(struct commit* commit){
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
         }
+        
         commit->add_length = size_add;
         commit->rm_length = size_rm;
         commit->mod_lenth = size_mod;
