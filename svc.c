@@ -761,7 +761,7 @@ int svc_checkout(void *helper, char *branch_name) {
     int index = 0;
     struct helper* help = helper;
     for (i = 0; i < help->branch_length; i++){
-        if(strcmp(help->branches[i]->name, branch_name)){
+        if(strcmp(help->branches[i]->name, branch_name) == 0){
             find = 1;
             index = i;
         }
