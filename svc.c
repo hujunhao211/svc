@@ -770,7 +770,7 @@ int svc_checkout(void *helper, char *branch_name) {
         return -1;
     }
     if (detect_no_change(help->head)){
-        help->branch_p = help->branches[i];
+        help->branch_p = help->branches[index];
     } else {
         return -2;
     }
