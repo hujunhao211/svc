@@ -717,9 +717,9 @@ void print_c(struct commit* com){
         printf("    / %s [%d --> %d]",com->modification[i],old,hash);
     }
     printf("\n");
-    printf("    Tracked files (%d)\n",com->file_length);
+    printf("    Tracked files (%d):\n",com->file_length);
     for (i = 0; i < com->file_length; i++){
-        printf("    [%*d]%s\n",10,com->files_array[i]->hash_id,com->files_array[i]->file_name);
+        printf("    [%*d] %s\n",10,com->files_array[i]->hash_id,com->files_array[i]->file_name);
     }
 }
 void print_commit(void *helper, char *commit_id) {
