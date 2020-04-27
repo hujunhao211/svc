@@ -71,7 +71,7 @@ void *svc_init(void) {
     help->file_array = malloc(sizeof(struct files*));
     help->file_length = 0;
     help->capacity = 1;
-    help->branches[0]->name = malloc(5);
+    help->branches[0]->name = strdup("master");
     return (void*)help;
 }
 
@@ -531,7 +531,6 @@ char *svc_commit(void *helper, char *message) {
     }
     if (help->head == NULL){
         if (add_length != 0){
-            help->branches[0]->name = malloc(sizeof(int));
             struct helper* help = helper;
             help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
             help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
