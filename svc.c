@@ -469,6 +469,29 @@ int detect_change(struct commit* pre){
     }
     return (remove_length || add_length || have_mod || remove_file);
 }
+void update_help(struct helper* help){
+    int i,index,find,iteration;
+    for (iteration = 0; iteration < help->file_length; iteration++){
+        index = 0;
+        find = 0;
+        for (i = 0; i < help->file_length; i++){
+            FILE* file = fopen(help->file_array[i]->file_name, "r");
+            if (file == NULL){
+                find = 1;
+                index = i;
+            }
+        }
+        if (find){
+            for (i = index; i < help->file_length - 1; i++){
+                free(help->file_array[i]->file_name);
+                free(help->file_array[i]);
+                help->file_array[i] = help->file_array[i + 1];
+            }
+            help->file_array[help->file_length -1] = NULL;
+            help->file_length--;
+        }
+    }
+}
 char *svc_commit(void *helper, char *message) {
     // TODO: Implement
     int i;
@@ -510,6 +533,7 @@ char *svc_commit(void *helper, char *message) {
             help->branches[0]->branch_commit[0]->commit_id = con_hexa(commit_id);
             help->branches[0]->precommit = NULL;
 //            printf("commit id in the function: %s\n",help->branches[0]->branch_commit[0]->commit_id);
+            update_help(help);
             return help->branches[0]->branch_commit[0]->commit_id;
         } else {
             return NULL;
@@ -539,6 +563,7 @@ char *svc_commit(void *helper, char *message) {
                     free(file_name);
                     free(free_file);
                 } else{
+                    fclose(file);
                 }
             }
             struct commit* pre = help->branch_p->precommit;
@@ -553,6 +578,7 @@ char *svc_commit(void *helper, char *message) {
             help->head = help->branch_p->branch_commit[help->branch_p->length - 1];
 //            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
 //            printf("commit id in the function1: %s\n",help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id);
+            update_help(help);
             return help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id;
     }else {
         return NULL;
@@ -590,6 +616,7 @@ char *svc_commit(void *helper, char *message) {
                     free(file_name);
                     free(free_file);
                 } else{
+                    fclose(file);
                 }
             }
             commit->parent = malloc(sizeof(struct commit*) * 2);
@@ -598,6 +625,7 @@ char *svc_commit(void *helper, char *message) {
 //            printf("help %d\n",help->branch_length);
 //            printf("help commit: %d\n",help->branches[help->branch_length-1]->length);
 //            printf("commit id in the function2: %d\n",help->branches[0]->branch_commit[1] == NULL);
+            update_help(help);
             return commit->commit_id;
         }
         return NULL;
