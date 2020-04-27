@@ -341,8 +341,6 @@ int cal_commit(struct commit* commit){
             }
         }
     }
-    add_length = 0;
-    remove_length = 0;
     allocate_file(commit);
     for (i = 0; i < add_length; i++){
         free(array_add[i]->file_name);
@@ -354,6 +352,8 @@ int cal_commit(struct commit* commit){
     }
     free(array_remove);
     return commit_id;
+    add_length = 0;
+    remove_length = 0;
 }
 char* concat(char *s1, char *s2,char* s3)
 {
