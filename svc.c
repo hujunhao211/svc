@@ -58,9 +58,9 @@ void *svc_init(void) {
     help->branches[0]->length = 0;
     help->branches[0]->tag = 0;
     help->branches[0]->precommit = NULL;
-    help->branch_p = help->branches[0];
     help->file_array = malloc(sizeof(struct files*));
     help->file_length = 0;
+    help->branch_p = help->branches[0];
     help->capacity = 1;
     return (void*)help;
 }
@@ -240,7 +240,7 @@ void allocate_file(struct commit* commit){
             printf("here1\n");
             if (!detect_del(pre->files_array[i]->file_name)){
                 commit->files_array = realloc(commit->files_array, ++commit->file_length);
-                commit->files_array[commit->file_length - 1]= malloc(sizeof(struct files));
+                commit->files_array[commit->file_length - 1] = malloc(sizeof(struct files));
                 commit->files_array[commit->file_length - 1]->file_name = strdup(pre->files_array[i]->file_name);
                 commit->files_array[commit->file_length - 1]->hash_id = hash_file(NULL, pre->files_array[i]->file_name);
             }
@@ -625,8 +625,10 @@ int svc_add(void *helper, char *file_name) {
     }
     FILE* file = fopen(file_name, "r");
     if (file == NULL){
+        fclose(file);
         return -3;
     }
+    fclose(file);
     int find_remove = 0;
     int remove_index = 0;
     for (i = 0; i < remove_length; i++){
@@ -656,8 +658,6 @@ int svc_add(void *helper, char *file_name) {
         help->file_array[help->file_length] = malloc(sizeof(struct files));
         help->file_array[help->file_length++]->file_name = strdup(file_name);
         help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
-        
-        
         array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
         array_add[add_length - 1] = malloc(sizeof(struct files));
 //        printf("lenth%d\n",add_length);
@@ -717,10 +717,10 @@ int svc_rm(void *helper, char *file_name) {
         add_length--;
     }
     free(file_temp);
-//    if (help->file_length == help->capacity){
-//        help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
-//        help->capacity *= 2;
-//    }
+    if (help->file_length == help->capacity){
+        help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+        help->capacity *= 2;
+    }
 //    help->file_array[help->file_length] = malloc(sizeof(struct files));
 //    help->file_array[help->file_length++]->file_name = strdup(file_name);
 //    help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, help->file_array[help->file_length - 1]->file_name);
