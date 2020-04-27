@@ -320,7 +320,6 @@ int cal_commit(struct commit* commit){
                 array = realloc(array, (++size)*sizeof(char*));
                 array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
-            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
