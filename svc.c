@@ -41,6 +41,7 @@ typedef struct helper{
     struct files **file_array;
 } helper;
 typedef struct branch{
+    char* name;
     int length;
     int tag;
     commit_t** branch_commit;
@@ -106,6 +107,7 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]->parent);
             free(help->branches[i]->branch_commit[j]);
         }
+        free(help->branches[i]->name);
         free(help->branches[i]->branch_commit);
         free(help->branches[i]);
     }
@@ -540,6 +542,7 @@ char *svc_commit(void *helper, char *message) {
             help->branches[0]->branch_commit[0]->branch_p = help->branches[0];
             int commit_id = cal_commit(help->branches[0]->branch_commit[0]);
             help->head = help->branches[0]->branch_commit[0];
+            help->branches[0]->name = strdup("master");
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
