@@ -688,6 +688,30 @@ void print_commit(void *helper, char *commit_id) {
     // TODO: Implement
 }
 
+int detect_no_change(struct commit* pre){
+    int i;
+    int have_mod = 0;
+    for (i = 0; i < pre->file_length; i++){
+        if (detect_mod(pre->files_array[i], pre->files_array[i]->file_name)){
+            have_mod = 1;
+        }
+    }
+    int remove_file = 0;
+    for (i = 0; i < pre->file_length; i++){
+        FILE* file = fopen(pre->files_array[i]->file_name, "r");
+        if (file == NULL){
+            remove_file = 1;
+        }
+    }
+    int change = 0;
+    for (i = 0; i < add_length; i++){
+        FILE* f = fopen(array_add[i]->file_name, "r");
+        if (f != NULL){
+            change = 1;
+        }
+    }
+    return (!(remove_length || have_mod || remove_file || change));
+}
 int check_name(char* name){
     int i;
     int valid = 1;
@@ -712,7 +736,7 @@ int svc_branch(void *helper, char *branch_name) {
             return -2;
         }
     }
-    if (detect_change(help->head)){
+    if (detect_no_change(help->head)){
         help->branches = realloc(help->branches, ++help->branch_length);
         help->branches[help->branch_length - 1] = malloc(sizeof(struct branch));
         help->branches[help->branch_length - 1]->length = 0;
@@ -745,14 +769,15 @@ int svc_checkout(void *helper, char *branch_name) {
     if (!find){
         return -1;
     }
-    if (detect_change(help->head)){
-        help->branch_p = help->branches[index];
+    if (detect_no_change(help->head)){
+        help->branch_p = help->branches[i];
     } else {
         return -2;
     }
     // TODO: Implement
     return 0;
 }
+
 char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
     return NULL;
