@@ -866,7 +866,7 @@ char **list_branches(void *helper, int *n_branches) {
     int size = 0;
     char** array = malloc(sizeof(char*));
     for (i = 0 ;i < help->branch_length; i++){
-        printf("%s\n",help->branches[i]);
+        printf("%s\n",help->branches[i]->name);
         array = realloc(array, sizeof(char*) * (++size));
         array[size - 1] = help->branches[i]->name;
     }
