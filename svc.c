@@ -315,6 +315,7 @@ int cal_commit(struct commit* commit){
                 array = realloc(array, (++size)*sizeof(char*));
                 array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
+            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
@@ -322,6 +323,7 @@ int cal_commit(struct commit* commit){
 //        printf("mod is in wrnnn nnnlnlnttpijt\n");
 //        printf("before size = %d\n",size);
         for (i = 0; i < commit->prev->file_length; i++){
+            if (!detect_add(commit->prev->files_array[i]->file_name) && !detect_del(commit->prev->files_array[i]->file_name)){
                 if (detect_mod(commit->prev->files_array[i], commit->prev->files_array[i]->file_name)){
 //                    printf("mod is in wrnnn nnnlnlnttpijt\n");
                     array = realloc(array, (++size) * sizeof(char*));
@@ -329,7 +331,7 @@ int cal_commit(struct commit* commit){
                     array[size - 1] = commit->prev->files_array[i]->file_name;
                     mod_array[mod_size - 1] = commit->prev->files_array[i]->file_name;
                 }
-            
+            }
         }
         int size_add = 0;
         int size_rm = 0;
@@ -347,6 +349,7 @@ int cal_commit(struct commit* commit){
                 commit_id = calculate_change(array[i], strlen(array[i]), commit_id);
             }
             if (detect_del(array[i])){
+//                printf("remove here %s\n",array[i]);
                 commit->deletion = realloc(commit->deletion, (++size_rm) * sizeof(char*));
                 commit->deletion[size_rm - 1] = strdup(array[i]);
                 commit_id += 85973;
@@ -368,10 +371,13 @@ int cal_commit(struct commit* commit){
         if (commit->prev->file_length > 0){
             int k;
             for (k = 0; k < commit->prev->file_length; k++){
+                FILE* file = fopen(commit->prev->files_array[k]->file_name, "r");
+                if (file != NULL){
                 commit_id += 85973;
 //                hash = hash_file(NULL, commit->prev->files_array[k]->file_name);
                 char* get_name = commit->prev->files_array[k]->file_name;
                 commit_id = calculate_change(get_name, strlen(get_name), commit_id);
+                }
             }
             commit->add_length = 0;
             commit->rm_length = 0;
