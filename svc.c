@@ -308,10 +308,11 @@ int cal_commit(struct commit* commit){
             FILE* file = fopen(commit->prev->files_array[i]->file_name, "r");
             if (file == NULL){
                 array_remove = realloc(array_remove, ++remove_length * sizeof(char*));
-                array_remove[remove_length - 1] = commit->prev->files_array[i]->file_name;
+                array_remove[remove_length - 1] = strdup(commit->prev->files_array[i]->file_name);
                 array = realloc(array, (++size)*sizeof(char*));
                 array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
+            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
