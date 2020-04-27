@@ -726,6 +726,7 @@ void print_commit(void *helper, char *commit_id) {
     // TODO: Implement
     if (commit_id == NULL){
         printf("Invalid commit id\n");
+        return;
     }
     struct helper* help = (struct helper*)helper;
     int i,j;
