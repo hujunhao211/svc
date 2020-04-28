@@ -909,7 +909,8 @@ int svc_checkout(void *helper, char *branch_name) {
     }
     // TODO: Implement
     return 0;
-}(void *helper, int *n_branches) {
+}
+char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
     int i;
     if (n_branches == NULL){
