@@ -889,7 +889,7 @@ int svc_checkout(void *helper, char *branch_name) {
             free(free_file);
         }
     } else{
-        struct commit* commit_head = help->branches[index]->branch_commit[i];;
+        struct commit* commit_head = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
         for (i = help->branches[index]->length - 1; i >= 0; i--){
             commit_head = help->branches[index]->branch_commit[i];
             if (commit_head->commit_tag == 0){
