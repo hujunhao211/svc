@@ -1021,6 +1021,7 @@ int svc_reset(void *helper, char *commit_id) {
     if (commit_id == NULL){
         return -1;
     }
+    printf("reset\n");
     int find = 0;
     int index_branch = 0;
     int index_commit = 0;
@@ -1028,11 +1029,13 @@ int svc_reset(void *helper, char *commit_id) {
     int i,j;
     for(i = 0; i < help->branch_length;i++){
         for(j = 0; j < help->branches[i]->length; j++){
+            if (help->branches[i]->branch_commit[j]->commit_tag == 0){
                 if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
                     find = 1;
                     index_branch = i;
                     index_commit = j;
                 }
+            }
         }
     }
     if (!find){
