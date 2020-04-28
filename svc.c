@@ -600,6 +600,7 @@ char *svc_commit(void *helper, char *message) {
             int commit_id = cal_commit(help->branch_p->branch_commit[help->branch_p->length - 1]);
             help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
             help->branch_p->branch_commit[help->branch_p->length - 1]->next_size = 0;
+            help->branch_p->branch_commit[help->branch_p->length - 1]->next = NULL;
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
                 if (file != NULL){
