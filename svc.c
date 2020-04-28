@@ -1173,6 +1173,17 @@ char* get_mess(char *branch_name){
     strcat(mess, branch_name);
     return mess;
 }
+int detect_head_change(){
+    int i,uncom;
+    uncom = 0;
+    for(i = 0 ; i < add_length; i++){
+        FILE* file = fopen(array_add[i]->file_name, "r");
+        if (file != NULL){
+            uncom = 1;
+        }
+    }
+    return uncom;
+}
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
     int i,find;
