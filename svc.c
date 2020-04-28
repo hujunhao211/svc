@@ -220,18 +220,14 @@ int calculate_change(char* file_name,size_t size,int id){
     return id;
 }
 void copy_file(char* name_1, char *  name_2){
-    char c;
+    unsigned int c;
     FILE* file_1 = fopen(name_1, "r");
     FILE* file_2 = fopen(name_2, "w");
-    if (file_1 != NULL){
-        while ((c = fgetc(file_1)) != EOF) {
-            fputc(c, file_2);
-        }
-        fclose(file_1);
-        fclose(file_2);
-    } else {
-        printf("%s\n",name_1);
+    while ((c = fgetc(file_1)) != EOF) {
+        fputc(c, file_2);
     }
+    fclose(file_1);
+    fclose(file_2);
 }
 int find_mod(char* file_name, char** file_array,int size){
     int i;
