@@ -228,6 +228,8 @@ void copy_file(char* name_1, char *  name_2){
         }
         fclose(file_1);
         fclose(file_2);
+    } else {
+        printf("%s\n",name_1);
     }
 }
 int find_mod(char* file_name, char** file_array,int size){
