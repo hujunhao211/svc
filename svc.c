@@ -1076,7 +1076,6 @@ int svc_reset(void *helper, char *commit_id) {
     }
     help->file_length = 0;
     struct commit* com_p = help->branches[index_branch]->branch_commit[help->branches[index_branch]->length - 1];
-    print_commit(helper,com_p->commit_id);
     while (1) {
         if (strcmp(com_p->commit_id, help->branches[index_branch]->branch_commit[index_commit]->commit_id) == 0){
             break;
