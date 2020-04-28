@@ -594,7 +594,7 @@ char *svc_commit(void *helper, char *message) {
             help->branch_p->branch_commit = realloc(help->branch_p->branch_commit, (++help->branch_length)* sizeof(struct commit*));
             help->branch_p->branch_commit[help->branch_length - 1] = malloc(sizeof(commit_t));
             help->branch_p->branch_commit[help->branch_length - 1]->file_length = 0;
-            help->branch_p->branch_commit[help->branch_length - 1]->prev = help->branches[help->branch_length - 1]->precommit;
+            help->branch_p->branch_commit[help->branch_length - 1]->prev = help->branch_p->precommit;
             help->branch_p->branch_commit[help->branch_length - 1]->parent = malloc(sizeof(struct commit*) * 2);
             help->branch_p->branch_commit[help->branch_length - 1]->commit_tag = 0;
             help->branch_p->branch_commit[help->branch_length - 1]->message = strdup(message);
