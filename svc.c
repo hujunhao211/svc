@@ -247,10 +247,13 @@ void allocate_file(struct commit* commit){
     commit->files_array = malloc(sizeof(struct files*));
     commit->file_length = 0;
     for (i = 0; i < add_length; i++){
-        commit->files_array = realloc(commit->files_array, (++commit->file_length) * sizeof(struct files*));
-        commit->files_array[commit->file_length - 1] = malloc(sizeof(struct files));
-        commit->files_array[commit->file_length - 1]->file_name = strdup(array_add[i]->file_name);
-        commit->files_array[commit->file_length - 1]->hash_id = hash_file(NULL, array_add[i]->file_name);
+        FILE* file = fopen(array_add[i]->file_name, "r");
+        if (file != NULL){
+            commit->files_array = realloc(commit->files_array, (++commit->file_length) * sizeof(struct files*));
+            commit->files_array[commit->file_length - 1] = malloc(sizeof(struct files));
+            commit->files_array[commit->file_length - 1]->file_name = strdup(array_add[i]->file_name);
+            commit->files_array[commit->file_length - 1]->hash_id = hash_file(NULL, array_add[i]->file_name);
+        }
     }
 //    printf("here\n");
     struct commit* pre = commit->prev;
