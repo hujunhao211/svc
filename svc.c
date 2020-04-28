@@ -556,6 +556,7 @@ char *svc_commit(void *helper, char *message) {
             help->branches[0]->branch_commit[0]->message = strdup(message);
             help->branches[0]->branch_commit[0]->parent = NULL;
             help->branches[0]->branch_commit[0]->branch_p = help->branches[0];
+            help->branches[0]->branch_commit[0]->commit_tag = 0;
             int commit_id = cal_commit(help->branches[0]->branch_commit[0]);
             help->head = help->branches[0]->branch_commit[0];
             for (i = 0; i < help->file_length; i++){
@@ -586,6 +587,7 @@ char *svc_commit(void *helper, char *message) {
             help->branch_p->branch_commit[help->branch_length - 1]->file_length = 0;
             help->branch_p->branch_commit[help->branch_length - 1]->prev = help->branches[help->branch_length - 1]->precommit;
             help->branch_p->branch_commit[help->branch_length - 1]->parent = malloc(sizeof(struct commit*) * 2);
+            help->branch_p->branch_commit[help->branch_length - 1]->commit_tag = 0;
             help->branch_p->branch_commit[help->branch_length - 1]->message = strdup(message);
             help->branch_p->branch_commit[help->branch_length - 1]->parent[0] = help->branch_p->precommit;
             help->branch_p->branch_commit[help->branch_length - 1]->branch_p = help->branch_p;
@@ -661,6 +663,7 @@ char *svc_commit(void *helper, char *message) {
             commit->parent = malloc(sizeof(struct commit*) * 2);
             commit->parent[0] = commit->prev;
             commit->parent[1] = NULL;
+            commit->commit_tag = 0;
 //            printf("help %d\n",help->branch_length);
 //            printf("help commit: %d\n",help->branches[help->branch_length-1]->length);
 //            printf("commit id in the function2: %d\n",help->branches[0]->branch_commit[1] == NULL);
@@ -1029,10 +1032,10 @@ int svc_reset(void *helper, char *commit_id) {
     int i,j;
     for(i = 0; i < help->branch_length;i++){
         for(j = 0; j < help->branches[i]->length; j++){
-            printf("here\n");
-            printf("%s\n",commit_id);
-            printf("commit: %s\n",help->branches[i]->branch_commit[j]->commit_id);
-            printf("commit tag: %d\n",help->branches[i]->branch_commit[j]->commit_tag);
+//            printf("here\n");
+//            printf("%s\n",commit_id);
+//            printf("commit: %s\n",help->branches[i]->branch_commit[j]->commit_id);
+//            printf("commit tag: %d\n",help->branches[i]->branch_commit[j]->commit_tag);
             if (help->branches[i]->branch_commit[j]->commit_tag == 0){
                 if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
                     find = 1;
