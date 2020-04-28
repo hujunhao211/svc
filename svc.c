@@ -222,11 +222,13 @@ void copy_file(char* name_1, char *  name_2){
     char c;
     FILE* file_1 = fopen(name_1, "r");
     FILE* file_2 = fopen(name_2, "w");
-    while ((c = fgetc(file_1)) != EOF) {
-        fputc(c, file_2);
+    if (file_1 != NULL){
+        while ((c = fgetc(file_1)) != EOF) {
+            fputc(c, file_2);
+        }
+        fclose(file_1);
+        fclose(file_2);
     }
-    fclose(file_1);
-    fclose(file_2);
 }
 int find_mod(char* file_name, char** file_array,int size){
     int i;
@@ -1012,9 +1014,9 @@ void recover_file(struct commit* com){
         char* get_name = get_file_name(value);
         char* file_name = get_file_name(com->files_array[i]->hash_id);
         char* free_file = concat("A",file_name , get_name);
-        printf("%s\n",com->files_array[i]->file_name);
-        printf("%s\n",free_file);
-//        copy_file(free_file, com->files_array[i]->file_name);
+//        printf("%s\n",com->files_array[i]->file_name);
+//        printf("%s\n",free_file);
+        copy_file(free_file, com->files_array[i]->file_name);
 //        printf("free_file :::::::::::::::  %s\n",free_file);
 //        printf("file_name :::::::::::::::  %s\n",file_name);
         free(get_name);
