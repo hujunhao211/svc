@@ -1014,11 +1014,12 @@ void recover_file(struct commit* com){
     printf("%s\n",com->commit_id);
     for (i = 0; i < com->file_length; i++){
         int value = convert_dec(com->commit_id);
+        printf("%d\n",value);
         char* get_name = get_file_name(value);
         char* file_name = get_file_name(com->files_array[i]->hash_id);
         char* free_file = concat("A",file_name , get_name);
 //        printf("%s\n",com->files_array[i]->file_name);
-//        printf("%s\n",free_file);
+        printf("%s\n",free_file);
         copy_file(free_file, com->files_array[i]->file_name);
 //        printf("free_file :::::::::::::::  %s\n",free_file);
 //        printf("file_name :::::::::::::::  %s\n",file_name);
