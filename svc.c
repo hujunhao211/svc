@@ -867,7 +867,7 @@ int svc_checkout(void *helper, char *branch_name) {
         free(help->file_array[i]);
     }
     help->file_length = 0;
-    printf("%d\n",help->branches[index]->precommit == NULL);
+    printf("%s\n",help->branches[index]->name);
     for (i = 0; i < help->branches[index]->precommit->file_length; i++){
         help->file_array[help->file_length] = malloc(sizeof(struct files));
         help->file_array[help->file_length++]->file_name = strdup(help->branches[index]->precommit->files_array[i]->file_name);
