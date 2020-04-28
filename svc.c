@@ -1022,7 +1022,6 @@ int convert_dec(char* hexa){
 void recover_file(struct commit* com){
 //    char* file =
     int i;
-    print_commit(com);
     printf("commit_id string %s\n",com->commit_id);
     printf("commit file length %d\n",com->file_length);
     for (i = 0; i < com->file_length; i++){
@@ -1077,6 +1076,7 @@ int svc_reset(void *helper, char *commit_id) {
     }
     help->file_length = 0;
     struct commit* com_p = help->branches[index_branch]->branch_commit[help->branches[index_branch]->length - 1];
+    print_commit(helper,com_p);
     while (1) {
         if (strcmp(com_p->commit_id, help->branches[index_branch]->branch_commit[index_commit]->commit_id) == 0){
             break;
