@@ -1011,9 +1011,9 @@ int convert_dec(char* hexa){
 void recover_file(struct commit* com){
 //    char* file =
     int i;
+    printf("%s\n",com->commit_id);
     for (i = 0; i < com->file_length; i++){
         int value = convert_dec(com->commit_id);
-        printf("%s\n",com->commit_id);
         char* get_name = get_file_name(value);
         char* file_name = get_file_name(com->files_array[i]->hash_id);
         char* free_file = concat("A",file_name , get_name);
