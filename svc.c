@@ -1022,6 +1022,7 @@ int convert_dec(char* hexa){
 void recover_file(struct commit* com){
 //    char* file =
     int i;
+    print_commit(com);
     printf("commit_id string %s\n",com->commit_id);
     printf("commit file length %d\n",com->file_length);
     for (i = 0; i < com->file_length; i++){
