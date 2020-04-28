@@ -1084,7 +1084,7 @@ int svc_reset(void *helper, char *commit_id) {
         com_p->commit_tag = 1;
         com_p = com_p->prev;
     }
-    print_commit(helper,com_p);
+    print_commit(helper,com_p->commit_id);
     for(i = 0; i < help->branches[index_branch]->branch_commit[index_commit]->file_length; i++){
         if (help->capacity == help->file_length){
             help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
