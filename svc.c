@@ -1025,18 +1025,18 @@ int convert_dec(char* hexa){
 void recover_file(struct commit* com){
 //    char* file =
     int i;
-    printf("commit_id string %s\n",com->commit_id);
-    printf("commit file length %d\n",com->file_length);
+//    printf("commit_id string %s\n",com->commit_id);
+//    printf("commit file length %d\n",com->file_length);
     for (i = 0; i < com->file_length; i++){
-        printf("%s\n",com->files_array[i]->file_name);
+//        printf("%s\n",com->files_array[i]->file_name);
         int value = convert_dec(com->commit_id);
-        printf("commit id value %d\n",value);
-        printf("hash id value %d\n",com->files_array[i]->hash_id);
+//        printf("commit id value %d\n",value);
+//        printf("hash id value %d\n",com->files_array[i]->hash_id);
         char* get_name = get_file_name(value);
         char* file_name = get_file_name(com->files_array[i]->hash_id);
         char* free_file = concat("A",file_name , get_name);
 //        printf("%s\n",com->files_array[i]->file_name);
-        printf("file name %s\n",free_file);
+//        printf("file name %s\n",free_file);
         copy_file(free_file, com->files_array[i]->file_name);
 //        printf("free_file :::::::::::::::  %s\n",free_file);
 //        printf("file_name :::::::::::::::  %s\n",file_name);
