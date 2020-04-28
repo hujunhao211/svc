@@ -1032,6 +1032,7 @@ int svc_reset(void *helper, char *commit_id) {
             printf("here\n");
             printf("%s\n",commit_id);
             printf("commit: %s\n",help->branches[i]->branch_commit[j]->commit_id);
+            printf("commit tag: %d\n",help->branches[i]->branch_commit[j]->commit_tag);
             if (help->branches[i]->branch_commit[j]->commit_tag == 0){
                 if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
                     find = 1;
