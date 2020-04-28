@@ -1025,6 +1025,7 @@ void recover_file(struct commit* com){
     printf("commit_id string %s\n",com->commit_id);
     printf("commit file length %d\n",com->file_length);
     for (i = 0; i < com->file_length; i++){
+        printf("%s\n",com->file_array[i]->filename);
         int value = convert_dec(com->commit_id);
         printf("commit id value %d\n",value);
         printf("hash id value %d\n",com->files_array[i]->hash_id);
