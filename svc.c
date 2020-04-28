@@ -528,6 +528,7 @@ void update_help(struct helper* help){
             if (file == NULL){
                 find = 1;
                 index = i;
+                break;
             }
         }
         if (find){
