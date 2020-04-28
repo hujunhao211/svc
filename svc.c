@@ -870,21 +870,19 @@ int svc_checkout(void *helper, char *branch_name) {
     if (help->branches[index]->length == 0){
         for (i = 0; i < help->branches[index]->precommit->file_length; i++){
             help->file_array[help->file_length] = malloc(sizeof(struct files));
-            help->file_array[help->file_length]->file_name = strdup(help->branches[index]->precommit->files_array[i]->file_name);
-            help->file_array[help->file_length]->hash_id = help->branches[index]->precommit->files_array[i]->hash_id;
+            help->file_array[help->file_length ++ ]->file_name = strdup(help->branches[index]->precommit->files_array[i]->file_name);
+            help->file_array[help->file_length - 1]->hash_id = help->branches[index]->precommit->files_array[i]->hash_id;
         }
     } else{
         for (i = 0; i < help->branches[index]->branch_commit[help->branches[index]->length - 1]->file_length; i++){
             help->file_array[help->file_length] = malloc(sizeof(struct files));
-            help->file_array[help->file_length]->file_name = strdup(help->branches[index]->branch_commit[help->branches[index]->length - 1]->files_array[i]->file_name);
-            help->file_array[help->file_length]->hash_id = help->branches[index]->branch_commit[help->branches[index]->length - 1]->files_array[i]->hash_id;
+            help->file_array[help->file_length ++]->file_name = strdup(help->branches[index]->branch_commit[help->branches[index]->length - 1]->files_array[i]->file_name);
+            help->file_array[help->file_length - 1]->hash_id = help->branches[index]->branch_commit[help->branches[index]->length - 1]->files_array[i]->hash_id;
         }
     }
     // TODO: Implement
     return 0;
 }
-
-
 char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
     int i;
