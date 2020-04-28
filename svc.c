@@ -998,6 +998,63 @@ int svc_rm(void *helper, char *file_name) {
 
 int svc_reset(void *helper, char *commit_id) {
     // TODO: Implement
+    if (commit_id == NULL){
+        return -1;
+    }
+    int find = 0;
+    int index_branch = 0;
+    int index_commit = 0;
+    struct helper* help = (struct helper*)helper;
+    int i,j;
+    for(i = 0; i < help->branch_length;i++){
+        for(j = 0; j < help->branches[i]->length; j++){
+            if (help->branches[i]->branch_commit[j]->commit_tag == 0){
+                if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
+                    find = 1;
+                    index_branch = i;
+                    index_commit = j;
+                }
+            }
+        }
+    }
+    if (!find){
+        return -2;
+    }
+    for (i = 0; i < help->file_length; i++){
+        free(help->file_array[i]->file_name);
+        free(help->file_array[i]);
+    }
+    help->file_length = 0;
+    struct commit* com_p = help->head;
+    while (1) {
+        if (strcmp(com_p->commit_id, help->branches[index_branch]->branch_commit[index_commit]->commit_id) == 0){
+            break;
+        }
+        com_p->commit_tag = 1;
+        com_p = com_p->prev;
+    }
+    for(i = 0; i < help->branches[index_branch]->branch_commit[index_commit]->file_length; i++){
+        if (help->capacity == help->file_length){
+            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+            help->capacity *= 2;
+        }
+        help->file_array[help->file_length] = malloc(sizeof(struct files));
+        help->file_array[help->file_length++]->file_name = strdup(com_p->files_array[i]->file_name);
+        help->file_array[help->file_length - 1]->hash_id = com_p->files_array[i]->hash_id;
+    }
+    for(i = 0; i < add_length; i++){
+        free(array_add[i]->file_name);
+        free(array_add[i]);
+    }
+    free(array_add);
+    array_add = 0;
+    for(i = 0; i < remove_length; i++){
+        free(array_remove[i]);
+    }
+    free(array_remove);
+    remove_length = 0;
+    help->head = com_p;
+    // TODO: Implement
     return 0;
 }
 
