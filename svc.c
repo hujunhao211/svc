@@ -996,8 +996,28 @@ int svc_rm(void *helper, char *file_name) {
     return id;
 }
 
+int convert_dec(char* hexa){
+    int value = 0;
+    sscanf(hexa, "%x",&value);
+    return value;
+}
+void recover_file(struct commit* com){
+//    char* file =
+    int i;
+    for (i = 0; i < com->file_length; i++){
+        int value = convert_dec(com->commit_id);
+        char* get_name = get_file_name(value);
+        char* file_name = get_file_name(com->files_array[i]->hash_id);
+        char* free_file = concat("A",file_name , get_name);
+        copy_file(free_file, com->files_array[i]->file_name);
+//        printf("free_file :::::::::::::::  %s\n",free_file);
+//        printf("file_name :::::::::::::::  %s\n",file_name);
+        free(get_name);
+        free(file_name);
+        free(free_file);
+    }
+}
 int svc_reset(void *helper, char *commit_id) {
-    // TODO: Implement
     if (commit_id == NULL){
         return -1;
     }
@@ -1020,12 +1040,13 @@ int svc_reset(void *helper, char *commit_id) {
     if (!find){
         return -2;
     }
+//    printf("reset?__________________________________\n");
     for (i = 0; i < help->file_length; i++){
         free(help->file_array[i]->file_name);
         free(help->file_array[i]);
     }
     help->file_length = 0;
-    struct commit* com_p = help->head;
+    struct commit* com_p = help->branches[index_branch]->branch_commit[help->branches[index_branch]->length - 1];
     while (1) {
         if (strcmp(com_p->commit_id, help->branches[index_branch]->branch_commit[index_commit]->commit_id) == 0){
             break;
@@ -1054,9 +1075,11 @@ int svc_reset(void *helper, char *commit_id) {
     free(array_remove);
     remove_length = 0;
     help->head = com_p;
+    recover_file(com_p);
     // TODO: Implement
     return 0;
 }
+
 
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
