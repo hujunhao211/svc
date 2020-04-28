@@ -532,9 +532,9 @@ void update_help(struct helper* help){
             }
         }
         if (find){
+            free(help->file_array[index]->file_name);
+            free(help->file_array[index]);
             for (i = index; i < help->file_length - 1; i++){
-                free(help->file_array[i]->file_name);
-                free(help->file_array[i]);
                 help->file_array[i] = help->file_array[i + 1];
             }
             help->file_array[help->file_length -1] = NULL;
