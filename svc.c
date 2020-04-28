@@ -11,6 +11,7 @@
 #include <string.h>
 #include <ctype.h>
 char* get_file_name(int hash);
+int convert_dec(char* hexa);
 typedef struct commit{
     struct commit* prev;
     struct commit** parent;
@@ -873,17 +874,42 @@ int svc_checkout(void *helper, char *branch_name) {
             help->file_array[help->file_length ++ ]->file_name = strdup(help->branches[index]->precommit->files_array[i]->file_name);
             help->file_array[help->file_length - 1]->hash_id = help->branches[index]->precommit->files_array[i]->hash_id;
         }
+        struct commit* com = help->branches[index]->precommit;
+        for(i = 0; i < com->file_length; i++){
+            int value = convert_dec(com->commit_id);
+            char* get_name = get_file_name(value);
+            char* file_name = get_file_name(com->files_array[i]->hash_id);
+            char* free_file = concat("A",file_name , get_name);
+            copy_file(free_file, com->files_array[i]->file_name);
+            //        printf("free_file :::::::::::::::  %s\n",free_file);
+            //        printf("file_name :::::::::::::::  %s\n",file_name);
+            free(get_name);
+            free(file_name);
+            free(free_file);
+        }
     } else{
         for (i = 0; i < help->branches[index]->branch_commit[help->branches[index]->length - 1]->file_length; i++){
             help->file_array[help->file_length] = malloc(sizeof(struct files));
             help->file_array[help->file_length ++]->file_name = strdup(help->branches[index]->branch_commit[help->branches[index]->length - 1]->files_array[i]->file_name);
             help->file_array[help->file_length - 1]->hash_id = help->branches[index]->branch_commit[help->branches[index]->length - 1]->files_array[i]->hash_id;
         }
+        struct commit* com = help->branches[index]->branch_commit[help->branches[index]->length - 1];
+        for(i = 0; i < com->file_length; i++){
+            int value = convert_dec(com->commit_id);
+            char* get_name = get_file_name(value);
+            char* file_name = get_file_name(com->files_array[i]->hash_id);
+            char* free_file = concat("A",file_name , get_name);
+            copy_file(free_file, com->files_array[i]->file_name);
+            //        printf("free_file :::::::::::::::  %s\n",free_file);
+            //        printf("file_name :::::::::::::::  %s\n",file_name);
+            free(get_name);
+            free(file_name);
+            free(free_file);
+        }
     }
     // TODO: Implement
     return 0;
-}
-char **list_branches(void *helper, int *n_branches) {
+}(void *helper, int *n_branches) {
     // TODO: Implement
     int i;
     if (n_branches == NULL){
