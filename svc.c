@@ -1355,9 +1355,8 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //    printf("com:%s ????????\n",com);
     free(name);
 //    printf("helper->head->name %s\n",help->head->message);
-    if (help->head->parent != NULL){
-        help->head->parent[1] = com_p;
-    }
+    help->head->parent[1] = com_p;
+
     printf("Merge successful\n");
     return help->head->commit_id;
     return NULL;
