@@ -641,8 +641,12 @@ char *svc_commit(void *helper, char *message) {
             }
             struct commit* pre = help->branch_p->precommit;
             if (pre->next_size == 0){
-                pre->next = malloc(sizeof(struct commit*));
-                pre->next[0] = help->branch_p->branch_commit[help->branch_p->length - 1];
+                if (pre->next == NULL){
+                    pre->next = malloc(sizeof(struct commit*));
+                    pre->next[0] = help->branch_p->branch_commit[help->branch_p->length - 1];
+                } else {
+                    printf("?\n");
+                }
             } else{
                 pre->next = realloc(pre->next, (sizeof(struct commit*)) * (++pre->next_size));
                 pre->next[pre->next_size - 1] = help->branch_p->branch_commit[help->branch_p->length - 1];
