@@ -1001,6 +1001,7 @@ int svc_checkout(void *helper, char *branch_name) {
 
 char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
+    printf("list_branches\n");
     int i;
     if (n_branches == NULL){
         return NULL;
