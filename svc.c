@@ -238,8 +238,8 @@ void copy_file(char* name_1, char *  name_2){
     while ((c = fgetc(file_1)) != EOF) {
         fputc(c, file_2);
     }
-    printf("name1 :     %s\n",name_1);
-    printf("name2:       %s\n",name_2);
+//    printf("name1 :     %s\n",name_1);
+//    printf("name2:       %s\n",name_2);
     fclose(file_1);
     fclose(file_2);
 }
@@ -363,7 +363,7 @@ int cal_commit(struct commit* commit){
                 array = realloc(array, (++size)*sizeof(char*));
                 array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
-            fclose(file);
+//            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
@@ -501,7 +501,7 @@ char* convert_hexa(int decimalNumber){
 }
 char* con_hexa(int decimalNumber){
     char* array = malloc(20);
-    sprintf(array,"%x", decimalNumber);
+    sprintf(array,"%.6x", decimalNumber);
     return array;
 }
 char* get_file_name(int hash){
@@ -991,7 +991,7 @@ char **list_branches(void *helper, int *n_branches) {
     int size = 0;
     char** array = malloc(sizeof(char*));
     for (i = 0 ;i < help->branch_length; i++){
-        printf("%s\n",help->branches[i]->name);
+//        printf("%s\n",help->branches[i]->name);
         array = realloc(array, sizeof(char*) * (++size));
         array[size - 1] = help->branches[i]->name;
     }
