@@ -741,15 +741,16 @@ char *svc_commit(void *helper, char *message) {
 void *get_commit(void *helper, char *commit_id) {
     // TODO: Implement
     int i,j;
+    struct commit* com = NULL;
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
         for (j = 0; j < help->branches[i]->length; j++){
             if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
-                return help->branches[i]->branch_commit[j];
+                com = help->branches[i]->branch_commit[j];
             }
         }
     }
-    return NULL;
+    return com;
 }
 
 char **get_prev_commits(void *helper, void *commit, int *n_prev) {
