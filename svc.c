@@ -1318,7 +1318,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         com_p = help->branches[index]->branch_commit[i];
     }
     printf("im here\n");
-    int j;
+//    int j;
     if(n_resolutions > 0){
 //        for (i = 0; i < help->head->file_length; i++){
 //            for(j = 0; j < n_resolutions; j++){
