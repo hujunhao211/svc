@@ -693,18 +693,18 @@ char *svc_commit(void *helper, char *message) {
         return NULL;
         }
     } else{
-        printf("in here2 merge?\n");
-        for(i = 0; i < help->head->file_length; i++){
-            FILE* f = fopen(help->head->files_array[i]->file_name,"r");
-            if (f != NULL){
-                printf("%s\n",help->head->files_array[i]->file_name);
-            }
-        }
+//        printf("in here2 merge?\n");
+//        for(i = 0; i < help->head->file_length; i++){
+//            FILE* f = fopen(help->head->files_array[i]->file_name,"r");
+//            if (f != NULL){
+//                printf("%s\n",help->head->files_array[i]->file_name);
+//            }
+//        }
 //        for(i = 0 ; i < add_length; i++){
 //            printf("add: %s\n",array_add[i]->file_name);
 //        }
         if (detect_change(help->head)){
-            printf("in here2 merge\n");
+//            printf("in here2 merge\n");
             struct commit* commit = malloc(sizeof(struct commit));
             commit->prev = help->head;
             commit->file_length = 0;
