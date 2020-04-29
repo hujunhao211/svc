@@ -1274,7 +1274,7 @@ char* get_mess(char *branch_name){
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
     static int record = 0;
-    if (record > 1){
+    if (record > 2){
     int i,find;
     struct helper* help = (struct helper*)helper;
     if (branch_name == NULL){
