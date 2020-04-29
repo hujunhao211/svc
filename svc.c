@@ -1271,7 +1271,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         printf("Cannot merge a branch with itself\n");
         return NULL;
     }
-    printf("merge %s %s\n",help->branch_p->branch_name,branch_name);
+    printf("merge %s %s\n",help->branch_p->name,branch_name);
     find = 0;
     int index = 0;
     for (i = 0; i < help->branch_length; i++){
