@@ -639,7 +639,7 @@ char *svc_commit(void *helper, char *message) {
                 } else{
                 }
             }
-            struct commit* pre = help->branch_p->precommit;
+//            struct commit* pre = help->branch_p->precommit;
 //            if (pre->next_size == 0){
 //                pre->next = malloc(sizeof(struct commit*));
 //                pre->next[0] = help->branch_p->branch_commit[help->branch_p->length - 1];
@@ -703,20 +703,6 @@ char *svc_commit(void *helper, char *message) {
             return commit->commit_id;
         }
         return NULL;
-    }
-    return NULL;
-}
-
-void *get_commit(void *helper, char *commit_id) {
-    // TODO: Implement
-    int i,j;
-    struct helper* help = (struct helper*)helper;
-    for (i = 0; i < help->branch_length; i++){
-        for (j = 0; j < help->branches[i]->length; j++){
-            if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
-                return help->branches[i]->branch_commit[j];
-            }
-        }
     }
     return NULL;
 }
