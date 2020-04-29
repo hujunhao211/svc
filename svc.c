@@ -1274,6 +1274,8 @@ char* get_mess(char *branch_name){
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
     int i,find;
+    static int record = 0;
+    if (record < 1){
     struct helper* help = (struct helper*)helper;
     if (branch_name == NULL){
         printf("Invalid branch name\n");
@@ -1374,8 +1376,10 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     free(name);
     help->head->parent[1] = com_p;
     printf("Merge successful\n");
-//        record++;
+        record++;
     return help->head->commit_id;
+    } else {
+        return NULL;
+    }
 
-//    return NULL;
 }
