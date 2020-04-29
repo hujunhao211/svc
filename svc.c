@@ -507,7 +507,7 @@ char* con_hexa(int decimalNumber){
     return array;
 }
 char* get_file_name(int hash){
-    printf("hash: %d\n",hash);
+//    printf("hash: %d\n",hash);
     char* array = malloc(sizeof(char));
     int value = 0;
     int index = 1;
