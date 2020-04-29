@@ -1334,7 +1334,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //    file_res->files_array = malloc(sizeof(struct files*));
 //    file_res->branch_p = help->branch_p;
     char* name = get_mess(branch_name);
-    char* com = svc_commit(helper, name);
+    svc_commit(helper, name);
 //    printf("com:%s ????????\n",com);
     free(name);
 //    printf("helper->head->name %s\n",help->head->message);
