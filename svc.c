@@ -193,10 +193,10 @@ int detect_mod(struct files* f, char* path){
 //    printf("file %d\n",f->hash_id);
 //    printf("path %d\n",id);
 //    printf("path %s\n",path);
-    printf("%s\n",f->file_name);
-    printf("%s\n",path);
-    printf("%d\n",f->hash_id);
-    printf("%d\n",id);
+//    printf("%s\n",f->file_name);
+//    printf("%s\n",path);
+//    printf("%d\n",f->hash_id);
+//    printf("%d\n",id);
     if (f->hash_id != id){
         mod = 1;
     }
