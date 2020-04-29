@@ -636,7 +636,7 @@ char *svc_commit(void *helper, char *message) {
                     free(file_name);
                     free(free_file);
             }
-            struct commit* pre = help->branch_p->precommit;
+//            struct commit* pre = help->branch_p->precommit;
 //            if (pre->next_size == 0){
 //                if (pre->next == NULL){
 //                    pre->next = malloc(sizeof(struct commit*));
