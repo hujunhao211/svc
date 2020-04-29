@@ -15,7 +15,7 @@ int convert_dec(char* hexa);
 typedef struct commit{
     struct commit* prev;
     struct commit** parent;
-    struct commit ** next;
+//    struct commit ** next;
     char* commit_id;
     char* message;
     int next_size;
@@ -96,7 +96,7 @@ void cleanup(void *helper) {
 //            printf("commit id in the function\n");
             free(help->branches[i]->branch_commit[j]->files_array);
             free(help->branches[i]->branch_commit[j]->message);
-            free(help->branches[i]->branch_commit[j]->next);
+//            free(help->branches[i]->branch_commit[j]->next);
             for (z = 0; z < help->branches[i]->branch_commit[j]->add_length;z++){
                 free(help->branches[i]->branch_commit[j]->addition[z]);
             }
@@ -578,9 +578,9 @@ char *svc_commit(void *helper, char *message) {
             help->branches[0]->branch_commit = malloc(sizeof(commit_t*));
             help->branches[0]->branch_commit[0]= malloc(sizeof(commit_t));
             help->branches[0]->length = 1;
-            help->branches[0]->branch_commit[0]->next_size = 0;
+//            help->branches[0]->branch_commit[0]->next_size = 0;
             help->branches[0]->branch_commit[0]->prev = NULL;
-            help->branches[0]->branch_commit[0]->next = NULL;
+//            help->branches[0]->branch_commit[0]->next = NULL;
             help->branches[0]->branch_commit[0]->file_length = 0;
             help->branches[0]->branch_commit[0]->message = strdup(message);
             help->branches[0]->branch_commit[0]->parent = NULL;
@@ -623,11 +623,10 @@ char *svc_commit(void *helper, char *message) {
             help->branch_p->branch_commit[help->branch_p->length - 1]->parent[1] = NULL;
             int commit_id = cal_commit(help->branch_p->branch_commit[help->branch_p->length - 1]);
             help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
-            help->branch_p->branch_commit[help->branch_p->length - 1]->next_size = 0;
-            help->branch_p->branch_commit[help->branch_p->length - 1]->next = NULL;
+//            help->branch_p->branch_commit[help->branch_p->length - 1]->next_size = 0;
+//            help->branch_p->branch_commit[help->branch_p->length - 1]->next = NULL;
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
-                if (file != NULL){
                     fclose(file);
                     char* get_name = get_file_name(commit_id);
                     char* file_name = get_file_name(hash_file(NULL, help->file_array[i]->file_name));
@@ -636,21 +635,19 @@ char *svc_commit(void *helper, char *message) {
                     free(get_name);
                     free(file_name);
                     free(free_file);
-                } else{
-                }
             }
             struct commit* pre = help->branch_p->precommit;
-            if (pre->next_size == 0){
-                if (pre->next == NULL){
-                    pre->next = malloc(sizeof(struct commit*));
-                    pre->next[0] = help->branch_p->branch_commit[help->branch_p->length - 1];
-                } else {
-                    printf("?\n");
-                }
-            } else{
-                pre->next = realloc(pre->next, (sizeof(struct commit*)) * (++pre->next_size));
-                pre->next[pre->next_size - 1] = help->branch_p->branch_commit[help->branch_p->length - 1];
-            }
+//            if (pre->next_size == 0){
+//                if (pre->next == NULL){
+//                    pre->next = malloc(sizeof(struct commit*));
+//                    pre->next[0] = help->branch_p->branch_commit[help->branch_p->length - 1];
+//                } else {
+//                    printf("?\n");
+//                }
+//            } else{
+//                pre->next = realloc(pre->next, (sizeof(struct commit*)) * (++pre->next_size));
+//                pre->next[pre->next_size - 1] = help->branch_p->branch_commit[help->branch_p->length - 1];
+//            }
             
 //            printf("?????????????????????   here    %d\n",help->branch_p->length);
             help->head = help->branch_p->branch_commit[0];
@@ -666,21 +663,21 @@ char *svc_commit(void *helper, char *message) {
             struct commit* commit = malloc(sizeof(struct commit));
             commit->prev = help->head;
             commit->file_length = 0;
-            if (help->head->next_size == 0){
-                help->head->next = malloc(sizeof(struct commit*));
-                help->head->next[0] = commit;
-            } else{
-                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * (++help->head->next_size));
-                help->head->next[help->head->next_size - 1] = commit;
-            }
+//            if (help->head->next_size == 0){
+//                help->head->next = malloc(sizeof(struct commit*));
+//                help->head->next[0] = commit;
+//            } else{
+//                help->head->next = realloc(help->head->next, (sizeof(struct commit*)) * (++help->head->next_size));
+//                help->head->next[help->head->next_size - 1] = commit;
+//            }
             commit->message = strdup(message);
             help->head->branch_p->branch_commit = realloc(help->head->branch_p->branch_commit, (++help->head->branch_p->length)* sizeof(struct commit*));
             help->head->branch_p->branch_commit[help->head->branch_p->length - 1] = commit;
             commit->branch_p = help->head->branch_p;
             int commit_id = cal_commit(commit);
             commit->commit_id = con_hexa(commit_id);
-            commit->next_size = 0;
-            commit->next = NULL;
+//            commit->next_size = 0;
+//            commit->next = NULL;
             help->head = commit;
             for (i = 0; i < help->file_length; i++){
                 FILE* file = fopen(help->file_array[i]->file_name,"r");
