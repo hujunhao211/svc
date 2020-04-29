@@ -534,7 +534,7 @@ int detect_change(struct commit* pre){
     int i;
     int have_mod = 0;
     for (i = 0; i < pre->file_length; i++){
-        printf("%s\n",pre->files_array[i]->file_name);
+//        printf("%s\n",pre->files_array[i]->file_name);
         if (detect_mod(pre->files_array[i], pre->files_array[i]->file_name)){
             have_mod = 1;
         }
@@ -637,9 +637,9 @@ char *svc_commit(void *helper, char *message) {
             return NULL;
         }
     } else if(help->branch_p->length == 0 || strcmp(help->branch_p->name,help->head->branch_p->name ) != 0){
-        printf("in here1 merge?\n");
+//        printf("in here1 merge?\n");
         if (detect_change(help->branch_p->precommit)){
-            printf("in here1 merge\n");
+//            printf("in here1 merge\n");
             help->branch_p->branch_commit = realloc(help->branch_p->branch_commit, (++help->branch_p->length)* sizeof(struct commit*));
             help->branch_p->branch_commit[help->branch_p->length - 1] = malloc(sizeof(commit_t));
             help->branch_p->branch_commit[help->branch_p->length - 1]->commit_tag = 0;
@@ -991,7 +991,7 @@ char **list_branches(void *helper, int *n_branches) {
     int size = 0;
     char** array = malloc(sizeof(char*));
     for (i = 0 ;i < help->branch_length; i++){
-//        printf("%s\n",help->branches[i]->name);
+        printf("%s\n",help->branches[i]->name);
         array = realloc(array, sizeof(char*) * (++size));
         array[size - 1] = help->branches[i]->name;
     }
