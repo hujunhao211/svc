@@ -1253,100 +1253,101 @@ char* get_mess(char *branch_name){
 }
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
-    int i,find;
-    struct helper* help = (struct helper*)helper;
-    if (branch_name == NULL){
-        printf("Invalid branch name\n");
-        return NULL;
-    }
-    if(strcmp(help->branch_p->name, branch_name) == 0){
-        printf("Cannot merge a branch with itself\n");
-        return NULL;
-    }
-    find = 0;
-    int index = 0;
-    for (i = 0; i < help->branch_length; i++){
-        if (strcmp(help->branches[i]->name, branch_name) == 0){
-            find = 1;
-            index = i;
-        }
-    }
-    if (!find){
-        printf("Branch not found\n");
-        return NULL;
-    }
-    if(help->head->prev == NULL){
-        if(detect_head_change(help->head)){
-            printf("Changes must be committed\n");
-            return NULL;
-        }
-    }
-    else if(detect_change(help->head->prev)){
-        printf("Changes must be committed\n");
-        return NULL;
-    }
-//    struct files** array = malloc(sizeof(struct files*));
-//    int size = 0;
-    struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
-    for (i = help->branches[index]->length - 1; i >= 0 ; i--){
-        com_p = help->branches[index]->branch_commit[i];
-        if (com_p->commit_tag == 0){
-            break;
-        }
-        com_p = help->branches[index]->branch_commit[i];
-    }
-//    print_commit(helper,help->head->commit_id);
-//    printf("name is: %s\n",com_p->message);
-//    print_commit(helper,com_p->commit_id);
-    int j;
-    for (i = 0; i < help->head->file_length; i++){
-        for(j = 0; j < n_resolutions; j++){
-            if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
-                if (resolutions[j].resolved_file == NULL){
-                    svc_rm(help, resolutions[j].file_name);
-                } else{
-                    copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
-                }
-            } else {
-                svc_add(helper,help->head->files_array[i]->file_name);
-            }
-        }
-    }
-    if (com_p->commit_tag == 0){
-        
-    }
-    for (i = 0; i < com_p->file_length; i++) {
-        for (j = 0; j < n_resolutions; j++) {
-            if(strcmp(com_p->files_array[i]->file_name, resolutions[j].file_name) == 0){
-                if (resolutions[j].resolved_file == NULL){
-                    if (!check_remove(resolutions[j].file_name, array_remove, remove_length)){
-                        svc_rm(help, resolutions[j].file_name);
-                    }
-                } else{
-                    copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
-                }
-            } else {
-                 svc_add(helper,com_p->files_array[i]->file_name);
-            }
-        }
-    }
-    
-//    printf("add length: %d\n",add_length);
-//    file_res->add_length = 0;
-//    file_res->rm_length = 0;
-//    file_res->mod_lenth = 0;
-//    file_res->addition = malloc(sizeof(char*));
-//    file_res->deletion = malloc(sizeof(char*));
-//    file_res->modification = malloc(sizeof(char*));
-//    file_res->file_length = 0;
-//    file_res->files_array = malloc(sizeof(struct files*));
-//    file_res->branch_p = help->branch_p;
-    char* name = get_mess(branch_name);
-    svc_commit(helper, name);
-//    printf("com:%s ????????\n",com);
-    free(name);
-//    printf("helper->head->name %s\n",help->head->message);
-    help->head->parent[1] = com_p;
-    printf("Merge successful\n");
-    return help->head->commit_id;
+//    int i,find;
+//    struct helper* help = (struct helper*)helper;
+//    if (branch_name == NULL){
+//        printf("Invalid branch name\n");
+//        return NULL;
+//    }
+//    if(strcmp(help->branch_p->name, branch_name) == 0){
+//        printf("Cannot merge a branch with itself\n");
+//        return NULL;
+//    }
+//    find = 0;
+//    int index = 0;
+//    for (i = 0; i < help->branch_length; i++){
+//        if (strcmp(help->branches[i]->name, branch_name) == 0){
+//            find = 1;
+//            index = i;
+//        }
+//    }
+//    if (!find){
+//        printf("Branch not found\n");
+//        return NULL;
+//    }
+//    if(help->head->prev == NULL){
+//        if(detect_head_change(help->head)){
+//            printf("Changes must be committed\n");
+//            return NULL;
+//        }
+//    }
+//    else if(detect_change(help->head->prev)){
+//        printf("Changes must be committed\n");
+//        return NULL;
+//    }
+////    struct files** array = malloc(sizeof(struct files*));
+////    int size = 0;
+//    struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
+//    for (i = help->branches[index]->length - 1; i >= 0 ; i--){
+//        com_p = help->branches[index]->branch_commit[i];
+//        if (com_p->commit_tag == 0){
+//            break;
+//        }
+//        com_p = help->branches[index]->branch_commit[i];
+//    }
+////    print_commit(helper,help->head->commit_id);
+////    printf("name is: %s\n",com_p->message);
+////    print_commit(helper,com_p->commit_id);
+//    int j;
+//    for (i = 0; i < help->head->file_length; i++){
+//        for(j = 0; j < n_resolutions; j++){
+//            if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
+//                if (resolutions[j].resolved_file == NULL){
+//                    svc_rm(help, resolutions[j].file_name);
+//                } else{
+//                    copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+//                }
+//            } else {
+//                svc_add(helper,help->head->files_array[i]->file_name);
+//            }
+//        }
+//    }
+//    if (com_p->commit_tag == 0){
+//        
+//    }
+//    for (i = 0; i < com_p->file_length; i++) {
+//        for (j = 0; j < n_resolutions; j++) {
+//            if(strcmp(com_p->files_array[i]->file_name, resolutions[j].file_name) == 0){
+//                if (resolutions[j].resolved_file == NULL){
+//                    if (!check_remove(resolutions[j].file_name, array_remove, remove_length)){
+//                        svc_rm(help, resolutions[j].file_name);
+//                    }
+//                } else{
+//                    copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+//                }
+//            } else {
+//                 svc_add(helper,com_p->files_array[i]->file_name);
+//            }
+//        }
+//    }
+//    
+////    printf("add length: %d\n",add_length);
+////    file_res->add_length = 0;
+////    file_res->rm_length = 0;
+////    file_res->mod_lenth = 0;
+////    file_res->addition = malloc(sizeof(char*));
+////    file_res->deletion = malloc(sizeof(char*));
+////    file_res->modification = malloc(sizeof(char*));
+////    file_res->file_length = 0;
+////    file_res->files_array = malloc(sizeof(struct files*));
+////    file_res->branch_p = help->branch_p;
+//    char* name = get_mess(branch_name);
+//    svc_commit(helper, name);
+////    printf("com:%s ????????\n",com);
+//    free(name);
+////    printf("helper->head->name %s\n",help->head->message);
+//    help->head->parent[1] = com_p;
+//    printf("Merge successful\n");
+//    return help->head->commit_id;
+    return NULL;
 }
