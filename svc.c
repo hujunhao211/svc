@@ -59,7 +59,7 @@ struct files** array_add = NULL;
 char** array_remove = NULL;
 void *svc_init(void) {
     // TODO: Implement
-    printf("svc_init\n");
+//    printf("svc_init\n");
     helper* help = malloc(sizeof(helper));
     help->branch_length = 1;
     help->branches = malloc(sizeof(branch *));
@@ -79,7 +79,7 @@ void *svc_init(void) {
 }
 
 void cleanup(void *helper) {
-    printf("clean up\n");
+//    printf("clean up\n");
     int i;
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
@@ -592,7 +592,7 @@ void update_help(struct helper* help){
     }
 }
 char *svc_commit(void *helper, char *message) {
-    printf("svc_commit %s\n",message);
+//    printf("svc_commit %s\n",message);
     // TODO: Implement
     int i;
     struct helper* help = helper;
@@ -886,7 +886,7 @@ int svc_branch(void *helper, char *branch_name) {
             return -2;
         }
     }
-    printf("create a new branch\n");
+//    printf("create a new branch\n");
     if (detect_no_change(help->head)){
 //        printf("_______________________________no change\n");
         help->branches = realloc(help->branches, (++help->branch_length)*sizeof(struct branch*));
@@ -910,7 +910,7 @@ int svc_checkout(void *helper, char *branch_name) {
     if (branch_name == NULL){
         return -1;
     }
-    printf("check out %s\n",branch_name);
+//    printf("check out %s\n",branch_name);
     int index = 0;
 //    printf("here____________________________________Egrg%s\n",branch_name);
     struct helper* help = helper;
@@ -1014,7 +1014,7 @@ int svc_add(void *helper, char *file_name) {
     if (array_add == NULL){
         array_add = malloc(sizeof(struct files));
     }
-    printf("add %s\n",file_name);
+//    printf("add %s\n",file_name);
     struct helper* help = helper;
     int i;
     for(i = 0; i < help->file_length;i++){
@@ -1078,7 +1078,7 @@ int svc_rm(void *helper, char *file_name) {
     if (array_remove == NULL){
         array_remove = malloc(sizeof(char*));
     }
-    printf("remove %s\n",file_name);
+//    printf("remove %s\n",file_name);
     struct helper* help = helper;
     int find = 0;
     int i,j,index = -1;
@@ -1156,7 +1156,7 @@ int svc_reset(void *helper, char *commit_id) {
     if (commit_id == NULL){
         return -1;
     }
-    printf("reset %s\n",commit_id);
+//    printf("reset %s\n",commit_id);
     int find = 0;
     int index_branch = 0;
     int index_commit = 0;
