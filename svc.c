@@ -691,9 +691,15 @@ char *svc_commit(void *helper, char *message) {
         return NULL;
         }
     } else{
-//        printf("in here2 merge?\n");
+        printf("in here2 merge?\n");
+        for(i = 0; i < help->head->file_length; i++){
+            FILE* f = fopen(help->head->files_array[i]->file_name,"r");
+            if (f != NULL){
+                printf("%s\n",help->head->files_array[i]->file_name);
+            }
+        }
         if (detect_change(help->head)){
-//            printf("in here2 merge\n");
+            printf("in here2 merge\n");
             struct commit* commit = malloc(sizeof(struct commit));
             commit->prev = help->head;
             commit->file_length = 0;
@@ -1355,8 +1361,9 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //    printf("com:%s ????????\n",com);
     free(name);
 //    printf("helper->head->name %s\n",help->head->message);
-    help->head->parent[1] = com_p;
-
+    if (help->head->parent != NULL){
+        help->head->parent[1] = com_p;
+    }
     printf("Merge successful\n");
     return help->head->commit_id;
     return NULL;
