@@ -1347,7 +1347,9 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                         svc_rm(help, resolutions[j].file_name);
                     }
                 } else{
+                    printf("modification\n");
                     copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+                    svc_addhelper,com_p->files_array[i]->file_name);
                 }
             } else {
                 printf("add here\n");
