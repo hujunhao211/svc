@@ -536,7 +536,7 @@ int detect_change(struct commit* pre){
     int i;
     int have_mod = 0;
     for (i = 0; i < pre->file_length; i++){
-        printf("%s\n",pre->files_array[i]->file_name);
+//        printf("%s\n",pre->files_array[i]->file_name);
         if (detect_mod(pre->files_array[i], pre->files_array[i]->file_name)){
             have_mod = 1;
         }
