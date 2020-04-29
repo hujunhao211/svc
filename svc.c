@@ -681,8 +681,9 @@ char *svc_commit(void *helper, char *message) {
             help->head = help->branch_p->branch_commit[0];
 //            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
 //            printf("commit id in the function1: %s\n",help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id);
+            help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id = con_hexa(commit_id);
             update_help(help);
-            return help->branch_p->branch_commit[0]->commit_id;
+            return help->branch_p->branch_commit[help->branch_p->length - 1]->commit_id;
     }else {
         return NULL;
         }
