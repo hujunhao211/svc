@@ -541,6 +541,8 @@ int detect_change(struct commit* pre){
             have_mod = 1;
         }
     }
+    printf("%d\n",remove_length);
+    printf("%d\n",remove_length);
     int remove_file = 0;
     for (i = 0; i < pre->file_length; i++){
         FILE* file = fopen(pre->files_array[i]->file_name, "r");
