@@ -1282,7 +1282,6 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         printf("Cannot merge a branch with itself\n");
         return NULL;
     }
-//    printf("merge %s %s\n",help->branch_p->name,branch_name);
     find = 0;
     int index = 0;
     for (i = 0; i < help->branch_length; i++){
@@ -1300,8 +1299,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
             printf("Changes must be committed\n");
             return NULL;
         }
-    }
-    else if(detect_change(help->head->prev)){
+    } else if(detect_change(help->head->prev)){
         printf("Changes must be committed\n");
         return NULL;
     }
@@ -1315,51 +1313,48 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         }
         com_p = help->branches[index]->branch_commit[i];
     }
-//    print_commit(helper,help->head->commit_id);
-//    printf("name is: %s\n",com_p->message);
-//    print_commit(helper,com_p->commit_id);
     int j;
-    for (i = 0; i < help->head->file_length; i++){
-        for(j = 0; j < n_resolutions; j++){
-            if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
-                if (resolutions[j].resolved_file == NULL){
-                    printf("remove here\n");
-                    svc_rm(help, resolutions[j].file_name);
-                } else{
-                    copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+    if(n_resolutions > 0){
+        for (i = 0; i < help->head->file_length; i++){
+            for(j = 0; j < n_resolutions; j++){
+                if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
+                    if (resolutions[j].resolved_file == NULL){
+                        svc_rm(help, resolutions[j].file_name);
+                    } else{
+                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+                    }
+                } else {
+                    svc_add(helper,help->head->files_array[i]->file_name);
                 }
-            } else {
-                svc_add(helper,help->head->files_array[i]->file_name);
             }
         }
-    }
-    if (com_p->commit_tag == 0){
-        
-    }
-    printf("n_resolution: %d\n",n_resolutions);
-    printf("com_p file length: %d\n",com_p->file_length);
-    for (i = 0; i < com_p->file_length; i++) {
-        for (j = 0; j < n_resolutions; j++) {
-            printf("com_p file: %s\n",com_p->files_array[i]->file_name);
-            if(strcmp(com_p->files_array[i]->file_name, resolutions[j].file_name) == 0){
-                if (resolutions[j].resolved_file == NULL){
-                    printf("remove here\n");
-                    if (!check_remove(resolutions[j].file_name, array_remove, remove_length)){
-                        svc_rm(help, resolutions[j].file_name);
+        if (com_p->commit_tag == 0){
+            
+        }
+        for (i = 0; i < com_p->file_length; i++) {
+            for (j = 0; j < n_resolutions; j++) {
+                if(strcmp(com_p->files_array[i]->file_name, resolutions[j].file_name) == 0){
+                    if (resolutions[j].resolved_file == NULL){
+                        if (!check_remove(resolutions[j].file_name, array_remove, remove_length)){
+                            svc_rm(help, resolutions[j].file_name);
+                        }
+                    } else{
+                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
-                } else{
-                    printf("modification\n");
-                    copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+                } else {
                     svc_add(helper,com_p->files_array[i]->file_name);
                 }
-            } else {
-                printf("add here\n");
-                 svc_add(helper,com_p->files_array[i]->file_name);
             }
+        }
+    } else {
+        for (i = 0; i < help->head->file_length; i++){
+            svc_add(helper, help->head->files_array[i]->file_name);
+        }
+        for (i = 0; i < com_p->file_length; i++){
+            svc_add(helper, com_p->files_array[i]->file_name);
         }
     }
     
-//    printf("add length: %d\n",add_length);
 //    file_res->add_length = 0;
 //    file_res->rm_length = 0;
 //    file_res->mod_lenth = 0;
@@ -1371,13 +1366,8 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //    file_res->branch_p = help->branch_p;
     char* name = get_mess(branch_name);
     svc_commit(helper, name);
-//    printf("com:%s ????????\n",com);
     free(name);
-//    printf("helper->head->name %s\n",help->head->message);
-    if (help->head->parent != NULL){
-        help->head->parent[1] = com_p;
-    }
+    help->head->parent[1] = com_p;
     printf("Merge successful\n");
     return help->head->commit_id;
-    return NULL;
 }
