@@ -269,6 +269,29 @@ void allocate_file(struct commit* commit){
         }
     }
 }
+int file_struct_compare(const void* f1, const void* f2){
+    const struct files* file1 = *((const struct files**)f1);
+    const struct files* file2 = *((const struct files**)f2);
+    char* s1 = strdup(file1->file_name);
+    char* s2 = strdup(file2->file_name);
+    int i = 0;
+    char c;
+    while (s1[i]) {
+        c = s1[i];
+        s1[i] = tolower(c);
+        i++;
+    }
+    i = 0;
+    while (s2[i]) {
+        c = s2[i];
+        s2[i] = tolower(c);
+        i++;
+    }
+    int result = string_compare(s1, s2);
+    free(s1);
+    free(s2);
+    return result;
+}
 int cal_commit(struct commit* commit){
     allocate_file(commit);
     int i;
@@ -277,6 +300,7 @@ int cal_commit(struct commit* commit){
 //    printf("message: %s\n",commit->message);
 //    printf("commid %d\n",commit_id);
     if (commit->prev == NULL){
+        qsort(array_add, add_length, sizeof(array_add[0]), file_struct_compare);
         if (add_length != 0){
             commit->addition = malloc(sizeof(char*));
             commit->deletion = malloc(sizeof(char*));
