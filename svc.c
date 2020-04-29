@@ -1303,7 +1303,8 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         printf("Changes must be committed\n");
         return NULL;
     }
-    printf("merge %s %s\n",help->branch_p->name,branch_name);
+    
+    printf("merge %s %s\n",help->branch_p->name,branch_name); index = 2;
 ////    struct files** array = malloc(sizeof(struct files*));
 ////    int size = 0;
 //    struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
