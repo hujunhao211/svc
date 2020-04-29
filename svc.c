@@ -1336,6 +1336,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     if (com_p->commit_tag == 0){
         
     }
+    printf("n_resolution: %d\n",n_resolution);
     printf("com_p file length: %d\n",com_p->file_length);
     for (i = 0; i < com_p->file_length; i++) {
         for (j = 0; j < n_resolutions; j++) {
