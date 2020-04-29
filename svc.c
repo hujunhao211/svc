@@ -81,7 +81,6 @@ void cleanup(void *helper) {
     int i;
     struct helper* help = (struct helper*)helper;
     for (i = 0; i < help->branch_length; i++){
-        free(help->branches[i]->name);
         int j;
 //        printf("length: %d\n",help->branches[i]->length);
         for (j = 0; j < help->branches[i]->length; j++){
@@ -113,6 +112,7 @@ void cleanup(void *helper) {
             free(help->branches[i]->branch_commit[j]);
         }
         free(help->branches[i]->branch_commit);
+        free(help->branches[i]->name);
         free(help->branches[i]);
     }
     for (int k = 0; k < help->file_length; k++){
@@ -128,6 +128,7 @@ void cleanup(void *helper) {
 int do_count(FILE* f ,int hash){
     char c = 0;
     while (fscanf(f, "%c",&c) != EOF) {
+//        printf("%c",c);
         hash = (hash + (unsigned char)c) % 2000000000;
     }
     return hash;
@@ -156,6 +157,8 @@ int hash_file(void *helper, char *file_path) {
 int get_commit_id(struct commit* commit){
     int id = 0;
     id = do_hash(commit->message);
+//    printf("commit.message in fun%s\n",commit->message);
+//    printf("commit_id: %d\n",id);
     return id;
 }
 int string_compare(const char* w1, const char* w2) {
@@ -187,9 +190,18 @@ int file_compare(const void* f1, const void* f2){
 int detect_mod(struct files* f, char* path){
     int mod = 0;
     int id = hash_file(NULL, path);
+//    printf("file %d\n",f->hash_id);
+//    printf("path %d\n",id);
+//    printf("path %s\n",path);
+    printf("%s\n",f->file_name);
+    printf("%s\n",path);
+    printf("%d\n",f->hash_id);
+    printf("%d\n",id);
     if (f->hash_id != id){
         mod = 1;
     }
+//    puts(path);
+//    printf("mod is: %d\n",mod);
     return mod;
 }
 int detect_add(char* file){
@@ -215,7 +227,7 @@ int detect_del(char* file){
 int calculate_change(char* file_name,size_t size,int id){
     size_t i;
     for (i = 0; i < size; i++) {
-        id = (id * ((unsigned char)file_name[i] % 37))% 15485863 + 1;
+        id = (id * (((unsigned char)file_name[i]) % 37))% 15485863 + 1;
     }
     return id;
 }
@@ -226,6 +238,8 @@ void copy_file(char* name_1, char *  name_2){
     while ((c = fgetc(file_1)) != EOF) {
         fputc(c, file_2);
     }
+    printf("name1 :     %s\n",name_1);
+    printf("name2:       %s\n",name_2);
     fclose(file_1);
     fclose(file_2);
 }
@@ -239,6 +253,7 @@ int find_mod(char* file_name, char** file_array,int size){
     }
     return find;
 }
+
 void allocate_file(struct commit* commit){
     int i;
     commit->files_array = malloc(sizeof(struct files*));
@@ -348,6 +363,7 @@ int cal_commit(struct commit* commit){
                 array = realloc(array, (++size)*sizeof(char*));
                 array[size - 1] = commit->prev->files_array[i]->file_name;;
             }
+            fclose(file);
         }
         int mod_size = 0;
         char** mod_array = malloc(sizeof(char*));
@@ -485,7 +501,7 @@ char* convert_hexa(int decimalNumber){
 }
 char* con_hexa(int decimalNumber){
     char* array = malloc(20);
-    sprintf(array,"%.6x", decimalNumber);
+    sprintf(array,"%x", decimalNumber);
     return array;
 }
 char* get_file_name(int hash){
@@ -518,6 +534,7 @@ int detect_change(struct commit* pre){
     int i;
     int have_mod = 0;
     for (i = 0; i < pre->file_length; i++){
+        printf("%s\n",pre->files_array[i]->file_name);
         if (detect_mod(pre->files_array[i], pre->files_array[i]->file_name)){
             have_mod = 1;
         }
@@ -537,6 +554,16 @@ int detect_change(struct commit* pre){
         }
     }
     return (remove_length || have_mod || remove_file || change);
+}
+int detec_self(struct commit* commit){
+    int i,change;
+    change = 0;
+    for (i = 0; i < commit->file_length; i++){
+        if (detect_mod(commit->files_array[i], commit->files_array[i]->file_name)){
+            change = 1;
+        }
+    }
+    return change;
 }
 void update_help(struct helper* help){
     int i,index,find,iteration;
@@ -610,7 +637,9 @@ char *svc_commit(void *helper, char *message) {
             return NULL;
         }
     } else if(help->branch_p->length == 0 || strcmp(help->branch_p->name,help->head->branch_p->name ) != 0){
+        printf("in here1 merge?\n");
         if (detect_change(help->branch_p->precommit)){
+            printf("in here1 merge\n");
             help->branch_p->branch_commit = realloc(help->branch_p->branch_commit, (++help->branch_p->length)* sizeof(struct commit*));
             help->branch_p->branch_commit[help->branch_p->length - 1] = malloc(sizeof(commit_t));
             help->branch_p->branch_commit[help->branch_p->length - 1]->commit_tag = 0;
@@ -658,7 +687,9 @@ char *svc_commit(void *helper, char *message) {
         return NULL;
         }
     } else{
+//        printf("in here2 merge?\n");
         if (detect_change(help->head)){
+//            printf("in here2 merge\n");
             struct commit* commit = malloc(sizeof(struct commit));
             commit->prev = help->head;
             commit->file_length = 0;
@@ -800,7 +831,6 @@ void print_commit(void *helper, char *commit_id) {
     }
     printf("Invalid commit id\n");
 }
-
 int detect_no_change(struct commit* pre){
     int i;
     int have_mod = 0;
@@ -835,6 +865,7 @@ int check_name(char* name){
             valid = 0;
         }
     }
+//    printf("valid :    ????????       %d\n",valid);
     return valid;
 }
 int svc_branch(void *helper, char *branch_name) {
@@ -843,6 +874,7 @@ int svc_branch(void *helper, char *branch_name) {
     if (branch_name == NULL || !check_name(branch_name)){
         return -1;
     }
+//    printf("_______________________________no change\n");
     int i;
     for ( i = 0; i < help->branch_length; i++){
         if (strcmp(help->branches[i]->name, branch_name) == 0){
@@ -850,6 +882,7 @@ int svc_branch(void *helper, char *branch_name) {
         }
     }
     if (detect_no_change(help->head)){
+//        printf("_______________________________no change\n");
         help->branches = realloc(help->branches, (++help->branch_length)*sizeof(struct branch*));
         help->branches[help->branch_length - 1] = malloc(sizeof(struct branch));
         help->branches[help->branch_length - 1]->length = 0;
@@ -947,6 +980,7 @@ int svc_checkout(void *helper, char *branch_name) {
     // TODO: Implement
     return 0;
 }
+
 char **list_branches(void *helper, int *n_branches) {
     // TODO: Implement
     int i;
@@ -964,6 +998,7 @@ char **list_branches(void *helper, int *n_branches) {
     *(n_branches) = size;
     return array;
 }
+
 int svc_add(void *helper, char *file_name) {
     // TODO: Implement
     if (file_name == NULL){
@@ -991,6 +1026,7 @@ int svc_add(void *helper, char *file_name) {
             remove_index = i;
         }
     }
+    
     if (find_remove){
         char* filename = array_remove[remove_index];
         for (i = remove_index; i < remove_length - 1; i++){
@@ -1086,7 +1122,6 @@ int svc_rm(void *helper, char *file_name) {
     }
     return id;
 }
-
 int convert_dec(char* hexa){
     int value = 0;
     sscanf(hexa, "%x",&value);
@@ -1095,18 +1130,11 @@ int convert_dec(char* hexa){
 void recover_file(struct commit* com){
 //    char* file =
     int i;
-//    printf("commit_id string %s\n",com->commit_id);
-//    printf("commit file length %d\n",com->file_length);
     for (i = 0; i < com->file_length; i++){
-//        printf("%s\n",com->files_array[i]->file_name);
         int value = convert_dec(com->commit_id);
-//        printf("commit id value %d\n",value);
-//        printf("hash id value %d\n",com->files_array[i]->hash_id);
         char* get_name = get_file_name(value);
         char* file_name = get_file_name(com->files_array[i]->hash_id);
         char* free_file = concat("A",file_name , get_name);
-//        printf("%s\n",com->files_array[i]->file_name);
-//        printf("file name %s\n",free_file);
         copy_file(free_file, com->files_array[i]->file_name);
 //        printf("free_file :::::::::::::::  %s\n",free_file);
 //        printf("file_name :::::::::::::::  %s\n",file_name);
@@ -1119,7 +1147,6 @@ int svc_reset(void *helper, char *commit_id) {
     if (commit_id == NULL){
         return -1;
     }
-//    printf("reset\n");
     int find = 0;
     int index_branch = 0;
     int index_commit = 0;
@@ -1127,10 +1154,6 @@ int svc_reset(void *helper, char *commit_id) {
     int i,j;
     for(i = 0; i < help->branch_length;i++){
         for(j = 0; j < help->branches[i]->length; j++){
-//            printf("here\n");
-//            printf("%s\n",commit_id);
-//            printf("commit: %s\n",help->branches[i]->branch_commit[j]->commit_id);
-//            printf("commit tag: %d\n",help->branches[i]->branch_commit[j]->commit_tag);
             if (help->branches[i]->branch_commit[j]->commit_tag == 0){
                 if (strcmp(help->branches[i]->branch_commit[j]->commit_id, commit_id) == 0){
                     find = 1;
@@ -1157,7 +1180,6 @@ int svc_reset(void *helper, char *commit_id) {
         com_p->commit_tag = 1;
         com_p = com_p->prev;
     }
-//    print_commit(helper,com_p->commit_id);
     for(i = 0; i < help->branches[index_branch]->branch_commit[index_commit]->file_length; i++){
         if (help->capacity == help->file_length){
             help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
@@ -1183,8 +1205,27 @@ int svc_reset(void *helper, char *commit_id) {
     // TODO: Implement
     return 0;
 }
-
-
+int detect_head_change(){
+    int i,uncom;
+    uncom = 0;
+    for(i = 0 ; i < add_length; i++){
+        FILE* file = fopen(array_add[i]->file_name, "r");
+        if (file != NULL){
+            uncom = 1;
+        }
+    }
+    return uncom;
+}
+//int find_file(char* str, struct files** file_array, int f_size){
+//    int find = 0;
+//    int i;
+//    for (i = 0; i < f_size; i++) {
+//        if (strcmp(str, file_array[i]->file_name) == 0){
+//            find = 1;
+//        }
+//    }
+//    return find;
+//}
 int check_remove(char* str, char** remove,int r_size){
     int i;
     int find = 0;
@@ -1201,17 +1242,6 @@ char* get_mess(char *branch_name){
     strcpy(mess, pre);
     strcat(mess, branch_name);
     return mess;
-}
-int detect_head_change(){
-    int i,uncom;
-    uncom = 0;
-    for(i = 0 ; i < add_length; i++){
-        FILE* file = fopen(array_add[i]->file_name, "r");
-        if (file != NULL){
-            uncom = 1;
-        }
-    }
-    return uncom;
 }
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
@@ -1243,7 +1273,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
             return NULL;
         }
     }
-    if(detect_change(help->head->prev)){
+    else if(detect_change(help->head->prev)){
         printf("Changes must be committed\n");
         return NULL;
     }
@@ -1257,6 +1287,9 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         }
         com_p = help->branches[index]->branch_commit[i];
     }
+//    print_commit(helper,help->head->commit_id);
+//    printf("name is: %s\n",com_p->message);
+//    print_commit(helper,com_p->commit_id);
     int j;
     for (i = 0; i < help->head->file_length; i++){
         for(j = 0; j < n_resolutions; j++){
@@ -1271,6 +1304,9 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
             }
         }
     }
+    if (com_p->commit_tag == 0){
+        
+    }
     for (i = 0; i < com_p->file_length; i++) {
         for (j = 0; j < n_resolutions; j++) {
             if(strcmp(com_p->files_array[i]->file_name, resolutions[j].file_name) == 0){
@@ -1282,11 +1318,12 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                     copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                 }
             } else {
-                svc_add(helper,help->head->files_array[i]->file_name);
+                 svc_add(helper,com_p->files_array[i]->file_name);
             }
         }
     }
     
+//    printf("add length: %d\n",add_length);
 //    file_res->add_length = 0;
 //    file_res->rm_length = 0;
 //    file_res->mod_lenth = 0;
@@ -1297,8 +1334,10 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //    file_res->files_array = malloc(sizeof(struct files*));
 //    file_res->branch_p = help->branch_p;
     char* name = get_mess(branch_name);
-    svc_commit(helper, name);
+    char* com = svc_commit(helper, name);
+//    printf("com:%s ????????\n",com);
     free(name);
+//    printf("helper->head->name %s\n",help->head->message);
     help->head->parent[1] = com_p;
     printf("Merge successful\n");
     return help->head->commit_id;
