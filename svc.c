@@ -1207,16 +1207,22 @@ int svc_reset(void *helper, char *commit_id) {
     // TODO: Implement
     return 0;
 }
-int detect_head_change(){
-    int i,uncom;
-    uncom = 0;
-    for(i = 0 ; i < add_length; i++){
-        FILE* file = fopen(array_add[i]->file_name, "r");
-        if (file != NULL){
-            uncom = 1;
-        }
-    }
-    return uncom;
+int detect_head_change(struct commit* head){
+//    int i,uncom;
+//    uncom = 0;
+//    for(i = 0 ; i < add_length; i++){
+//        FILE* file = fopen(array_add[i]->file_name, "r");
+//        if (file != NULL){
+//            uncom = 1;
+//        }
+//    }
+//    for(i = 0; i < head->file_length; i++){
+//        if (detect_mod(head->files_array[i], head->files_array[i]->file_name)){
+//            uncom = 1;
+//        }
+//    }
+    return detect_change(head);
+//    return uncom;
 }
 //int find_file(char* str, struct files** file_array, int f_size){
 //    int find = 0;
@@ -1270,7 +1276,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         return NULL;
     }
     if(help->head->prev == NULL){
-        if(detect_head_change()){
+        if(detect_head_change(help->head)){
             printf("Changes must be committed\n");
             return NULL;
         }
