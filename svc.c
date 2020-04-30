@@ -1336,8 +1336,8 @@ int svc_add_copy(void *helper, char *file_name) {
 //        help->file_array[help->file_length] = malloc(sizeof(struct files));
 //        help->file_array[help->file_length++]->file_name = strdup(file_name);
 //        help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
-//        
-//        
+//
+//
 ////        array_add = realloc(array_add, sizeof(struct file*) * (++add_length));
 ////        array_add[add_length - 1] = malloc(sizeof(struct files));
 //////        printf("lenth%d\n",add_length);
@@ -1425,7 +1425,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                         copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-                    svc_add_copy(helper,com_p->files_array[i]->file_name);
+//                    svc_add_copy(helper,com_p->files_array[i]->file_name);
                 }
             }
         }
@@ -1434,7 +1434,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //            svc_add(helper, help->head->files_array[i]->file_name);
 //        }
         for (i = 0; i < com_p->file_length; i++){
-            svc_add_copy(helper, com_p->files_array[i]->file_name);
+//            svc_add_copy(helper, com_p->files_array[i]->file_name);
         }
     }
 
