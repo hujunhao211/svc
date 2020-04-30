@@ -1291,16 +1291,16 @@ int svc_addss(void *helper, char *file_name) {
         return -3;
     }
 //    printf("add %s\n",file_name);
-    int find_remove = 0;
-    int remove_index = 0;
+//    int find_remove = 0;
+//    int remove_index = 0;
 //    printf("ignore %d\n",remove_index);
 //    printf("remove_length %d\n",remove_length);
-    for (i = 0; i < remove_length; i++){
-        if (strcmp(array_remove[i], file_name) == 0){
-            find_remove = 1;
-            remove_index = i;
-        }
-    }
+//    for (i = 0; i < remove_length; i++){
+//        if (strcmp(array_remove[i], file_name) == 0){
+//            find_remove = 1;
+//            remove_index = i;
+//        }
+//    }
 //    printf("add1 %s\n",file_name);
 //    printf("find_remove %d\n",find_remove);
     printf("remove_length %d\n",remove_length);
