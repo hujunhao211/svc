@@ -75,6 +75,8 @@ void *svc_init(void) {
     help->file_length = 0;
     help->capacity = 1;
     help->branches[0]->name = strdup("master");
+    add_length = 0;
+    remove_length = 0;
     return (void*)help;
 }
 
@@ -125,6 +127,19 @@ void cleanup(void *helper) {
     free(help->branches);
 //    free(help->head);
     free(help);
+    for (i = 0; i < add_length; i++){
+        free(array_add[i]->file_name);
+        free(array_add[i]);
+    }
+    free(array_add);
+    for (i = 0; i < remove_length; i++){
+        free(array_remove[i]);
+    }
+    free(array_remove);
+    add_length = 0;
+    remove_length = 0;
+    array_add = NULL;
+    array_remove = NULL;
     // TODO: Implement
 }
 int do_count(FILE* f ,int hash){
