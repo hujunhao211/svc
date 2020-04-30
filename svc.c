@@ -1331,27 +1331,29 @@ int svc_addss(void *helper, char *file_name) {
 //        free(filename);
 //        remove_length--;
     } else {
-//        printf("add2 %s\n",file_name);
-//        if (help->file_length == help->capacity){
-//            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
-//            help->capacity *= 2;
-//        }
-//        printf("%d\n",help->file_length);
-//        printf("%d\n",help->capacity);
-//        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
-//        printf("%p\n",help->file_array[help->file_length]);
-//        help->file_array[help->file_length]->file_name;
-//        help->file_array = realloc(help->file_array, sizeof(struct files*));
+        printf("helper capacity: %d\n",help->capacity);
+        printf("helper length: %d\n",help->length);
+////        printf("add2 %s\n",file_name);
+        if (help->file_length == help->capacity){
+            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+            help->capacity *= 2;
+        }
+////        printf("%d\n",help->file_length);
+////        printf("%d\n",help->capacity);
+////        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
+////        printf("%p\n",help->file_array[help->file_length]);
+////        help->file_array[help->file_length]->file_name;
+////        help->file_array = realloc(help->file_array, sizeof(struct files*));
         help->file_array[help->file_length] = malloc(sizeof(struct files));
         help->file_array[help->file_length++]->file_name = strdup(file_name);
         help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
-//
-//
-        array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
-        array_add[add_length - 1] = malloc(sizeof(struct files));
-//        printf("lenth%d\n",add_length);
-        array_add[add_length - 1]->file_name = strdup(file_name);
-        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
+////
+////
+//        array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
+//        array_add[add_length - 1] = malloc(sizeof(struct files));
+////        printf("lenth%d\n",add_length);
+//        array_add[add_length - 1]->file_name = strdup(file_name);
+//        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
     }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
