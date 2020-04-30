@@ -1391,7 +1391,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     }
     
 //    printf("merge %s %s\n",help->branch_p->name,branch_name);
-//    printf("indexd: %d igonore\n",index);
+    printf("indexd: %d igonore\n",index);
 ////    struct files** array = malloc(sizeof(struct files*));
 ////    int size = 0;
 //    struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
