@@ -1394,23 +1394,23 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     printf("indexd: %d igonore\n",index);
 ////    struct files** array = malloc(sizeof(struct files*));
 ////    int size = 0;
-//    struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
-//    for (i = help->branches[index]->length - 1; i >= 0 ; i--){
-//        com_p = help->branches[index]->branch_commit[i];
-//        if (com_p->commit_tag == 0){
-//            break;
-//        }
-//        com_p = help->branches[index]->branch_commit[i];
-//    }
-//    printf("im here\n");
-//    printf("n_resolution %d\n",n_resolutions);
-//    for(i = 0; i < n_resolutions; i++){
-//        printf("resolved file_name: %s\n",resolutions[i].file_name);
-//        printf("resolved file_content: %s\n",resolutions[i].resolved_file);
-//    }
-//    int j;
-//
-//    if(n_resolutions > 0){
+    struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
+    for (i = help->branches[index]->length - 1; i >= 0 ; i--){
+        com_p = help->branches[index]->branch_commit[i];
+        if (com_p->commit_tag == 0){
+            break;
+        }
+        com_p = help->branches[index]->branch_commit[i];
+    }
+    printf("im here\n");
+    printf("n_resolution %d\n",n_resolutions);
+    for(i = 0; i < n_resolutions; i++){
+        printf("resolved file_name: %s\n",resolutions[i].file_name);
+        printf("resolved file_content: %s\n",resolutions[i].resolved_file);
+    }
+    int j;
+
+    if(n_resolutions > 0){
 //        printf("in?\n");
 //        for (i = 0; i < help->head->file_length; i++){
 //            for(j = 0; j < n_resolutions; j++){
@@ -1443,16 +1443,18 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //                }
 //            }
 //        }
-//    } else {
-////        for (i = 0; i < help->head->file_length; i++){
-////            svc_add(helper, help->head->files_array[i]->file_name);
-////        }
-//        printf("comp->file_length: %d\n",com_p->file_length);
+    } else {
+//        for (i = 0; i < help->head->file_length; i++){
+//            svc_add(helper, help->head->files_array[i]->file_name);
+//        }
+        printf("comp->file_length: %d\n",com_p->file_length);
+        printf("add_length: %d ?\n",add_length);
+        printf("remove_length %d \n",remove_length);
 //        for (i = 0; i < com_p->file_length; i++){
 //            svc_addss(helper, com_p->files_array[i]->file_name);
 //
 //        }
-//    }
+    }
 //    printf("branch_name: %s\n",branch_name);
 //////    file_res->add_length = 0;
 //////    file_res->rm_length = 0;
