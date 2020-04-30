@@ -1390,7 +1390,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     for(i = 0; i < n_resolutions; i++){
         printf("resolved file_name: %s\n",resolutions[i].file_name);
     }
-//    int j;
+    int j;
     
     if(n_resolutions > 0){
         printf("in?\n");
