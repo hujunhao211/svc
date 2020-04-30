@@ -1332,10 +1332,10 @@ int svc_addss(void *helper, char *file_name) {
 //        remove_length--;
     } else {
 //        printf("add2 %s\n",file_name);
-        if (help->file_length == help->capacity){
-            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
-            help->capacity *= 2;
-        }
+//        if (help->file_length == help->capacity){
+//            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
+//            help->capacity *= 2;
+//        }
 //        printf("%d\n",help->file_length);
 //        printf("%d\n",help->capacity);
 //        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
