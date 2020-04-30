@@ -1305,8 +1305,8 @@ int svc_addss(void *helper, char *file_name) {
     if (file == NULL){
         return -3;
     }
-    printf("add_length: %d ?\n",add_length);
-    printf("remove_length %d \n",remove_length);
+//    printf("add_length: %d ?\n",add_length);
+//    printf("remove_length %d \n",remove_length);
 //    printf("add %s\n",file_name);
     int find_remove = 0;
 //    int remove_index = 0;
