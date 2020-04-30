@@ -1307,21 +1307,21 @@ int svc_add_copy(void *helper, char *file_name) {
         return -3;
     }
     int find_remove = 0;
-    int remove_index = 0;
-    for (i = 0; i < remove_length; i++){
-        if (strcmp(array_remove[i], file_name) == 0){
-            find_remove = 1;
-            remove_index = i;
-        }
-    }
+//    int remove_index = 0;
+//    for (i = 0; i < remove_length; i++){
+//        if (strcmp(array_remove[i], file_name) == 0){
+//            find_remove = 1;
+//            remove_index = i;
+//        }
+//    }
     
     if (find_remove){
-        char* filename = array_remove[remove_index];
-        for (i = remove_index; i < remove_length - 1; i++){
-            array_remove[i] = array_remove[i + 1];
-        }
-        free(filename);
-        remove_length--;
+//        char* filename = array_remove[remove_index];
+//        for (i = remove_index; i < remove_length - 1; i++){
+//            array_remove[i] = array_remove[i + 1];
+//        }
+//        free(filename);
+//        remove_length--;
     } else {
         if (help->file_length == help->capacity){
             help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
