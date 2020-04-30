@@ -1295,13 +1295,13 @@ int svc_addss(void *helper, char *file_name) {
         array_add = malloc(sizeof(struct files));
     }
     struct helper* help = helper;
-//    int i;
+    int i;
     
-//    for(i = 0; i < help->file_length;i++){
-//        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
-//            return -2;
-//        }
-//    }
+    for(i = 0; i < help->file_length;i++){
+        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
+            return -2;
+        }
+    }
     FILE* file = fopen(file_name, "r");
     if (file == NULL){
         return -3;
