@@ -1293,6 +1293,8 @@ int svc_addss(void *helper, char *file_name) {
     printf("add %s\n",file_name);
     int find_remove = 0;
     int remove_index = 0;
+    printf("ignore %d\n",remove_index);
+    printf("remove_length %d\n",remove_length);
     for (i = 0; i < remove_length; i++){
         if (strcmp(array_remove[i], file_name) == 0){
             find_remove = 1;
