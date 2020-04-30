@@ -1438,20 +1438,20 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         }
     }
 
-//    file_res->add_length = 0;
-//    file_res->rm_length = 0;
-//    file_res->mod_lenth = 0;
-//    file_res->addition = malloc(sizeof(char*));
-//    file_res->deletion = malloc(sizeof(char*));
-//    file_res->modification = malloc(sizeof(char*));
-//    file_res->file_length = 0;
-//    file_res->files_array = malloc(sizeof(struct files*));
-//    file_res->branch_p = help->branch_p;
-    char* name = get_mess(branch_name);
-    svc_commit(helper, name);
-    free(name);
-    help->head->parent[1] = com_p;
-    printf("Merge successful\n");
-    return help->head->commit_id;
-//    return NULL;
+////    file_res->add_length = 0;
+////    file_res->rm_length = 0;
+////    file_res->mod_lenth = 0;
+////    file_res->addition = malloc(sizeof(char*));
+////    file_res->deletion = malloc(sizeof(char*));
+////    file_res->modification = malloc(sizeof(char*));
+////    file_res->file_length = 0;
+////    file_res->files_array = malloc(sizeof(struct files*));
+////    file_res->branch_p = help->branch_p;
+//    char* name = get_mess(branch_name);
+//    svc_commit(helper, name);
+//    free(name);
+//    help->head->parent[1] = com_p;
+//    printf("Merge successful\n");
+//    return help->head->commit_id;
+    return NULL;
 }
