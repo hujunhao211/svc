@@ -1393,6 +1393,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //    int j;
     
     if(n_resolutions > 0){
+        printf("in?\n");
 //        for (i = 0; i < help->head->file_length; i++){
 //            for(j = 0; j < n_resolutions; j++){
 //                if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
