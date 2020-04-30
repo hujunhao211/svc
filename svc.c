@@ -1426,7 +1426,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-                    svc_addss(helper,com_p->files_array[i]->file_name);
+//                    svc_addss(helper,com_p->files_array[i]->file_name);
                 }
             }
         }
@@ -1436,7 +1436,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //        }
         printf("comp->file_length: %d\n",com_p->file_length);
         for (i = 0; i < com_p->file_length; i++){
-            svc_addss(helper, com_p->files_array[i]->file_name);
+//            svc_addss(helper, com_p->files_array[i]->file_name);
 
         }
     }
