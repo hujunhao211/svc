@@ -127,6 +127,19 @@ void cleanup(void *helper) {
     free(help->branches);
 //    free(help->head);
     free(help);
+    for (i = 0; i < add_length; i++){
+        free(array_add[i]->file_name);
+        free(array_add[i]);
+    }
+    free(array_add);
+    for (i = 0; i < remove_length; i++){
+        free(array_remove[i]);
+    }
+    free(array_remove);
+    add_length = 0;
+    remove_length = 0;
+    array_add = NULL;
+    array_remove = NULL;
     // TODO: Implement
 }
 int do_count(FILE* f ,int hash){
@@ -1426,7 +1439,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-//                    svc_addss(helper,com_p->files_array[i]->file_name);
+                    svc_addss(helper,com_p->files_array[i]->file_name);
                 }
             }
         }
@@ -1436,7 +1449,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //        }
         printf("comp->file_length: %d\n",com_p->file_length);
         for (i = 0; i < com_p->file_length; i++){
-//            svc_addss(helper, com_p->files_array[i]->file_name);
+            svc_addss(helper, com_p->files_array[i]->file_name);
 
         }
     }
