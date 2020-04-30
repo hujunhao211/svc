@@ -1293,12 +1293,12 @@ int svc_addss(void *helper, char *file_name) {
     printf("add %s\n",file_name);
     int find_remove = 0;
     int remove_index = 0;
-//    for (i = 0; i < remove_length; i++){
-//        if (strcmp(array_remove[i], file_name) == 0){
-//            find_remove = 1;
-//            remove_index = i;
-//        }
-//    }
+    for (i = 0; i < remove_length; i++){
+        if (strcmp(array_remove[i], file_name) == 0){
+            find_remove = 1;
+            remove_index = i;
+        }
+    }
     printf("add1 %s\n",file_name);
     if (find_remove){
         char* filename = array_remove[remove_index];
@@ -1426,7 +1426,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //        }
 //        printf("comp->file_length: %d\n",com_p->file_length);
         for (i = 0; i < com_p->file_length; i++){
-//            svc_addss(helper, com_p->files_array[i]->file_name);
+            svc_addss(helper, com_p->files_array[i]->file_name);
             
         }
     }
