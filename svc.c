@@ -1295,7 +1295,7 @@ int svc_add_copy(void *helper, char *file_name) {
         array_add = malloc(sizeof(struct files));
     }
 //    printf("add %s\n",file_name);
-    struct helper* help = helper;
+//    struct helper* help = helper;
 //    int i;
 //    for(i = 0; i < help->file_length;i++){
 //        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
