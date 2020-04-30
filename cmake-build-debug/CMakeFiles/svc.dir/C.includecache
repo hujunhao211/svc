@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/junhaohu/Desktop/gittest/svc/svc.c
+svc.h
+/Users/junhaohu/Desktop/gittest/svc/svc.h
+stdio.h
+-
+string.h
+-
+ctype.h
+-
+
+/Users/junhaohu/Desktop/gittest/svc/svc.h
+stdlib.h
+-
+

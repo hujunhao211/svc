@@ -1,0 +1,39 @@
+launchRodAngle,0,0
+totalMass,1,0.2
+cog,0,0
+cop,0,0
+temperature,0,0
+pressure,0,0
+nominalWindSpeed,0,0
+surfaceFinish,0,0
+cd,0,0
+gcc -Wall -pedantic -g svc.c -o svc
+valgrind --leak-check=full ./svc
+gcc -Wall -pedantic -g test.c -o test
+valgrind --leak-check=full ./test
+gcc -fsanitize=address -g svc.c -o svc
+./svc
+// TODO: implement
+void* helper = svc_init();
+    svc_add(helper, "a.txt");
+    char* start = svc_commit(helper, "Initial commit");
+    svc_add(helper,"b.txt");
+    svc_add(helper,"c.a");
+    FILe* file = fopen("a.txt");
+    fprintf(file,"this is changed a file, it has been changed\n");
+    svc_commit(helper,"Changed a.txt content");
+    svc_branch(helper,"features/brand-new-feature1");
+    int number = 0;
+    scanf("%d",&number);
+    svc_add(helper,"d.out");
+    svc_commit(helper,"Added a compiled program");
+    svc_add(helper,"view.sh");
+    svc_commit(helper,"Created icon");
+    svc_checkout(helper,"features/brand-new-feature1");
+    svc_rm(helper,"b.txt");
+    svc_commit("Removed a useless file");
+    svc_branch(helper,"fixes/emergency-fix");
+    svc_checkout(helper,"feature/config");
+    svc_add(helper,"cfg.txt");
+    svc_add(helper,"view.sh");
+    char * a = svc_commit(helper,"Added config");

@@ -1458,3 +1458,5 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     return help->head->commit_id;
 //    return NULL;
 }
+
+
