@@ -75,6 +75,8 @@ void *svc_init(void) {
     help->file_length = 0;
     help->capacity = 1;
     help->branches[0]->name = strdup("master");
+    add_length = 0;
+    remove_length = 0;
     return (void*)help;
 }
 
