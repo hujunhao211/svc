@@ -1313,8 +1313,8 @@ int svc_addss(void *helper, char *file_name) {
             help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
             help->capacity *= 2;
         }
-//        printf("%d\n",help->file_length);
-//        printf("%d\n",help->capacity);
+        printf("%d\n",help->file_length);
+        printf("%d\n",help->capacity);
 //        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
 //        printf("%p\n",help->file_array[help->file_length]);
 //        help->file_array[help->file_length]->file_name;
