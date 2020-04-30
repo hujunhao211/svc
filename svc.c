@@ -1328,7 +1328,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                         copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-                    svc_add(helper,help->head->files_array[i]->file_name);
+//                    svc_add(helper,help->head->files_array[i]->file_name);
                 }
             }
         }
@@ -1351,9 +1351,9 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
             }
         }
     } else {
-        for (i = 0; i < help->head->file_length; i++){
-            svc_add(helper, help->head->files_array[i]->file_name);
-        }
+//        for (i = 0; i < help->head->file_length; i++){
+//            svc_add(helper, help->head->files_array[i]->file_name);
+//        }
         for (i = 0; i < com_p->file_length; i++){
             svc_add(helper, com_p->files_array[i]->file_name);
         }
