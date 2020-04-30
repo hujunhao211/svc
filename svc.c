@@ -1399,7 +1399,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
             for(j = 0; j < n_resolutions; j++){
                 if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
                     if (resolutions[j].resolved_file == NULL){
-//                        svc_rm(help, resolutions[j].file_name);
+                        svc_rm(help, resolutions[j].file_name);
                     } else{
 //                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
@@ -1416,7 +1416,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                 if(strcmp(com_p->files_array[i]->file_name, resolutions[j].file_name) == 0){
                     if (resolutions[j].resolved_file == NULL){
                         if (!check_remove(resolutions[j].file_name, array_remove, remove_length)){
-//                            svc_rm(help, resolutions[j].file_name);
+                            svc_rm(help, resolutions[j].file_name);
                         }
                     } else{
 //                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
