@@ -75,8 +75,6 @@ void *svc_init(void) {
     help->file_length = 0;
     help->capacity = 1;
     help->branches[0]->name = strdup("master");
-    add_length = 0;
-    remove_length = 0;
     return (void*)help;
 }
 
@@ -127,19 +125,6 @@ void cleanup(void *helper) {
     free(help->branches);
 //    free(help->head);
     free(help);
-    for (i = 0; i < add_length; i++){
-        free(array_add[i]->file_name);
-        free(array_add[i]);
-    }
-    free(array_add);
-    for (i = 0; i < remove_length; i++){
-        free(array_remove[i]);
-    }
-    free(array_remove);
-    add_length = 0;
-    remove_length = 0;
-    array_add = NULL;
-    array_remove = NULL;
     // TODO: Implement
 }
 int do_count(FILE* f ,int hash){
@@ -1286,81 +1271,6 @@ char* get_mess(char *branch_name){
     strcat(mess, branch_name);
     return mess;
 }
-int svc_addss(void *helper, char *file_name) {
-    // TODO: Implement
-    if (file_name == NULL){
-        return -1;
-    }
-    if (array_add == NULL){
-        array_add = malloc(sizeof(struct files));
-    }
-    struct helper* help = helper;
-    int i;
-    
-    for(i = 0; i < help->file_length;i++){
-        if (strcmp(file_name, help->file_array[i]->file_name) == 0 ){
-            return -2;
-        }
-    }
-    FILE* file = fopen(file_name, "r");
-    if (file == NULL){
-        return -3;
-    }
-//    printf("add_length: %d ?\n",add_length);
-//    printf("remove_length %d \n",remove_length);
-//    printf("add %s\n",file_name);
-    int find_remove = 0;
-//    int remove_index = 0;
-//    printf("ignore %d\n",remove_index);
-//    printf("remove_length %d\n",remove_length);
-//    for (i = 0; i < remove_length; i++){
-//        if (strcmp(array_remove[i], file_name) == 0){
-//            find_remove = 1;
-//            remove_index = i;
-//        }
-//    }
-//    printf("add1 %s\n",file_name);
-//    printf("find_remove %d\n",find_remove);
-//    printf("remove_length %d\n",remove_length);
-    if (find_remove){
-//        printf("remove_length %d\n",remove_length);
-//        char* filename = array_remove[remove_index];
-//        for (i = remove_index; i < remove_length - 1; i++){
-//            array_remove[i] = array_remove[i + 1];
-//        }
-//        free(filename);
-//        remove_length--;
-    } else {
-        printf("helper capacity: %d\n",help->capacity);
-        printf("helper length: %d\n",help->file_length);
-////        printf("add2 %s\n",file_name);
-        if (help->file_length == help->capacity){
-            help->file_array = realloc(help->file_array, help->capacity*2 * sizeof(char *));
-            help->capacity *= 2;
-        }
-////        printf("%d\n",help->file_length);
-////        printf("%d\n",help->capacity);
-////        help->file_array[help->file_length++]->file_name = malloc(sizeof(char*));
-////        printf("%p\n",help->file_array[help->file_length]);
-////        help->file_array[help->file_length]->file_name;
-////        help->file_array = realloc(help->file_array, sizeof(struct files*));
-        help->file_array[help->file_length] = malloc(sizeof(struct files));
-        help->file_array[help->file_length++]->file_name = strdup(file_name);
-        help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
-////
-////
-        array_add = realloc(array_add, sizeof(struct commit) * (++add_length));
-        array_add[add_length - 1] = malloc(sizeof(struct files));
-//        printf("lenth%d\n",add_length);
-        array_add[add_length - 1]->file_name = strdup(file_name);
-        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
-    }
-//    else if(help->commit_array[help->commit_length - 1]->message != NULL){
-//
-//    }
-    return hash_file(NULL, file_name);
-}
-
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
     int i,find;
@@ -1396,7 +1306,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     }
     
 //    printf("merge %s %s\n",help->branch_p->name,branch_name);
-    printf("indexd: %d igonore\n",index);
+//    printf("indexd: %d igonore\n",index);
 ////    struct files** array = malloc(sizeof(struct files*));
 ////    int size = 0;
     struct commit* com_p = help->branches[index]->branch_commit[help->branches[index]->length - 1];;
@@ -1407,26 +1317,18 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         }
         com_p = help->branches[index]->branch_commit[i];
     }
-    printf("im here\n");
-    printf("n_resolution %d\n",n_resolutions);
-    for(i = 0; i < n_resolutions; i++){
-        printf("resolved file_name: %s\n",resolutions[i].file_name);
-        printf("resolved file_content: %s\n",resolutions[i].resolved_file);
-    }
     int j;
-
     if(n_resolutions > 0){
-//        printf("in?\n");
         for (i = 0; i < help->head->file_length; i++){
             for(j = 0; j < n_resolutions; j++){
                 if(strcmp(help->head->files_array[i]->file_name, resolutions[j].file_name) == 0){
                     if (resolutions[j].resolved_file == NULL){
                         svc_rm(help, resolutions[j].file_name);
                     } else{
-//                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-//                    svc_add(helper,help->head->files_array[i]->file_name);
+                    svc_add(helper,help->head->files_array[i]->file_name);
                 }
             }
         }
@@ -1441,39 +1343,36 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                             svc_rm(help, resolutions[j].file_name);
                         }
                     } else{
-//                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-                    svc_addss(helper,com_p->files_array[i]->file_name);
+                    svc_add(helper,com_p->files_array[i]->file_name);
                 }
             }
         }
     } else {
-//        for (i = 0; i < help->head->file_length; i++){
-//            svc_add(helper, help->head->files_array[i]->file_name);
-//        }
-        printf("comp->file_length: %d\n",com_p->file_length);
+        for (i = 0; i < help->head->file_length; i++){
+            svc_add(helper, help->head->files_array[i]->file_name);
+        }
         for (i = 0; i < com_p->file_length; i++){
-            svc_addss(helper, com_p->files_array[i]->file_name);
-
+            svc_add(helper, com_p->files_array[i]->file_name);
         }
     }
-//    printf("branch_name: %s\n",branch_name);
-////    file_res->add_length = 0;
-////    file_res->rm_length = 0;
-////    file_res->mod_lenth = 0;
-////    file_res->addition = malloc(sizeof(char*));
-////    file_res->deletion = malloc(sizeof(char*));
-////    file_res->modification = malloc(sizeof(char*));
-////    file_res->file_length = 0;
-////    file_res->files_array = malloc(sizeof(struct files*));
-////    file_res->branch_p = help->branch_p;
+
+//    file_res->add_length = 0;
+//    file_res->rm_length = 0;
+//    file_res->mod_lenth = 0;
+//    file_res->addition = malloc(sizeof(char*));
+//    file_res->deletion = malloc(sizeof(char*));
+//    file_res->modification = malloc(sizeof(char*));
+//    file_res->file_length = 0;
+//    file_res->files_array = malloc(sizeof(struct files*));
+//    file_res->branch_p = help->branch_p;
     char* name = get_mess(branch_name);
-////    svc_commit(helper, name);
+    svc_commit(helper, name);
     free(name);
     help->head->parent[1] = com_p;
     printf("Merge successful\n");
-//        record++;
     return help->head->commit_id;
-    return NULL;
+//    return NULL;
 }
