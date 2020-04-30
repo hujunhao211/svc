@@ -1404,7 +1404,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                     if (resolutions[j].resolved_file == NULL){
                         svc_rm(help, resolutions[j].file_name);
                     } else{
-//                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
+                        copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
 //                    svc_add(helper,help->head->files_array[i]->file_name);
