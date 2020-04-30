@@ -1304,7 +1304,7 @@ int svc_addss(void *helper, char *file_name) {
     printf("add1 %s\n",file_name);
     printf("find_remove %d\n",find_remove);
     if (find_remove){
-        printf("remove_length %d\n",remove_length);
+//        printf("remove_length %d\n",remove_length);
 //        char* filename = array_remove[remove_index];
 //        for (i = remove_index; i < remove_length - 1; i++){
 //            array_remove[i] = array_remove[i + 1];
