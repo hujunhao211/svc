@@ -1274,8 +1274,6 @@ char* get_mess(char *branch_name){
 char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions, int n_resolutions) {
     // TODO: Implement
     int i,find;
-    static int record = 0;
-    if (record < 1){
     struct helper* help = (struct helper*)helper;
     if (branch_name == NULL){
         printf("Invalid branch name\n");
@@ -1320,6 +1318,10 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
         com_p = help->branches[index]->branch_commit[i];
     }
     printf("im here\n");
+    printf("n_resolution %s\n",n_resolutions);
+    for(i = 0; i < n_resolutions; i++){
+        printf("resolved file_name: %s\n",resolutions[i].file_name);
+    }
     int j;
     if(n_resolutions > 0){
         for (i = 0; i < help->head->file_length; i++){
@@ -1331,7 +1333,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
                         copy_file(resolutions[j].resolved_file, resolutions[j].file_name);
                     }
                 } else {
-                    svc_add(helper,help->head->files_array[i]->file_name);
+//                    svc_add(helper,help->head->files_array[i]->file_name);
                 }
             }
         }
@@ -1376,10 +1378,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     free(name);
     help->head->parent[1] = com_p;
     printf("Merge successful\n");
-        record++;
+//        record++;
     return help->head->commit_id;
-    } else {
-        return NULL;
-    }
 
 }
