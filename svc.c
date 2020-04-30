@@ -1338,11 +1338,11 @@ int svc_add_copy(void *helper, char *file_name) {
         help->file_array[help->file_length - 1]->hash_id = hash_file(NULL, file_name);
         
         
-        array_add = realloc(array_add, sizeof(struct file*) * (++add_length));
-        array_add[add_length - 1] = malloc(sizeof(struct files));
-//        printf("lenth%d\n",add_length);
-        array_add[add_length - 1]->file_name = strdup(file_name);
-        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
+//        array_add = realloc(array_add, sizeof(struct file*) * (++add_length));
+//        array_add[add_length - 1] = malloc(sizeof(struct files));
+////        printf("lenth%d\n",add_length);
+//        array_add[add_length - 1]->file_name = strdup(file_name);
+//        array_add[add_length - 1]->hash_id = hash_file(NULL, file_name);
     }
 //    else if(help->commit_array[help->commit_length - 1]->message != NULL){
 //
