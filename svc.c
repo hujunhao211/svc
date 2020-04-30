@@ -1428,7 +1428,7 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
 //                    svc_add_copy(helper,com_p->files_array[i]->file_name);
                 }
             }
-//        }
+        }
     } else {
 //        for (i = 0; i < help->head->file_length; i++){
 //            svc_add(helper, help->head->files_array[i]->file_name);
