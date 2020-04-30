@@ -1447,9 +1447,9 @@ char *svc_merge(void *helper, char *branch_name, struct resolution *resolutions,
     char* name = get_mess(branch_name);
 ////    svc_commit(helper, name);
     free(name);
-//    help->head->parent[1] = com_p;
-//    printf("Merge successful\n");
-////        record++;
-//    return help->head->commit_id;
-    return NULL;
+    help->head->parent[1] = com_p;
+    printf("Merge successful\n");
+//        record++;
+    return help->head->commit_id;
+//    return NULL;
 }
